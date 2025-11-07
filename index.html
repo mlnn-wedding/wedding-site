@@ -4,282 +4,47 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Иван & Дана — 24.07.2026</title>
-  <meta name="description" content="Свадебный сайт Ивана и Даны: приглашение, программа, галерея и RSVP." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Libre+Bodoni:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    :root{
-      --peach:#f7c7b1; --blue:#a7cbff; --green:#93d1bf; --ink:#213043; --paper:#fffdfb;
-    }
-    .font-display{font-family:"Libre Bodoni",serif}
-    .font-sans{font-family:"Inter",system-ui,-apple-system,Segoe UI,Roboto,Arial,"Noto Sans"}
-    html{scroll-behavior:smooth}
-    body{background:var(--paper); color:var(--ink)}
-    section{padding:84px 0}
-    @media(min-width:768px){ section{padding:120px 0} }
-
-    /* Акварельный фон: деликатные углы */
-    .wash-edges:before,.wash-edges:after{content:""; position:fixed; pointer-events:none; z-index:-1; opacity:.45}
-    .wash-edges:before{left:0; top:0; width:42vw; height:100vh; background:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAt8AAAQQCAIAAA...') no-repeat center/cover; filter:blur(.3px)}
-    .wash-edges:after{right:0; bottom:0; width:42vw; height:100vh; background:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABDgAAAeACAIAAA...') no-repeat center/cover; filter:blur(.3px)}
-    .wash-top{position:relative}
-    .wash-top:before{content:""; position:absolute; inset:0; top:-120px; height:320px; background:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAt8AAAQRCAIAAA...') no-repeat center/contain; opacity:.26; pointer-events:none}
-
-    /* Плавные появления */
-    [data-reveal]{opacity:0; transform:translateY(18px); transition:opacity .9s ease, transform .9s ease}
-    [data-reveal].in{opacity:1; transform:none}
-
-    /* HERO: фото срезано клипом */
-    .hero-wrap{display:grid; gap:28px}
-    @media(min-width:900px){ .hero-wrap{grid-template-columns:1.1fr .9fr; align-items:end} }
-    .clip-photo{clip-path:polygon(0 0, 100% 0, 100% 100%, 12% 100%); border-radius:18px; overflow:hidden}
-
-    /* Лёгкая веточка (svg) */
-    .twig{width:64px; height:64px; opacity:.8; animation:wiggle 5s ease-in-out infinite}
-    @keyframes wiggle{ 0%,100%{transform:rotate(-1deg)} 50%{transform:rotate(1deg)} }
-
-    /* Слайдер центрированный */
-    .slider{position:relative; max-width:820px; margin:0 auto}
-    .slider img{width:100%; height:auto; border-radius:24px}
-    .navbtn{position:absolute; top:50%; transform:translateY(-50%); background:rgba(255,255,255,.7); border:1px solid rgba(0,0,0,.1); padding:.6rem .8rem; border-radius:999px}
-    .navbtn:hover{background:white}
-    .nav-prev{left:-10px} .nav-next{right:-10px}
-
-    /* Мини-календарь */
-    .cal{--g:clamp(10px,2vw,14px); display:grid; grid-template-columns:repeat(7,1fr); gap:var(--g); max-width:620px; margin:0 auto}
-    .cal div{aspect-ratio:1; display:flex; align-items:center; justify-content:center; border-radius:12px; background:rgba(0,0,0,.03)}
-    .cal .hdr{background:transparent; font-weight:600}
-    .cal .mark{background:linear-gradient(135deg,var(--peach),var(--blue)); color:#1c2b3a; font-weight:700; box-shadow:0 0 0 2px rgba(0,0,0,.06) inset}
-
-    /* Дресс-код пятна */
-    .blot{width:120px; height:80px; border-radius:24px; filter:blur(.3px); opacity:.85; background:var(--peach)}
-    .blot.b2{background:var(--blue)} .blot.b3{background:var(--green)}
-
-    /* Плавающая RSVP-кнопка */
-    .fab{position:fixed; right:16px; bottom:16px; z-index:60; transform:translateY(80px); opacity:0; transition:all .5s ease}
-    .fab.show{transform:none; opacity:1}
-
-    /* Низкая разделительная фотография */
-    .strip{width:100%; height:26vh; min-height:160px; background:url('https://i.ibb.co/rKnP7wdM/1.jpg') center/cover no-repeat}
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
-<body class="font-sans wash-edges">
+<body class="font-sans">
+  <!-- Плавающая кнопка RSVP (появится позже через JS) -->
+  <a href="#rsvp" class="fab" aria-label="Перейти к RSVP">RSVP</a>
 
-  <a href="#rsvp" id="fab" class="fab inline-flex items-center gap-2 px-5 py-3 rounded-full bg-[var(--ink)] text-white shadow-lg shadow-black/10">RSVP</a>
-
-  <!-- 1) HERO: имена & дата + фото справа -->
-  <section id="home" class="wash-top">
-    <div class="max-w-6xl mx-auto px-5 hero-wrap">
-      <div>
-        <h1 class="font-display text-4xl md:text-7xl leading-tight" data-reveal>Иван <span class="text-black/40">&</span> Дана</h1>
-        <p class="text-2xl md:text-3xl mt-4" data-reveal>24.07.2026</p>
+  <!-- 1) HERO: имена + дата + фото со скруглённым ЛЕВЫМ ВЕРХНИМ углом (60px) -->
+  <header id="home" class="section hero wash-top">
+    <div class="container hero-grid">
+      <div class="hero-text" data-reveal>
+        <h1 class="title">Иван <span class="amp">&</span> Дана</h1>
+        <p class="subtitle">24.07.2026</p>
       </div>
-      <div class="clip-photo shadow-lg" data-reveal>
-        <img src="https://i.ibb.co/h1FT0BXJ/photo-2025-03-23-16-02-43.jpg" alt="Иван и Дана" class="w-full h-full object-cover"/>
-      </div>
+      <figure class="hero-photo" data-reveal>
+        <img
+          class="photo-corner-tl-60"
+          src="https://i.ibb.co/h1FT0BXJ/photo-2025-03-23-16-02-43.jpg"
+          alt="Иван и Дана" />
+      </figure>
     </div>
-  </section>
+  </header>
 
-  <!-- 2) Приглашение с веточкой -->
-  <section id="invitation">
-    <div class="max-w-3xl mx-auto px-5 text-center">
-      <div class="mx-auto mb-3" data-reveal>
-        <svg class="twig mx-auto" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 52C28 40 36 26 40 12" stroke="currentColor" stroke-opacity=".4" stroke-width="2" stroke-linecap="round"/>
-          <path d="M24 44c4-6 10-10 18-12" stroke="currentColor" stroke-opacity=".3" stroke-width="2" stroke-linecap="round"/>
-          <circle cx="40" cy="12" r="3" fill="currentColor" fill-opacity=".2"/>
-        </svg>
-      </div>
-      <h2 class="font-display text-3xl md:text-5xl" data-reveal>Мы будем счастливы видеть вас</h2>
-      <p class="mt-5 text-lg leading-relaxed" data-reveal>Дорогие родные и друзья! В этот летний день мы скажем друг другу «да». Будем рады разделить с вами улыбки, объятия и тёплые слова. Пожалуйста, дайте нам знать о своём участии — так мы подготовим всё с заботой о каждом.</p>
-    </div>
-  </section>
+  <!-- Здесь пойдут остальные секции (пока оставляем комментариями):
+    2) Приглашение  
+    3) История любви  
+    4) Галерея  
+    5) Календарь  
+    6) Локация  
+    7) Фото зала  
+    8) Дресс-код  
+    9) Обратный отсчёт  
+    10) Пожелания  
+    11) Контакты  
+    12) Фото-разделитель  
+    13) RSVP  
+    14) Финал  
+  -->
 
-  <!-- 3) История любви (кратко) -->
-  <section id="story">
-    <div class="max-w-3xl mx-auto px-5 text-center" data-reveal>
-      <h2 class="font-display text-3xl md:text-5xl">Наша история</h2>
-      <p class="mt-5 text-lg leading-relaxed">Со школы вместе — дружба, которая стала любовью. Почти 7 лет бок о бок: поступления, первый общий переезд, новые города и планы. Мы научились быть командой и бережно хранить маленькие радости каждый день.</p>
-    </div>
-  </section>
-
-  <!-- 4) Галерея: одна по центру + стрелки -->
-  <section id="gallery">
-    <div class="slider" data-reveal>
-      <button class="navbtn nav-prev" id="gPrev" aria-label="предыдущее">←</button>
-      <img id="gImg" src="https://i.ibb.co/yFmMfNxN/DSC-3612.jpg" alt="Наше фото"/>
-      <button class="navbtn nav-next" id="gNext" aria-label="следующее">→</button>
-    </div>
-  </section>
-
-  <!-- 5) Мы ждём вас + календарик -->
-  <section id="calendar">
-    <div class="max-w-3xl mx-auto px-5 text-center">
-      <h2 class="font-display text-3xl md:text-5xl" data-reveal>Мы очень ждём вас</h2>
-      <p class="mt-3" data-reveal>Отметили дату — остаётся только встретиться и обнять вас.</p>
-      <div class="cal mt-8" id="miniCal" data-reveal></div>
-    </div>
-  </section>
-
-  <!-- 6) Локация -->
-  <section id="location">
-    <div class="max-w-4xl mx-auto px-5" data-reveal>
-      <h2 class="font-display text-3xl md:text-5xl mb-4">Локация</h2>
-      <p class="text-lg">Банкетный зал «Александровский парк», парк Александровский, 1а, Санкт‑Петербург</p>
-      <a target="_blank" class="inline-block mt-4 px-5 py-3 rounded-full border hover:bg-white" href="https://maps.google.com/?q=парк%20Александровский%2C%201а%2C%20Санкт-Петербург">Как добраться →</a>
-    </div>
-  </section>
-
-  <!-- 7) Фото зала (одно, по центру) -->
-  <section id="venue">
-    <div class="max-w-5xl mx-auto px-5" data-reveal>
-      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABLAAAAMgCAIAAA..." alt="Банкетный зал" class="w-full rounded-2xl shadow"/>
-    </div>
-  </section>
-
-  <!-- 8) Дресс-код -->
-  <section id="dresscode" style="padding-bottom:40px;">
-  <div class="max-w-3xl mx-auto px-5 text-center">
-    <h2 class="font-display text-3xl md:text-5xl" data-reveal>Дресс-код</h2>
-    <p class="mt-3 text-lg" data-reveal>
-      Будем рады, если вы поддержите мягкую палитру дня: персиковый, нежно-голубой и шалфейно-зелёный. Главное — ваш комфорт.
-    </p>
-
-    <!-- Небольшие цветовые пятна -->
-    <div class="mt-6 flex items-center justify-center gap-4" data-reveal>
-      <div class="blot" style="width:110px;height:70px;"></div>
-      <div class="blot b2" style="width:110px;height:70px;"></div>
-      <div class="blot b3" style="width:110px;height:70px;"></div>
-    </div>
-
-    <p class="mt-4 text-sm text-black/60" data-reveal>Примеры образов:</p>
-
-    <!-- Примеры: только реальные картинки, без пустых заглушек -->
-    <div class="mt-4 grid grid-cols-2 md:grid-cols-4 gap-3" data-reveal>
-      <img class="w-full h-[220px] md:h-[260px] object-cover rounded-xl" src="https://i.ibb.co/Wvd8n2Zq/de2c11b77ba4dcc2120c5cb636d02783.jpg" alt="Пример дресс-кода 1"/>
-      <img class="w-full h-[220px] md:h-[260px] object-cover rounded-xl" src="https://i.ibb.co/8D3h6kg6/50b5e96ec0da28b17034b33e8ef9a75b.jpg" alt="Пример дресс-кода 2"/>
-      <img class="w-full h-[220px] md:h-[260px] object-cover rounded-xl" src="https://i.ibb.co/FZZMwYs/82164cc26a0c702d4bb0e103bf77b686.jpg" alt="Пример дресс-кода 3"/>
-      <img class="w-full h-[220px] md:h-[260px] object-cover rounded-xl" src="https://i.ibb.co/NdybczhD/a0efa33ed5795ab1aaa3e2ebd9b16577.jpg" alt="Пример дресс-кода 4"/>
-  </div>
-</section>
-
-
-  <!-- 9) Обратный отсчёт (включая месяцы) -->
-  <section id="countdown">
-    <div class="max-w-6xl mx-auto px-5">
-      <h2 class="font-display text-3xl md:text-5xl mb-6" data-reveal>До встречи в день свадьбы</h2>
-      <div class="grid grid-cols-2 sm:grid-cols-5 gap-4" data-reveal>
-        <div class="p-5 rounded-2xl bg-black/5 text-center"><div id="cd-months" class="text-3xl font-bold">0</div><div class="text-xs tracking-widest">месяцев</div></div>
-        <div class="p-5 rounded-2xl bg-black/5 text-center"><div id="cd-days" class="text-3xl font-bold">0</div><div class="text-xs tracking-widest">дней</div></div>
-        <div class="p-5 rounded-2xl bg-black/5 text-center"><div id="cd-hours" class="text-3xl font-bold">0</div><div class="text-xs tracking-widest">часов</div></div>
-        <div class="p-5 rounded-2xl bg-black/5 text-center"><div id="cd-mins" class="text-3xl font-bold">0</div><div class="text-xs tracking-widest">минут</div></div>
-        <div class="p-5 rounded-2xl bg-black/5 text-center"><div id="cd-secs" class="text-3xl font-bold">0</div><div class="text-xs tracking-widest">секунд</div></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 10) Список пожеланий -->
-  <section id="wishlist">
-    <div class="max-w-3xl mx-auto px-5 text-center" data-reveal>
-      <h2 class="font-display text-3xl md:text-5xl">Пожелания</h2>
-      <p class="mt-4">Самый важный подарок — ваше присутствие и улыбки. Если хотите порадовать нас ещё больше — будем благодарны за тёплые открытки, несколько совместных кадров, а также маленькие записки с вашими советами и добрыми словами.</p>
-    </div>
-  </section>
-
-  <!-- 11) Контакты -->
-  <section id="contacts">
-    <div class="max-w-4xl mx-auto px-5 text-center" data-reveal>
-      <h2 class="font-display text-3xl md:text-5xl">Контакты</h2>
-      <p class="mt-3">По организационным вопросам:</p>
-      <p class="mt-2">Свидетель: <a class="underline" href="tel:+79990000000">+7 999 000‑00‑00</a> • Координатор: <a class="underline" href="tel:+79991111111">+7 999 111‑11‑11</a></p>
-      <p class="mt-1"><a class="underline" href="mailto:hello@wedding.test">hello@wedding.test</a></p>
-    </div>
-  </section>
-
-  <!-- 12) Узкая полоса‑фото -->
-  <div class="strip" aria-hidden="true"></div>
-
-  <!-- 13) RSVP (Google Form) -->
-  <section id="rsvp">
-    <div class="max-w-3xl mx-auto px-5 text-center" data-reveal>
-      <h2 class="font-display text-3xl md:text-5xl">Подтверждение участия</h2>
-      <p class="mt-2">Пожалуйста, заполните форму до <strong>01.06.2026</strong>.</p>
-      <div class="mt-6 aspect-[16/10] w-full overflow-hidden rounded-3xl bg-black/5">
-        <iframe
-  class="w-full h-full"
-  src="https://docs.google.com/forms/d/e/1FAIpQLSf9NOwUJNjnPGEonc8YSm3vMmIF-jR1gxHjSO27_xYyBctCsQ/viewform?embedded=true"
-  frameborder="0"
-  marginheight="0"
-  marginwidth="0">Загрузка…</iframe>
-      </div>
-    </div>
-  </section>
-
-  <!-- 14) Финальное пожелание -->
-  <section id="goodbye">
-    <div class="max-w-3xl mx-auto px-5 text-center" data-reveal>
-      <h2 class="font-display text-3xl md:text-5xl">До скорой встречи!</h2>
-      <p class="mt-3">Пусть ваш день сегодня будет таким же светлым, как наш праздник — и пусть мы увидимся совсем скоро.</p>
-    </div>
-  </section>
-
-  <footer class="py-16">
-    <div class="max-w-6xl mx-auto px-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-      <p>© <span id="year"></span> Иван и Дана</p>
-      <a href="#home" class="underline">Наверх ↑</a>
-    </div>
-  </footer>
-
-  <script>
-    // === Вставка data-URLов, подставленных на этапе сборки ===
-  </script>
-
-  <script>
-    // Reveal on scroll
-    const ro = new IntersectionObserver((entries)=>{ entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); ro.unobserve(e.target);} }); },{threshold:0.12});
-    document.querySelectorAll('[data-reveal]').forEach(el=>ro.observe(el));
-
-    // Floating RSVP visibility
-    const fab = document.getElementById('fab');
-    const toggleFab = ()=>{ window.scrollY>400 ? fab.classList.add('show') : fab.classList.remove('show') }
-    toggleFab(); window.addEventListener('scroll', toggleFab);
-
-    // Мини-календарь: ИЮЛЬ 2026 (пн-вс)
-    const cal = document.getElementById('miniCal');
-    const headers = ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'];
-    headers.forEach(h=>{ const d=document.createElement('div'); d.textContent=h; d.className='hdr'; cal.appendChild(d); });
-    // 1 июля 2026 — среда => сдвиг 2 (если Пн=0)
-    const firstDow = 2; const daysInMonth = 31; const weddingDay=24;
-    for(let i=0;i<firstDow;i++){ const c=document.createElement('div'); c.textContent=''; cal.appendChild(c); }
-    for(let d=1; d<=daysInMonth; d++){ const c=document.createElement('div'); c.textContent=d; if(d===weddingDay) c.classList.add('mark'); cal.appendChild(c); }
-
-    // Слайдер галереи
-    const photos = ['https://i.ibb.co/yFmMfNxN/DSC-3612.jpg','https://i.ibb.co/CsTT9srS/DS-1455.webp','https://i.ibb.co/qLZ74QHP/20240928-130804.webp','https://i.ibb.co/fdQm8s1w/DS-0736.webp'];
-    const gImg = document.getElementById('gImg');
-    let gi = 0; const set = i=>{ gi=(i+photos.length)%photos.length; gImg.src=photos[gi]; }
-    document.getElementById('gPrev').addEventListener('click', ()=>set(gi-1));
-    document.getElementById('gNext').addEventListener('click', ()=>set(gi+1));
-
-    // Countdown (с месяцами)
-    const target = new Date('2026-07-24T12:00:00');
-    const el = id=>document.getElementById(id);
-    function tick(){
-      const now = new Date();
-      let diff = Math.max(0, target - now);
-      const daysTotal = Math.floor(diff / 86400000);
-      const months = Math.floor(daysTotal / 30); // прибл. по 30 дней
-      const days = daysTotal % 30;
-      const hours = Math.floor((diff/3600000)%24);
-      const mins = Math.floor((diff/60000)%60);
-      const secs = Math.floor((diff/1000)%60);
-      el('cd-months').textContent=months; el('cd-days').textContent=days; el('cd-hours').textContent=hours; el('cd-mins').textContent=mins; el('cd-secs').textContent=secs;
-    }
-    tick(); setInterval(tick,1000);
-
-    // Footer year
-    document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
