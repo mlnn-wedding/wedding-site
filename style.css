@@ -67,8 +67,15 @@ body::after{opacity:.18; filter:blur(2px)}
 /* Контейнер с текстом всегда сверху */
 .hero-right-edge .container{ position:relative; z-index:2; }
 
-/* Положение блока с фото (чуть «за край» для красоты) */
-.hero-photo-bleed{ right:-2px; }
+/* Центрируем фото по вертикали внутри секции */
+.hero-photo-bleed{
+  position: absolute;
+  right: -8px;           /* можно 0 или -16px по вкусу */
+  top: 50%;
+  transform: translateY(-50%);  /* вертикальный центр */
+  z-index: 1;
+  pointer-events: none;
+}
 
 /* ЖЁСТКАЯ регулировка размера фото — перекроет всё остальное */
 #heroPhoto{
@@ -89,6 +96,11 @@ body::after{opacity:.18; filter:blur(2px)}
   .hero-photo-bleed img{
     width:100%;
   }
+}
+
+/* Чтобы картинка не обрезалась по высоте секции */
+.hero{
+  min-height: 72vh;   /* можно 68–80vh по вкусу */
 }
 
 
