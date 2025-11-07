@@ -78,7 +78,7 @@ body::after{opacity:.18; filter:blur(2px)}
 
 /* КРУПНОСТЬ фото: регулируешь двумя числами — 56vw и 820px */
 .hero-photo-bleed img{
-  width:min(56vw, 820px);   /* больше = ближе к центру */
+  width:min(55vw, 720px);   /* больше = ближе к центру */
   height:auto;
   display:block;
   object-fit:cover;
@@ -96,3 +96,4 @@ body::after{opacity:.18; filter:blur(2px)}
     width:100%;
   }
 }
+
