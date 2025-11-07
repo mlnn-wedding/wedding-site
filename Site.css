@@ -1,0 +1,64 @@
+:root{
+  --peach:#f7c7b1; /* персиковый */
+  --blue:#a7cbff;  /* голубой */
+  --green:#93d1bf; /* зелёный */
+  --ink:#213043;   /* тёмный текст */
+  --paper:#fffdfb; /* тёплый фон */
+}
+/* Базовая типографика */
+html{scroll-behavior:smooth}
+body{
+  margin:0; color:var(--ink); background:var(--paper);
+  font-family:"Inter",system-ui,-apple-system,Segoe UI,Roboto,Arial,"Noto Sans";
+  line-height:1.55;
+}
+.font-sans{font-family:"Inter",system-ui,-apple-system,Segoe UI,Roboto,Arial,"Noto Sans"}
+.font-display{font-family:"Libre Bodoni",serif}
+
+/* Акварельные края (очень деликатно, без картинок) */
+body::before, body::after{
+  content:""; position:fixed; inset:0; pointer-events:none; z-index:-1; opacity:.26;
+  background: radial-gradient(1000px 600px at 6% 0%, var(--peach)/28%, transparent 60%),
+              radial-gradient(900px 500px at 100% 20%, var(--blue)/24%, transparent 60%),
+              radial-gradient(1000px 650px at 50% 100%, var(--green)/20%, transparent 60%);
+}
+body::after{opacity:.18; filter:blur(2px)}
+
+/* Секции и контейнер */
+.section{padding:84px 0}
+@media(min-width:768px){ .section{padding:120px 0} }
+.container{width:100%; max-width:1200px; margin:0 auto; padding:0 20px}
+
+/* HERO */
+.hero-grid{display:grid; gap:28px; align-items:end}
+@media(min-width:900px){ .hero-grid{grid-template-columns:1.1fr .9fr} }
+.title{font-family:"Libre Bodoni",serif; font-weight:600; margin:0; font-size:clamp(36px,6vw,68px); line-height:1.05}
+.amp{color:rgba(0,0,0,.4)}
+.subtitle{margin:.6rem 0 0; font-size:clamp(18px,3.2vw,28px); opacity:.9}
+
+.hero-photo img{display:block; width:100%; height:auto; object-fit:cover}
+/* Скруглён только левый верхний угол — 60px */
+.photo-corner-tl-60{border-top-left-radius:60px; border-top-right-radius:0; border-bottom-right-radius:0; border-bottom-left-radius:0; overflow:hidden}
+
+/* Плавные появления */
+[data-reveal]{opacity:0; transform:translateY(18px); transition:opacity .9s ease, transform .9s ease}
+[data-reveal].in{opacity:1; transform:none}
+
+/* Плавающая кнопка RSVP (скрыта, пока не проскроллили) */
+.fab{position:fixed; right:16px; bottom:16px; display:inline-flex; align-items:center; justify-content:center;
+  padding:.8rem 1.1rem; background:var(--ink); color:#fff; border-radius:999px; text-decoration:none;
+  box-shadow:0 10px 25px rgba(0,0,0,.12); font-weight:600; letter-spacing:.02em;
+  transform:translateY(80px); opacity:0; transition:all .45s ease; z-index:60}
+.fab.show{transform:none; opacity:1}
+
+/* Декоративная верхняя «течь» — еле заметно */
+.wash-top{position:relative}
+.wash-top::before{content:""; position:absolute; left:0; right:0; top:-100px; height:260px; pointer-events:none; opacity:.18;
+  background: radial-gradient(60% 60% at 50% 40%, var(--blue)/22%, transparent 70%)}
+
+/* Утилиты отступов/центрирования, если понадобятся позже */
+.text-center{text-align:center}
+.mt-2{margin-top:.5rem} .mt-3{margin-top:.75rem} .mt-4{margin-top:1rem} .mt-6{margin-top:1.5rem}
+.mt-8{margin-top:2rem} .mb-6{margin-bottom:1.5rem}
+
+/* Сетка галереи, календаря, таймера и т.д. добавим при переносе секций */
