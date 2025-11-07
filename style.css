@@ -61,30 +61,42 @@ body::after{opacity:.18; filter:blur(2px)}
 .mt-2{margin-top:.5rem} .mt-3{margin-top:.75rem} .mt-4{margin-top:1rem} .mt-6{margin-top:1.5rem}
 .mt-8{margin-top:2rem} .mb-6{margin-bottom:1.5rem}
 
-/* ——— ФОТО ДО ПРАВОГО КРАЯ ——— */
+/* ——— HERO: фото крупно, до правого края, без горизонтального скролла ——— */
+.hero-right-edge{
+  position: relative;
+  overflow-x: hidden;  /* страховка от «расширения» */
+}
+
+/* Текст остаётся в контейнере, фото выносим поверх лэйаута на правый край */
 .hero-right-edge .hero-grid{
-  display:grid;
-  grid-template-columns: 1fr auto;
-  align-items: center;
+  position: relative;
+  z-index: 2; /* текст над фото */
 }
 
-/* Тянем фигурку фото до правого края окна,
-   независимо от ширины контейнера */
+/* Фото фиксируем к правому краю в пределах секции */
 .hero-right-edge .hero-photo{
-  justify-self: end;
-  margin-inline-end: calc((100vw - 100%) / -2);
+  position: absolute;
+  right: 0;
+  bottom: 0;            /* можно сделать top: 0; если нужно выровнять по верху */
+  margin: 0;
+  z-index: 1;
 }
 
-/* Фолбэк для старых браузеров */
-@supports not (margin-inline-end: 0) {
-  .hero-right-edge .hero-photo{ margin-right: calc((100vw - 100%) / -2); }
-}
-
-/* Размер самого изображения */
+/* Размер: увеличивай/уменьшай двумя числами: 58vw и 780px */
 .hero-right-edge .hero-photo img{
-  width: min(55vw, 720px);
+  width: min(58vw, 780px);  /* сделай 60vw/820px, если хочется ещё крупнее */
   height: auto;
-  display:block;
+  display: block;
   object-fit: cover;
 }
 
+/* На мобильных возвращаем обычный поток, чтобы всё было аккуратно по ширине */
+@media (max-width: 899px){
+  .hero-right-edge .hero-photo{
+    position: static;
+    margin-top: 16px;
+  }
+  .hero-right-edge .hero-photo img{
+    width: 100%;
+  }
+}
