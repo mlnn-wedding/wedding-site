@@ -61,31 +61,29 @@ body::after{opacity:.18; filter:blur(2px)}
 .mt-2{margin-top:.5rem} .mt-3{margin-top:.75rem} .mt-4{margin-top:1rem} .mt-6{margin-top:1.5rem}
 .mt-8{margin-top:2rem} .mb-6{margin-bottom:1.5rem}
 
-/* Фото на первом экране уходит к правому краю */
-.hero-right-edge .hero-grid {
-  display: grid;
+/* ——— ФОТО ДО ПРАВОГО КРАЯ ——— */
+.hero-right-edge .hero-grid{
+  display:grid;
   grid-template-columns: 1fr auto;
   align-items: center;
 }
 
-.hero-right-edge .hero-photo {
-  position: relative;
-  margin: 0;
+/* Тянем фигурку фото до правого края окна,
+   независимо от ширины контейнера */
+.hero-right-edge .hero-photo{
+  justify-self: end;
+  margin-inline-end: calc((100vw - 100%) / -2);
 }
 
-/* Фото выходит наружу за контейнер, чтобы было до края страницы */
-@media(min-width: 900px) {
-  .hero-right-edge .hero-photo {
-    right: calc((100vw - 1200px) / -2);
-  }
+/* Фолбэк для старых браузеров */
+@supports not (margin-inline-end: 0) {
+  .hero-right-edge .hero-photo{ margin-right: calc((100vw - 100%) / -2); }
 }
 
-.hero-right-edge .hero-photo img {
-  width: clamp(300px, 48vw, 620px);
+/* Размер самого изображения */
+.hero-right-edge .hero-photo img{
+  width: min(48vw, 640px);
   height: auto;
+  display:block;
   object-fit: cover;
 }
-
-
-/* Сетка галереи, календаря, таймера и т.д. добавим при переносе секций */
-
