@@ -43,38 +43,80 @@ img {
 
 .hero-grid {
   display: grid;
-  grid-template-columns: 1.1fr 1fr;
+  grid-template-columns: minmax(320px, 0.8fr) minmax(420px, 1.35fr);
   align-items: center;
   gap: clamp(40px, 6vw, 120px);
-  width: min(1400px, 90%);
-  margin: 0 auto;
+  width: min(1680px, 100%);
+  margin: 0 0 0 auto;
+  padding-left: clamp(56px, 12vw, 240px);
+}
+
+.hero-text {
+  justify-self: start;
+  margin-left: clamp(12px, 4vw, 40px);
 }
 
 
 /* Текст слева */
 .title {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: clamp(4px, 0.8vw, 12px);
   font-family: "Libre Bodoni", serif;
-  font-weight: 600;
-  margin: 0 0 1rem 0;
-  font-size: clamp(60px, 9vw, 150px);
-  line-height: 1;
+  font-weight: 400;
+  margin: 0 0 clamp(12px, 1.4vw, 20px) 0;
+  font-size: clamp(44px, 7vw, 110px);
+  line-height: 0.95;
   text-transform: uppercase;
-  letter-spacing: .02em;
+  letter-spacing: 0.08em;
+  color: #3a2b23;
+}
+
+.title .name {
+  display: block;
+  font-weight: 400;
+}
+
+.title .name-top {
+  letter-spacing: 0.12em;
+}
+
+.title .amp-line {
+  align-self: center;
+  font-size: clamp(36px, 6.6vw, 96px);
+  line-height: 0.9;
+  letter-spacing: 0.2em;
+}
+
+.title .name-bottom {
+  padding-left: clamp(60px, 8vw, 128px);
+  letter-spacing: 0.12em;
 }
 
 .amp {
-  color: #b79e8e;
+  color: #b09078;
+  font-weight: 400;
 }
 
 .subtitle {
-  margin-top: clamp(20px, 2vw, 40px);
-  font-size: clamp(24px, 2.2vw, 34px);
-  opacity: .8;
+  margin-top: clamp(18px, 3.6vw, 56px);
+  font-family: "Inter", sans-serif;
+  font-size: clamp(18px, 1.6vw, 26px);
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(90, 74, 62, 0.75);
 }
 
 /* Фото справа */
 .hero-photo {
   margin: 0;
+  justify-self: stretch;
+  overflow: hidden;
+  border-top-left-radius: 140px;
+  border-top-right-radius: 0;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
 }
 
 .hero-photo img {
@@ -82,13 +124,33 @@ img {
   height: auto;
   object-fit: cover;
   object-position: center 45%;
-  border-top-left-radius: 140px;
+  border-top-left-radius: inherit;
   border-top-right-radius: 0;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
-  aspect-ratio: 4 / 3; /* ключевая часть! */
-  max-width: 520px;
-  margin-left: auto;
+  aspect-ratio: 4 / 3;
+  max-width: none;
+  transform-origin: center;
+  animation: hero-photo-zoom 12s ease-out forwards;
+}
+
+@keyframes hero-photo-zoom {
+  0% {
+    transform: scale(1.14);
+  }
+  55% {
+    transform: scale(1.02);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-photo img {
+    animation: none;
+    transform: none;
+  }
 }
 
 
@@ -97,6 +159,16 @@ img {
   .hero-grid {
     grid-template-columns: 1fr;
     gap: 32px;
+    margin: 0 auto;
+    padding-left: 0;
+  }
+
+  .hero-text {
+    margin-left: 0;
+  }
+
+  .hero-photo {
+    border-top-left-radius: 60px;
   }
 
   .hero-photo img {
