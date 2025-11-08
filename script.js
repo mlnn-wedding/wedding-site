@@ -11,18 +11,6 @@
   document.querySelectorAll('[data-reveal]').forEach(el => io.observe(el));
 })();
 
-// === Floating RSVP button ===
-(() => {
-  const fab = document.querySelector('.fab');
-  if (!fab) return;
-  const toggle = () => {
-    if (window.scrollY > 400) fab.classList.add('show');
-    else fab.classList.remove('show');
-  };
-  toggle();
-  window.addEventListener('scroll', toggle, { passive: true });
-})();
-
 // === Placeholders for upcoming sections ===
 // Gallery slider (will be wired when gallery section added)
 window.Wedding = window.Wedding || {};
