@@ -10,43 +10,209 @@
   <link rel="stylesheet" href="style.css?v=7">
 </head>
 <body class="font-sans">
-  <!-- 1) HERO: имена + дата + фото со скруглённым ЛЕВЫМ ВЕРХНИМ углом (60px) -->
+  <!-- 1) HERO: имена, дата и фото с диагональным срезом справа -->
   <header id="home" class="section hero wash-top">
-  <div class="container hero-grid">
-    <div class="hero-text">
-      <h1 class="title">
-        <span class="name name-top">Иван</span>
-        <span class="amp-line amp">&</span>
-        <span class="name name-bottom">Дана</span>
-      </h1>
-      <p class="subtitle">24.07.2026</p>
-    </div>
+    <div class="container hero-grid">
+      <div class="hero-text" data-reveal>
+        <h1 class="title">
+          <span class="name name-top">Иван</span>
+          <span class="amp-line amp">&</span>
+          <span class="name name-bottom">Дана</span>
+        </h1>
+        <p class="subtitle">24.07.2026</p>
+      </div>
 
-    <figure class="hero-photo">
-      <img
-        src="https://i.ibb.co/h1FT0BXJ/photo-2025-03-23-16-02-43.jpg"
-        alt="Иван и Дана"
-      />
-    </figure>
-  </div>
+      <figure class="hero-photo" data-reveal>
+        <img
+          src="https://i.ibb.co/64WMt8L/photo-2024-10-23-20-15-27.jpg"
+          alt="Иван и Дана"
+        />
+      </figure>
+    </div>
   </header>
 
+  <main>
+    <section id="invitation" class="section invitation" data-reveal>
+      <div class="container invitation-card">
+        <div class="invite-illustration" aria-hidden="true">
+          <svg viewBox="0 0 160 120" role="presentation">
+            <path class="twig" d="M10 110 Q80 20 150 30" />
+            <circle class="bud" cx="32" cy="68" r="6" />
+            <circle class="bud" cx="88" cy="52" r="8" />
+            <circle class="bud" cx="126" cy="40" r="5" />
+          </svg>
+        </div>
+        <div class="invite-text">
+          <h2>Дорогие наши родные и друзья!</h2>
+          <p>
+            Мы счастливы пригласить вас разделить с нами день, в который мы скажем друг другу «да» и отметим нашу любовь.
+            Нам будет очень приятно видеть вас среди гостей и провести вместе тёплый праздник.
+          </p>
+          <p>До встречи на нашей свадьбе!</p>
+        </div>
+      </div>
+    </section>
 
-  <!-- Здесь пойдут остальные секции (пока оставляем комментариями):
-    2) Приглашение  
-    3) История любви  
-    4) Галерея  
-    5) Календарь  
-    6) Локация  
-    7) Фото зала  
-    8) Дресс-код  
-    9) Обратный отсчёт  
-    10) Пожелания  
-    11) Контакты  
-    12) Фото-разделитель  
-    13) RSVP  
-    14) Финал  
-  -->
+    <section id="story" class="section story" data-reveal>
+      <div class="container story-grid">
+        <h2 class="section-title">Наша история</h2>
+        <div class="story-points">
+          <article>
+            <h3>Со школьной скамьи</h3>
+            <p>Мы познакомились в старшей школе и с тех пор шагали рядом — от подготовки к экзаменам до первых путешествий без родителей.</p>
+          </article>
+          <article>
+            <h3>Семь лет вдохновения</h3>
+            <p>Почти семь лет мы растём друг с другом: поддерживаем мечты, смеёмся над глупостями и каждый день учимся слышать и любить ещё больше.</p>
+          </article>
+          <article>
+            <h3>Общие решения</h3>
+            <p>Мы пережили переезд в новый город, поступление в университеты и первые взрослые победы — и всё это лишь укрепило уверенность, что мы команда.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="gallery" class="section gallery" data-reveal>
+      <div class="container gallery-wrap">
+        <h2 class="section-title">Галерея</h2>
+        <div class="gallery-frame">
+          <button class="gallery-nav" id="gallery-prev" aria-label="Предыдущее фото">&#8592;</button>
+          <img id="gallery-current" src="" alt="Фотография из галереи" />
+          <button class="gallery-nav" id="gallery-next" aria-label="Следующее фото">&#8594;</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="calendar" class="section calendar" data-reveal>
+      <div class="container calendar-grid">
+        <div class="calendar-text">
+          <h2 class="section-title">Ждём вас</h2>
+          <p>Мы с нетерпением готовимся к нашему празднику и мечтаем разделить этот день с вами. Пожалуйста, отметьте дату в своём календаре.</p>
+        </div>
+        <div class="calendar-widget">
+          <div class="mini-calendar" id="mini-calendar"></div>
+          <p class="calendar-date">24 июля 2026</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="location" class="section location" data-reveal>
+      <div class="container location-card">
+        <div class="location-info">
+          <h2 class="section-title">Локация праздника</h2>
+          <p>Банкетный зал «Александровский парк»<br />Парк Александровский, 1а, Санкт-Петербург</p>
+        </div>
+        <a class="btn" href="https://yandex.ru/maps/-/CCUBvRIkhB" target="_blank" rel="noopener">Как добраться</a>
+      </div>
+    </section>
+
+    <section id="venue" class="section venue" data-reveal>
+      <div class="container">
+        <h2 class="section-title">Наш зал</h2>
+        <figure class="venue-photo">
+          <img src="https://i.ibb.co/J5P8QkH/alex-park-hall.jpg" alt="Банкетный зал Александровский парк" />
+        </figure>
+      </div>
+    </section>
+
+    <section id="dresscode" class="section dresscode" data-reveal>
+      <div class="container dresscode-grid">
+        <div class="dresscode-text">
+          <h2 class="section-title">Дресс-код</h2>
+          <p>Будем рады, если вы поддержите атмосферу вечера и выберете наряды в нежных природных оттенках. Это поможет фотографиям получиться ещё более тёплыми и гармоничными.</p>
+        </div>
+        <div class="dresscode-palette">
+          <div class="swatch" style="--c:#e6d9cf"></div>
+          <div class="swatch" style="--c:#d7c2b1"></div>
+          <div class="swatch" style="--c:#c0b29f"></div>
+          <div class="swatch" style="--c:#9c8a78"></div>
+          <div class="swatch" style="--c:#f2ede6"></div>
+        </div>
+        <div class="dresscode-examples">
+          <img src="https://i.ibb.co/NK0V9VJ/dresscode-1.jpg" alt="Пример образа 1" />
+          <img src="https://i.ibb.co/TrTnWHk/dresscode-2.jpg" alt="Пример образа 2" />
+          <img src="https://i.ibb.co/ZmTY9pP/dresscode-3.jpg" alt="Пример образа 3" />
+        </div>
+      </div>
+    </section>
+
+    <section id="countdown" class="section countdown" data-reveal>
+      <div class="container countdown-card">
+        <h2 class="section-title">До встречи осталось</h2>
+        <div class="countdown-grid">
+          <div class="count-box"><span id="cd-months">0</span><small>месяцев</small></div>
+          <div class="count-box"><span id="cd-days">0</span><small>дней</small></div>
+          <div class="count-box"><span id="cd-hours">0</span><small>часов</small></div>
+          <div class="count-box"><span id="cd-mins">0</span><small>минут</small></div>
+          <div class="count-box"><span id="cd-secs">0</span><small>секунд</small></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="wishlist" class="section wishlist" data-reveal>
+      <div class="container">
+        <h2 class="section-title">Пожелания</h2>
+        <p>Ваше присутствие — главный подарок! Если хотите порадовать нас дополнительно, мы будем счастливы впечатлениям, открыткам с тёплыми словами и любым знакам внимания, которые сделают день особенным.</p>
+      </div>
+    </section>
+
+    <section id="contacts" class="section contacts" data-reveal>
+      <div class="container contacts-grid">
+        <div>
+          <h2 class="section-title">Контакты</h2>
+          <p>Если у вас возникнут вопросы, пожалуйста, свяжитесь с нами:</p>
+        </div>
+        <ul>
+          <li><strong>Иван</strong> — +7 (900) 000-00-01</li>
+          <li><strong>Дана</strong> — +7 (900) 000-00-02</li>
+          <li><strong>Email</strong> — love@example.com</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section divider" data-reveal>
+      <img src="https://i.ibb.co/dP1VbhZ/wide-photo.jpg" alt="Иван и Дана" />
+    </section>
+
+    <section id="rsvp" class="section rsvp" data-reveal>
+      <div class="container rsvp-card">
+        <h2 class="section-title">Подтверждение присутствия</h2>
+        <p>Пожалуйста, дайте знать до 1 июня 2026 года, сможете ли вы быть с нами.</p>
+        <form class="rsvp-form">
+          <label>
+            <span>Ваше имя</span>
+            <input type="text" name="name" placeholder="Как вас представить?" required />
+          </label>
+          <label>
+            <span>Электронная почта</span>
+            <input type="email" name="email" placeholder="example@mail.ru" required />
+          </label>
+          <label>
+            <span>Сможете прийти?</span>
+            <select name="attendance" required>
+              <option value="" disabled selected>Выберите вариант</option>
+              <option value="yes">Да, обязательно буду</option>
+              <option value="maybe">Пока не уверены</option>
+              <option value="no">К сожалению, не получится</option>
+            </select>
+          </label>
+          <label>
+            <span>Комментарий</span>
+            <textarea name="message" rows="3" placeholder="Аллергии, пожелания или вопросы"></textarea>
+          </label>
+          <button type="submit" class="btn">Отправить</button>
+        </form>
+      </div>
+    </section>
+
+    <section id="final" class="section finale" data-reveal>
+      <div class="container finale-card">
+        <p>Спасибо, что нашли время заглянуть! Мы очень надеемся увидеть вас на нашей свадьбе и разделить этот день с вами.</p>
+        <p>До скорой встречи и чудесного вам дня!</p>
+      </div>
+    </section>
+  </main>
 
   <script src="script.js"></script>
 </body>

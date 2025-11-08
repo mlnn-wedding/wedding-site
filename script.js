@@ -78,3 +78,27 @@ window.Wedding.miniCal = {
     }
   }
 };
+
+document.addEventListener('DOMContentLoaded', () => {
+  window.Wedding.gallery.mount('gallery-current', 'gallery-prev', 'gallery-next');
+  window.Wedding.countdown.start();
+  window.Wedding.miniCal.mount('mini-calendar');
+
+  const rsvp = document.querySelector('.rsvp-form');
+  if (rsvp) {
+    rsvp.addEventListener('submit', (ev) => {
+      ev.preventDefault();
+      const btn = rsvp.querySelector('button[type="submit"]');
+      if (btn) {
+        const original = btn.textContent;
+        btn.textContent = 'Спасибо!';
+        btn.disabled = true;
+        setTimeout(() => {
+          btn.textContent = original;
+          btn.disabled = false;
+          rsvp.reset();
+        }, 2200);
+      }
+    });
+  }
+});
