@@ -22,18 +22,41 @@ window.Wedding.gallery = {
     'https://i.ibb.co/fdQm8s1w/DS-0736.webp',
   ],
   index: 0,
-  mount(imgId, prevId, nextId){
+  timer: null,
+  mount(imgId){
     const img = document.getElementById(imgId);
-    const prev = document.getElementById(prevId);
-    const next = document.getElementById(nextId);
-    if(!img || !prev || !next) return;
-    const set = (i) => {
+    if(!img) return;
+    const show = (i) => {
       this.index = (i + this.photos.length) % this.photos.length;
-      img.src = this.photos[this.index];
+      img.classList.remove('is-visible');
+      const nextSrc = this.photos[this.index];
+      const currentSrc = img.getAttribute('data-src');
+      if(currentSrc === nextSrc){
+        requestAnimationFrame(() => img.classList.add('is-visible'));
+        return;
+      }
+      img.onload = () => {
+        img.classList.add('is-visible');
+        img.setAttribute('data-src', nextSrc);
+      };
+      img.src = nextSrc;
+      if(img.complete){
+        requestAnimationFrame(() => {
+          img.classList.add('is-visible');
+          img.setAttribute('data-src', nextSrc);
+        });
+      }
     };
-    prev.addEventListener('click', () => set(this.index - 1));
-    next.addEventListener('click', () => set(this.index + 1));
-    set(0);
+    show(0);
+    this.timer = setInterval(() => show(this.index + 1), 3000);
+    document.addEventListener('visibilitychange', () => {
+      if(document.hidden){
+        this.timer && clearInterval(this.timer);
+        this.timer = null;
+      } else if(!this.timer){
+        this.timer = setInterval(() => show(this.index + 1), 3000);
+      }
+    });
   }
 };
 
@@ -65,9 +88,16 @@ window.Wedding.countdown = {
 
 // Mini calendar (July 2026)
 window.Wedding.miniCal = {
-  mount(containerId){
+  monthIndex: 6,
+  year: 2026,
+  mount(containerId, monthId, yearId){
     const cal = document.getElementById(containerId);
+    const monthEl = monthId ? document.getElementById(monthId) : null;
+    const yearEl = yearId ? document.getElementById(yearId) : null;
     if(!cal) return;
+    const monthNames = ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
+    monthEl && (monthEl.textContent = monthNames[this.monthIndex]);
+    yearEl && (yearEl.textContent = this.year);
     const headers = ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'];
     for(const h of headers){ const d=document.createElement('div'); d.textContent=h; d.className='hdr'; cal.appendChild(d); }
     const firstDow = 2; // 1 июля 2026 — среда → offset 2 (если Пн=0)
@@ -80,9 +110,9 @@ window.Wedding.miniCal = {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-  window.Wedding.gallery.mount('gallery-current', 'gallery-prev', 'gallery-next');
+  window.Wedding.gallery.mount('gallery-current');
   window.Wedding.countdown.start();
-  window.Wedding.miniCal.mount('mini-calendar');
+  window.Wedding.miniCal.mount('mini-calendar', 'calendar-month', 'calendar-year');
 
   const rsvp = document.querySelector('.rsvp-form');
   if (rsvp) {

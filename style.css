@@ -291,35 +291,34 @@ img {
 .story-grid {
   display: grid;
   gap: clamp(28px, 6vw, 48px);
+  justify-items: center;
 }
 
 .story-points {
-  display: grid;
-  gap: clamp(20px, 4vw, 36px);
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  display: flex;
+  flex-direction: column;
+  gap: clamp(24px, 5vw, 40px);
+  width: min(760px, 100%);
 }
 
 .story-points article {
-  padding: 24px;
-  background: rgba(255, 255, 255, 0.78);
-  border-radius: 24px;
-  box-shadow: 0 12px 28px rgba(33, 21, 12, 0.08);
-  display: flex;
-  flex-direction: column;
+  display: grid;
   gap: 12px;
+  text-align: center;
 }
 
 .story-points h3 {
   margin: 0;
-  font-size: 22px;
+  font-size: clamp(22px, 3vw, 26px);
   font-weight: 600;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .story-points p {
   margin: 0;
-  font-size: 18px;
-  line-height: 1.55;
+  font-size: clamp(18px, 2.6vw, 20px);
+  line-height: 1.6;
 }
 
 /* ====== GALLERY ====== */
@@ -336,9 +335,6 @@ img {
   border-radius: 32px;
   overflow: hidden;
   box-shadow: 0 16px 44px rgba(33, 21, 12, 0.12);
-  display: flex;
-  align-items: center;
-  justify-content: center;
   background: rgba(255, 255, 255, 0.75);
 }
 
@@ -346,36 +342,12 @@ img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.8s ease;
 }
 
-.gallery-nav {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(255, 255, 255, 0.85);
-  border: none;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  font-size: 24px;
-  cursor: pointer;
-  color: #654b36;
-  transition: background 0.3s ease, transform 0.3s ease;
-}
-
-.gallery-nav:hover,
-.gallery-nav:focus-visible {
-  background: rgba(181, 148, 124, 0.85);
-  color: #fff;
-  transform: translateY(-50%) scale(1.05);
-}
-
-#gallery-prev {
-  left: 16px;
-}
-
-#gallery-next {
-  right: 16px;
+.gallery-frame img.is-visible {
+  opacity: 1;
 }
 
 /* ====== CALENDAR ====== */
@@ -396,7 +368,26 @@ img {
 .calendar-widget {
   display: grid;
   justify-items: center;
-  gap: 16px;
+  gap: 18px;
+}
+
+.calendar-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: "Libre Bodoni", serif;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #2f2117;
+}
+
+.calendar-month {
+  font-size: clamp(22px, 3vw, 26px);
+}
+
+.calendar-year {
+  font-size: clamp(16px, 2.4vw, 18px);
+  opacity: 0.8;
 }
 
 .mini-calendar {
@@ -432,13 +423,6 @@ img {
   width: 36px;
   height: 36px;
   font-weight: 600;
-}
-
-.calendar-date {
-  margin: 0;
-  font-size: 18px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
 }
 
 /* ====== LOCATION ====== */
@@ -703,12 +687,6 @@ img {
 /* ====== MEDIA ====== */
 
 @media (max-width: 768px) {
-  .gallery-nav {
-    width: 40px;
-    height: 40px;
-    font-size: 20px;
-  }
-
   .mini-calendar {
     grid-template-columns: repeat(7, 36px);
   }
