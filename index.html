@@ -90,8 +90,8 @@
         </div>
         <div class="calendar-widget">
           <div class="calendar-header">
-            <span id="calendar-month" class="calendar-month"></span>
             <span id="calendar-year" class="calendar-year"></span>
+            <span id="calendar-month" class="calendar-month"></span>
           </div>
           <div class="mini-calendar" id="mini-calendar"></div>
         </div>
@@ -104,7 +104,7 @@
           <h2 class="section-title">Локация праздника</h2>
           <p>Банкетный зал «Александровский парк»<br />Парк Александровский, 1а, Санкт-Петербург</p>
         </div>
-        <a class="btn" href="https://yandex.ru/maps/org/aleksandrovskiy_park/1134945799/?ll=30.318635%2C59.894669&z=16" target="_blank" rel="noopener">Как добраться</a>
+        <a class="btn" href="https://yandex.com/maps/-/CLCUETkj" target="_blank" rel="noopener">Как добраться</a>
       </div>
     </section>
 
@@ -164,10 +164,17 @@
           <h2 class="section-title">Контакты</h2>
           <p>Если у вас возникнут вопросы, пожалуйста, свяжитесь с нами:</p>
         </div>
-        <ul>
-          <li><strong>Иван</strong> — +7 (900) 000-00-01</li>
-          <li><strong>Дана</strong> — +7 (900) 000-00-02</li>
-          <li><strong>Email</strong> — love@example.com</li>
+        <ul class="contacts-list">
+          <li>
+            <strong>Иван</strong>
+            <span class="contact-line">Телефон: <a href="tel:+79215830737">8&nbsp;921&nbsp;583-07-37</a></span>
+            <span class="contact-line">Telegram: <a href="https://t.me/MILKAsuper" target="_blank" rel="noopener">@MILKAsuper</a></span>
+          </li>
+          <li>
+            <strong>Дана</strong>
+            <span class="contact-line">Телефон: <a href="tel:+79226544678">8&nbsp;922&nbsp;654-46-78</a></span>
+            <span class="contact-line">Telegram: <a href="https://t.me/Danonella" target="_blank" rel="noopener">@Danonella</a></span>
+          </li>
         </ul>
       </div>
     </section>
@@ -186,21 +193,53 @@
             <input type="text" name="name" placeholder="Как вас представить?" required />
           </label>
           <label>
-            <span>Электронная почта</span>
-            <input type="email" name="email" placeholder="example@mail.ru" required />
-          </label>
-          <label>
-            <span>Сможете прийти?</span>
+            <span>Присутствие</span>
             <select name="attendance" required>
               <option value="" disabled selected>Выберите вариант</option>
-              <option value="yes">Да, обязательно буду</option>
+              <option value="yes">Буду обязательно</option>
               <option value="maybe">Пока не уверены</option>
               <option value="no">К сожалению, не получится</option>
             </select>
           </label>
           <label>
-            <span>Комментарий</span>
-            <textarea name="message" rows="3" placeholder="Аллергии, пожелания или вопросы"></textarea>
+            <span>Количество человек</span>
+            <input type="number" name="guests" min="1" max="10" placeholder="Например, 2" required />
+          </label>
+          <label>
+            <span>Количество детей до 12 лет</span>
+            <input type="number" name="kids" min="0" max="10" placeholder="Если без детей, укажите 0" required />
+          </label>
+          <label>
+            <span>Присутствие на втором дне за городом</span>
+            <select name="day2" required>
+              <option value="" disabled selected>Выберите вариант</option>
+              <option value="yes">Да, едем с вами</option>
+              <option value="maybe">Пока думаем</option>
+              <option value="no">Не получится</option>
+            </select>
+          </label>
+          <fieldset>
+            <legend>Что предпочитаете из напитков?</legend>
+            <label class="checkbox">
+              <input type="checkbox" name="drinks" value="wine" />
+              <span>Вино</span>
+            </label>
+            <label class="checkbox">
+              <input type="checkbox" name="drinks" value="sparkling" />
+              <span>Игристое</span>
+            </label>
+            <label class="checkbox">
+              <input type="checkbox" name="drinks" value="strong" />
+              <span>Крепкие напитки</span>
+            </label>
+            <label class="checkbox">
+              <input type="checkbox" name="drinks" value="soft" />
+              <span>Безалкогольные</span>
+            </label>
+          </fieldset>
+          <label>
+            <span>Аллергии или особенности</span>
+            <textarea name="allergy" rows="3" placeholder="Расскажите, что нам учесть"></textarea>
           </label>
           <button type="submit" class="btn">Отправить</button>
         </form>
@@ -211,6 +250,18 @@
       <div class="container finale-card">
         <p>Спасибо, что нашли время заглянуть! Мы очень надеемся увидеть вас на нашей свадьбе и разделить этот день с вами.</p>
         <p>До скорой встречи и чудесного вам дня!</p>
+        <div class="anon-wish">
+          <h3>Хотите сказать что-то анонимно?</h3>
+          <p>Мы будем рады прочитать ваши пожелания — можно оставить анонимное сообщение ниже, и мы увидим его только вместе.</p>
+          <form class="anon-form">
+            <label>
+              <span class="visually-hidden">Анонимное пожелание</span>
+              <textarea name="anon" rows="4" placeholder="Напишите нам пару строк..." required></textarea>
+            </label>
+            <button type="submit" class="btn btn-secondary">Отправить пожелание</button>
+          </form>
+        </div>
+        <p class="site-credit">Сайт разработан совместной работой жениха, невесты и ChatGPT, без использования сторонних сайт-мейкеров.</p>
       </div>
     </section>
   </main>

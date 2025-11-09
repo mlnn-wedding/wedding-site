@@ -375,31 +375,35 @@ img {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 4px;
   font-family: "Libre Bodoni", serif;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: #2f2117;
 }
 
-.calendar-month {
-  font-size: clamp(22px, 3vw, 26px);
+.calendar-year {
+  font-size: clamp(32px, 5vw, 48px);
+  font-weight: 600;
+  letter-spacing: 0.22em;
 }
 
-.calendar-year {
-  font-size: clamp(16px, 2.4vw, 18px);
-  opacity: 0.8;
+.calendar-month {
+  font-size: clamp(20px, 3vw, 28px);
+  letter-spacing: 0.16em;
+  opacity: 0.85;
 }
 
 .mini-calendar {
   display: grid;
-  grid-template-columns: repeat(7, 42px);
-  gap: 6px;
-  padding: 20px;
+  grid-template-columns: repeat(7, 48px);
+  gap: 8px;
+  padding: 26px;
   border-radius: 20px;
   background: rgba(255, 255, 255, 0.85);
   box-shadow: 0 12px 30px rgba(33, 21, 12, 0.12);
   font-family: "Inter", sans-serif;
-  font-size: 15px;
+  font-size: 16px;
   color: #554235;
 }
 
@@ -420,9 +424,55 @@ img {
   background: #b7957d;
   color: white;
   border-radius: 50%;
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   font-weight: 600;
+}
+
+/* ====== CONTACTS ====== */
+
+.contacts-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 18px;
+  font-family: "Inter", sans-serif;
+  font-size: 16px;
+  color: rgba(59, 47, 47, 0.85);
+}
+
+.contacts-list li {
+  display: grid;
+  gap: 6px;
+  padding: 18px 20px;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 20px;
+  box-shadow: 0 10px 24px rgba(33, 21, 12, 0.12);
+  text-align: left;
+}
+
+.contacts-list strong {
+  font-family: "Libre Bodoni", serif;
+  font-size: 22px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #2f2117;
+}
+
+.contact-line {
+  display: block;
+  letter-spacing: 0.02em;
+}
+
+.contacts-list a {
+  color: #8c6d55;
+  text-decoration: none;
+}
+
+.contacts-list a:hover,
+.contacts-list a:focus-visible {
+  text-decoration: underline;
 }
 
 /* ====== LOCATION ====== */
@@ -577,18 +627,17 @@ img {
 
 .contacts-grid {
   display: grid;
-  gap: 16px;
+  gap: 28px;
   justify-items: center;
   text-align: center;
 }
 
-.contacts-grid ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: grid;
-  gap: 8px;
-  font-size: 20px;
+.contacts-grid > div {
+  max-width: 520px;
+}
+
+.contacts-grid .contacts-list {
+  width: min(560px, 100%);
 }
 
 /* ====== DIVIDER PHOTO ====== */
@@ -657,6 +706,39 @@ img {
   min-width: 220px;
 }
 
+.rsvp-form fieldset {
+  border: 1px solid rgba(100, 80, 64, 0.25);
+  border-radius: 18px;
+  padding: 18px 20px 14px;
+  display: grid;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.85);
+}
+
+.rsvp-form legend {
+  font-family: "Inter", sans-serif;
+  font-size: 15px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(59, 47, 47, 0.7);
+  padding: 0 6px;
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: "Inter", sans-serif;
+  font-size: 15px;
+  color: rgba(59, 47, 47, 0.85);
+}
+
+.checkbox input {
+  width: 18px;
+  height: 18px;
+  accent-color: #b7957d;
+}
+
 /* ====== FINALE ====== */
 
 .finale-card {
@@ -669,6 +751,77 @@ img {
   padding: 36px 32px;
   border-radius: 28px;
   box-shadow: 0 16px 40px rgba(33, 21, 12, 0.08);
+}
+
+.anon-wish {
+  margin-top: 32px;
+  display: grid;
+  gap: 18px;
+}
+
+.anon-wish h3 {
+  margin: 0;
+  font-family: "Libre Bodoni", serif;
+  font-size: clamp(24px, 3vw, 32px);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #2f2117;
+}
+
+.anon-form {
+  display: grid;
+  gap: 14px;
+}
+
+.anon-form textarea {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 18px;
+  border: 1px solid rgba(100, 80, 64, 0.25);
+  background: rgba(255, 255, 255, 0.9);
+  font-family: "Inter", sans-serif;
+  font-size: 16px;
+  color: #3b2f2f;
+  resize: vertical;
+  min-height: 140px;
+}
+
+.anon-form textarea:focus {
+  outline: none;
+  border-color: #b89983;
+  box-shadow: 0 0 0 2px rgba(184, 153, 131, 0.2);
+}
+
+.btn-secondary {
+  background: transparent;
+  border: 1px solid rgba(59, 47, 47, 0.45);
+  color: #3b2f2f;
+}
+
+.btn-secondary:hover,
+.btn-secondary:focus-visible {
+  background: rgba(59, 47, 47, 0.08);
+}
+
+.site-credit {
+  margin-top: 36px;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(59, 47, 47, 0.6);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 /* ====== REVEAL ====== */
@@ -686,13 +839,43 @@ img {
 
 /* ====== MEDIA ====== */
 
+@media (min-width: 1024px) {
+  .calendar-widget {
+    gap: 24px;
+  }
+
+  .mini-calendar {
+    grid-template-columns: repeat(7, 58px);
+    gap: 12px;
+    padding: 34px;
+    font-size: 18px;
+  }
+
+  .mini-calendar .hdr {
+    font-size: 14px;
+  }
+
+  .mini-calendar .mark {
+    width: 48px;
+    height: 48px;
+  }
+}
+
 @media (max-width: 768px) {
   .mini-calendar {
     grid-template-columns: repeat(7, 36px);
+    gap: 6px;
+    padding: 20px;
+    font-size: 14px;
   }
 
   .dresscode-palette {
     flex-wrap: wrap;
+  }
+
+  .mini-calendar .mark {
+    width: 32px;
+    height: 32px;
   }
 }
 
@@ -712,10 +895,17 @@ img {
 
   .mini-calendar {
     grid-template-columns: repeat(7, 32px);
+    gap: 4px;
+    padding: 18px;
   }
 
   .rsvp-card {
     padding: 32px 20px;
+  }
+
+  .mini-calendar .mark {
+    width: 28px;
+    height: 28px;
   }
 }
 
