@@ -411,18 +411,33 @@ img {
   overflow: hidden;
   box-shadow: 0 16px 44px rgba(33, 21, 12, 0.12);
   background: rgba(255, 255, 255, 0.75);
+  isolation: isolate;
 }
 
 .gallery-frame img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
   opacity: 0;
-  transition: opacity 0.8s ease;
+  transform: scale(1.035);
+  transition: opacity 1.4s cubic-bezier(0.4, 0, 0.2, 1), transform 7s ease;
+  will-change: opacity, transform;
 }
 
 .gallery-frame img.is-visible {
   opacity: 1;
+  transform: scale(1.01);
+  z-index: 2;
+}
+
+.gallery-frame img[aria-hidden="true"] {
+  z-index: 1;
+}
+
+#gallery-buffer.is-visible {
+  z-index: 3;
 }
 
 /* ====== CALENDAR ====== */
@@ -718,6 +733,32 @@ img {
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: rgba(59, 47, 47, 0.7);
+}
+
+.rsvp-form textarea,
+.wishes-form textarea {
+  resize: none;
+  overflow: auto;
+}
+
+@media (max-width: 640px) {
+  .countdown-grid {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .count-box {
+    text-align: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gallery-frame img {
+    transition: none;
+    transform: none;
+  }
 }
 
 /* ====== WISHLIST ====== */

@@ -23,40 +23,156 @@ window.Wedding.gallery = {
   ],
   index: 0,
   timer: null,
+  intervalMs: 5000,
+  _visibilityHandler: null,
+  _motionQuery: null,
+  _motionHandler: null,
   mount(imgId){
-    const img = document.getElementById(imgId);
-    if(!img) return;
+    const current = document.getElementById(imgId);
+    if(!current) return;
+    const frame = current.closest('.gallery-frame');
+    let buffer = frame ? frame.querySelector('#gallery-buffer') : null;
+    if(!buffer && frame){
+      buffer = document.createElement('img');
+      buffer.id = 'gallery-buffer';
+      buffer.setAttribute('aria-hidden', 'true');
+      buffer.alt = '';
+      buffer.loading = 'lazy';
+      buffer.decoding = 'async';
+      frame.appendChild(buffer);
+    }
+    if(!buffer || !this.photos.length) return;
+
+    current.decoding = 'async';
+
+    const front = current;
+    const back = buffer;
+
+    const setActive = (imgEl, src) => {
+      if(!src) return;
+      imgEl.setAttribute('data-src', src);
+      imgEl.src = src;
+    };
+
+    const runTransition = (nextSrc) => {
+      let finished = false;
+      let fallbackTimer = null;
+
+      const finish = () => {
+        if(finished) return;
+        finished = true;
+        back.removeEventListener('transitionend', onEnd);
+        if(fallbackTimer){
+          window.clearTimeout(fallbackTimer);
+        }
+        setActive(front, nextSrc);
+        requestAnimationFrame(() => {
+          front.classList.add('is-visible');
+          back.classList.remove('is-visible');
+        });
+        back.removeAttribute('data-src');
+        back.removeAttribute('src');
+      };
+
+      const onEnd = (event) => {
+        if(event.target === back && event.propertyName === 'opacity'){
+          finish();
+        }
+      };
+
+      back.addEventListener('transitionend', onEnd);
+      fallbackTimer = window.setTimeout(finish, 1800);
+
+      requestAnimationFrame(() => {
+        front.classList.remove('is-visible');
+        requestAnimationFrame(() => {
+          back.classList.add('is-visible');
+        });
+      });
+    };
+
     const show = (i) => {
+      if(!this.photos.length) return;
       this.index = (i + this.photos.length) % this.photos.length;
-      img.classList.remove('is-visible');
       const nextSrc = this.photos[this.index];
-      const currentSrc = img.getAttribute('data-src');
-      if(currentSrc === nextSrc){
-        requestAnimationFrame(() => img.classList.add('is-visible'));
+      if(front.getAttribute('data-src') === nextSrc){
         return;
       }
-      img.onload = () => {
-        img.classList.add('is-visible');
-        img.setAttribute('data-src', nextSrc);
+      back.onload = null;
+
+      const startSwap = () => {
+        if(this._motionQuery && this._motionQuery.matches){
+          setActive(front, nextSrc);
+          front.classList.add('is-visible');
+          back.classList.remove('is-visible');
+          back.removeAttribute('data-src');
+          back.removeAttribute('src');
+          return;
+        }
+        runTransition(nextSrc);
       };
-      img.src = nextSrc;
-      if(img.complete){
-        requestAnimationFrame(() => {
-          img.classList.add('is-visible');
-          img.setAttribute('data-src', nextSrc);
-        });
+
+      setActive(back, nextSrc);
+      if(back.complete){
+        startSwap();
+      } else {
+        back.onload = () => {
+          back.onload = null;
+          startSwap();
+        };
       }
     };
-    show(0);
-    this.timer = setInterval(() => show(this.index + 1), 3000);
-    document.addEventListener('visibilitychange', () => {
-      if(document.hidden){
-        this.timer && clearInterval(this.timer);
-        this.timer = null;
-      } else if(!this.timer){
-        this.timer = setInterval(() => show(this.index + 1), 3000);
+
+    setActive(front, this.photos[0]);
+    front.classList.add('is-visible');
+    this.index = 0;
+    back.removeAttribute('data-src');
+    back.removeAttribute('src');
+    back.classList.remove('is-visible');
+
+    const start = () => {
+      if(this.timer || (this._motionQuery && this._motionQuery.matches)) return;
+      this.timer = window.setInterval(() => show(this.index + 1), this.intervalMs);
+    };
+
+    const stop = () => {
+      if(!this.timer) return;
+      window.clearInterval(this.timer);
+      this.timer = null;
+    };
+
+    if(!this._motionQuery){
+      this._motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+      this._motionHandler = () => {
+        if(this._motionQuery.matches){
+          stop();
+        } else {
+          start();
+        }
+      };
+      if(typeof this._motionQuery.addEventListener === 'function'){
+        this._motionQuery.addEventListener('change', this._motionHandler);
+      } else if(typeof this._motionQuery.addListener === 'function'){
+        this._motionQuery.addListener(this._motionHandler);
       }
-    });
+    }
+
+    if(!this._visibilityHandler){
+      this._visibilityHandler = () => {
+        if(document.hidden){
+          stop();
+        } else {
+          start();
+        }
+      };
+      document.addEventListener('visibilitychange', this._visibilityHandler);
+    }
+
+    if(!(this._motionQuery && this._motionQuery.matches)){
+      start();
+    }
+
+    return { next: () => show(this.index + 1) };
   }
 };
 

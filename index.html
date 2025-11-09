@@ -27,6 +27,8 @@
         <img
           src="https://i.ibb.co/h1FT0BXJ/photo-2025-03-23-16-02-43.jpg"
           alt="Иван и Дана"
+          fetchpriority="high"
+          decoding="async"
         />
       </figure>
     </div>
@@ -78,7 +80,8 @@
       <div class="container gallery-wrap">
         <h2 class="section-title">Галерея</h2>
         <div class="gallery-frame">
-          <img id="gallery-current" src="" alt="Фотография из галереи" />
+          <img id="gallery-current" src="" alt="Фотография из галереи" decoding="async" />
+          <img id="gallery-buffer" src="" alt="" aria-hidden="true" decoding="async" loading="lazy" />
         </div>
       </div>
     </section>
@@ -113,7 +116,7 @@
       <div class="container">
         <h2 class="section-title">Наш зал</h2>
         <figure class="venue-photo">
-          <img src="https://i.ibb.co/yBpf5VGf/7bafc00a38232062e419a0acf09e9ff2-w1230-h820-no-cut.webp" alt="Банкетный зал Александровский парк" />
+          <img src="https://i.ibb.co/yBpf5VGf/7bafc00a38232062e419a0acf09e9ff2-w1230-h820-no-cut.webp" alt="Банкетный зал Александровский парк" loading="lazy" decoding="async" />
         </figure>
       </div>
     </section>
@@ -132,9 +135,9 @@
           <div class="swatch" style="--c:#f2ede6"></div>
         </div>
         <div class="dresscode-examples">
-          <img src="https://i.ibb.co/NK0V9VJ/dresscode-1.jpg" alt="Пример образа 1" />
-          <img src="https://i.ibb.co/TrTnWHk/dresscode-2.jpg" alt="Пример образа 2" />
-          <img src="https://i.ibb.co/ZmTY9pP/dresscode-3.jpg" alt="Пример образа 3" />
+          <img src="https://i.ibb.co/NK0V9VJ/dresscode-1.jpg" alt="Пример образа 1" loading="lazy" decoding="async" />
+          <img src="https://i.ibb.co/TrTnWHk/dresscode-2.jpg" alt="Пример образа 2" loading="lazy" decoding="async" />
+          <img src="https://i.ibb.co/ZmTY9pP/dresscode-3.jpg" alt="Пример образа 3" loading="lazy" decoding="async" />
         </div>
       </div>
     </section>
@@ -271,7 +274,7 @@
       </div>
     </section>
     <section class="section divider" data-reveal>
-      <img src="https://i.ibb.co/dP1VbhZ/wide-photo.jpg" alt="Иван и Дана" />
+      <img src="https://i.ibb.co/dP1VbhZ/wide-photo.jpg" alt="Иван и Дана" loading="lazy" decoding="async" />
     </section>
     <section id="contacts" class="section contacts" data-reveal>
       <div class="container contacts-grid">
