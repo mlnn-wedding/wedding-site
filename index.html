@@ -187,7 +187,7 @@
       <div class="container rsvp-card">
         <h2 class="section-title">Подтверждение присутствия</h2>
         <p>Пожалуйста, дайте знать до 1 июня 2026 года, сможете ли вы быть с нами.</p>
-        <form class="rsvp-form" novalidate>
+        <form class="rsvp-form" novalidate data-gform="https://docs.google.com/forms/d/e/1FAIpQLSf9NOwUJNjnPGEonc8YSm3vMmIF-jR1gxHjSO27_xYyBctCsQ/formResponse">
           <label>
             <span>Ваше имя</span>
             <input type="text" name="name" placeholder="Как вас представить?" required />
@@ -196,9 +196,9 @@
             <span>Присутствие</span>
             <select name="attendance" required>
               <option value="" disabled selected>Выберите вариант</option>
-              <option value="yes">Буду обязательно</option>
-              <option value="maybe">Пока не уверены</option>
-              <option value="no">К сожалению, не получится</option>
+              <option value="Буду">Буду обязательно</option>
+              <option value="Не знаю">Пока не уверены</option>
+              <option value="Нет">К сожалению, не получится</option>
             </select>
           </label>
           <label>
@@ -213,9 +213,9 @@
             <span>Присутствие на втором дне за городом</span>
             <select name="day2" required>
               <option value="" disabled selected>Выберите вариант</option>
-              <option value="yes">Да, едем с вами</option>
-              <option value="maybe">Пока думаем</option>
-              <option value="no">Не получится</option>
+              <option value="Да">Да, едем с вами</option>
+              <option value="Не знаю">Пока думаем</option>
+              <option value="Нет">Не получится</option>
             </select>
           </label>
           <fieldset class="drink-fieldset">
@@ -227,19 +227,19 @@
                 <span>Шампанское</span>
               </label>
               <label class="choice-pill">
-                <input type="checkbox" name="drinks" value="Белое вино полусухое" />
+                <input type="checkbox" name="drinks" value="Белое полусухое" />
                 <span>Белое полусухое</span>
               </label>
               <label class="choice-pill">
-                <input type="checkbox" name="drinks" value="Белое вино полусладкое" />
+                <input type="checkbox" name="drinks" value="Белое полусладкое" />
                 <span>Белое полусладкое</span>
               </label>
               <label class="choice-pill">
-                <input type="checkbox" name="drinks" value="Красное вино полусухое" />
+                <input type="checkbox" name="drinks" value="Красное полусухое" />
                 <span>Красное полусухое</span>
               </label>
               <label class="choice-pill">
-                <input type="checkbox" name="drinks" value="Красное вино полусладкое" />
+                <input type="checkbox" name="drinks" value="Красное полусладкое" />
                 <span>Красное полусладкое</span>
               </label>
               <label class="choice-pill">
@@ -274,11 +274,10 @@
           </label>
           <div class="form-actions">
             <button type="submit" class="btn">Отправить</button>
-            <button type="button" class="btn btn-secondary" data-export="rsvp">Скачать ответы (CSV)</button>
           </div>
-          <p class="form-storage" data-storage="rsvp">
-            <strong data-count="rsvp">0 ответов сохранено</strong>
-            <span class="storage-note" data-default="Ответы сохраняются в браузере и доступны только вам">Ответы сохраняются в браузере и доступны только вам</span>
+          <p class="form-storage">
+            <strong>Ответы отправляются в Google-форму</strong>
+            <span class="storage-note">После отправки вы можете закрыть страницу — всё уже сохранено.</span>
           </p>
           <p class="form-feedback" id="rsvp-feedback" aria-live="polite"></p>
         </form>

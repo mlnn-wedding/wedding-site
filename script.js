@@ -161,11 +161,6 @@ document.addEventListener('DOMContentLoaded', () => {
   })();
 
   const counterConfig = {
-    rsvp: {
-      forms: ['ответ', 'ответа', 'ответов'],
-      empty: 'Пока нет сохранённых ответов',
-      suffix: 'сохранено'
-    },
     anon: {
       forms: ['сообщение', 'сообщения', 'сообщений'],
       empty: 'Пока нет сохранённых пожеланий',
@@ -250,15 +245,12 @@ document.addEventListener('DOMContentLoaded', () => {
     el.classList.toggle('is-error', Boolean(isError));
   };
 
-  updateCount('rsvp');
   updateCount('anon');
-  updateStorageNote('rsvp');
   updateStorageNote('anon');
 
   const rsvp = document.querySelector('.rsvp-form');
   if (rsvp) {
     const submitBtn = rsvp.querySelector('button[type="submit"]');
-    const exportBtn = rsvp.querySelector('[data-export="rsvp"]');
     const feedbackEl = document.getElementById('rsvp-feedback');
 
     const syncPills = () => {
@@ -280,77 +272,82 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     syncPills();
+    const gformUrl = rsvp.dataset.gform;
+    const fieldMap = {
+      name: 'entry.1768114812',
+      attendance: 'entry.261955250',
+      guests: 'entry.2115685374',
+      kids: 'entry.1985729318',
+      day2: 'entry.1672786907',
+      drinks: 'entry.1201722257',
+      drinksOther: 'entry.1201722257.other_option_response',
+      allergy: 'entry.1404903480'
+    };
 
-    exportBtn?.addEventListener('click', () => {
-      if (!storage.available) {
-        showFeedback(feedbackEl, 'Экспорт недоступен в этом режиме браузера', true);
-        return;
+    const setSubmitting = (state) => {
+      if (!submitBtn) return;
+      submitBtn.disabled = state;
+      submitBtn.classList.toggle('is-busy', state);
+    };
+
+    const submitToGoogle = (formData) => {
+      if (!gformUrl) {
+        return Promise.reject(new Error('Не указан адрес Google-формы'));
       }
-      const entries = storage.read('rsvp');
-      if (!entries.length) {
-        showFeedback(feedbackEl, 'Пока нечего экспортировать — нет сохранённых ответов', true);
-        return;
+      const payload = new URLSearchParams();
+      payload.append('fvv', '1');
+      payload.append('pageHistory', '0');
+      payload.append(fieldMap.name, (formData.get('name') || '').toString().trim());
+      payload.append(fieldMap.attendance, (formData.get('attendance') || '').toString());
+      payload.append(fieldMap.guests, (formData.get('guests') || '').toString());
+      payload.append(fieldMap.kids, (formData.get('kids') || '').toString());
+      payload.append(fieldMap.day2, (formData.get('day2') || '').toString());
+      const drinks = formData.getAll('drinks').map((v) => v.toString()).filter(Boolean);
+      drinks.forEach((drink) => payload.append(fieldMap.drinks, drink));
+      const extraDrink = (formData.get('drinksNote') || '').toString().trim();
+      if (extraDrink) {
+        payload.append(fieldMap.drinks, '__other_option__');
+        payload.append(fieldMap.drinksOther, extraDrink);
       }
-      const columns = [
-        { header: 'Дата/время', accessor: (entry) => new Date(entry.submittedAt).toLocaleString('ru-RU') },
-        { header: 'Имя', accessor: 'name' },
-        { header: 'Статус присутствия', accessor: 'attendanceLabel' },
-        { header: 'Количество гостей', accessor: 'guests' },
-        { header: 'Дети до 12', accessor: 'kids' },
-        { header: 'Второй день', accessor: 'day2Label' },
-        { header: 'Напитки', accessor: (entry) => entry.drinks?.join(', ') || '' },
-        { header: 'Пожелания по напиткам', accessor: 'drinksNote' },
-        { header: 'Аллергии/особенности', accessor: 'allergy' }
-      ];
-      const ok = downloadCSV(entries, columns, 'wedding-rsvp.csv');
-      if (ok) {
-        showFeedback(feedbackEl, 'Файл с ответами скачан');
+      const allergy = (formData.get('allergy') || '').toString().trim();
+      if (allergy) {
+        payload.append(fieldMap.allergy, allergy);
       }
-    });
+      return fetch(gformUrl, {
+        method: 'POST',
+        mode: 'no-cors',
+        body: payload
+      });
+    };
 
     rsvp.addEventListener('submit', (ev) => {
       ev.preventDefault();
       if (!rsvp.reportValidity()) {
         return;
       }
-      if (!storage.available) {
-        showFeedback(feedbackEl, 'Не удалось сохранить: включите обычный режим браузера', true);
-        return;
-      }
-
       const formData = new FormData(rsvp);
-      const getSelectLabel = (name) => {
-        const option = rsvp.querySelector(`[name="${name}"] option:checked`);
-        return option ? option.textContent.trim() : '';
-      };
-      const entry = {
-        submittedAt: new Date().toISOString(),
-        name: (formData.get('name') || '').toString().trim(),
-        attendance: formData.get('attendance'),
-        attendanceLabel: getSelectLabel('attendance'),
-        guests: formData.get('guests'),
-        kids: formData.get('kids'),
-        day2: formData.get('day2'),
-        day2Label: getSelectLabel('day2'),
-        drinks: formData.getAll('drinks').map((v) => v.toString()),
-        drinksNote: (formData.get('drinksNote') || '').toString().trim(),
-        allergy: (formData.get('allergy') || '').toString().trim()
-      };
-      const entries = storage.append('rsvp', entry);
-      const count = entries.length;
-      updateCount('rsvp');
-      showFeedback(feedbackEl, `Ответ сохранён! Сейчас у нас ${count} ${pluralizeRu(count, counterConfig.rsvp.forms)}.`);
-      if (submitBtn) {
-        const original = submitBtn.textContent;
-        submitBtn.textContent = 'Спасибо!';
-        submitBtn.disabled = true;
-        setTimeout(() => {
-          submitBtn.textContent = original;
-          submitBtn.disabled = false;
-        }, 2200);
-      }
-      rsvp.reset();
-      syncPills();
+      showFeedback(feedbackEl, 'Отправляем ответ...');
+      setSubmitting(true);
+      submitToGoogle(formData)
+        .then(() => {
+          showFeedback(feedbackEl, 'Ответ отправлен! Спасибо, что сообщили нам.');
+          if (submitBtn) {
+            const original = submitBtn.textContent;
+            submitBtn.textContent = 'Отправлено!';
+            setTimeout(() => {
+              submitBtn.textContent = original;
+            }, 2200);
+          }
+          rsvp.reset();
+          syncPills();
+        })
+        .catch((err) => {
+          console.error('Не удалось отправить ответ в Google-форму', err);
+          showFeedback(feedbackEl, 'Не получилось отправить ответ. Попробуйте ещё раз чуть позже.', true);
+        })
+        .finally(() => {
+          setSubmitting(false);
+        });
     });
   }
 
