@@ -96,8 +96,8 @@ window.Wedding.miniCal = {
     const yearEl = yearId ? document.getElementById(yearId) : null;
     if(!cal) return;
     const monthNames = ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
-    monthEl && (monthEl.textContent = monthNames[this.monthIndex]);
     yearEl && (yearEl.textContent = this.year);
+    monthEl && (monthEl.textContent = monthNames[this.monthIndex]);
     const headers = ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'];
     for(const h of headers){ const d=document.createElement('div'); d.textContent=h; d.className='hdr'; cal.appendChild(d); }
     const firstDow = 2; // 1 июля 2026 — среда → offset 2 (если Пн=0)
@@ -127,6 +127,24 @@ document.addEventListener('DOMContentLoaded', () => {
           btn.textContent = original;
           btn.disabled = false;
           rsvp.reset();
+        }, 2200);
+      }
+    });
+  }
+
+  const anon = document.querySelector('.anon-form');
+  if (anon) {
+    anon.addEventListener('submit', (ev) => {
+      ev.preventDefault();
+      const btn = anon.querySelector('button[type="submit"]');
+      if (btn) {
+        const original = btn.textContent;
+        btn.textContent = 'Мы всё прочитаем!';
+        btn.disabled = true;
+        setTimeout(() => {
+          btn.textContent = original;
+          btn.disabled = false;
+          anon.reset();
         }, 2200);
       }
     });
