@@ -21,13 +21,6 @@ body {
   background-repeat: repeat;
 }
 
-.icon-sprite {
-  position: absolute;
-  width: 0;
-  height: 0;
-  overflow: hidden;
-}
-
 img {
   max-width: 100%;
   display: block;
@@ -937,11 +930,13 @@ img {
 
 .choice-pill {
   position: relative;
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 999px;
-  padding: 12px 20px;
+  padding: 14px 18px;
+  min-height: 56px;
+  width: 100%;
   font-family: "Inter", sans-serif;
   font-size: 15px;
   letter-spacing: 0.04em;
@@ -951,8 +946,7 @@ img {
   cursor: pointer;
   transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
   overflow: hidden;
-  text-align: left;
-  --pill-icon-size: 26px;
+  text-align: center;
 }
 
 .choice-pill::after {
@@ -974,84 +968,14 @@ img {
   opacity: 0;
 }
 
-.pill-visual {
-  pointer-events: none;
-  position: relative;
-  z-index: 1;
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  color: inherit;
-}
-
-.pill-icon {
-  display: block;
-  width: var(--pill-icon-size);
-  height: var(--pill-icon-size);
-  flex: 0 0 var(--pill-icon-size);
-  color: var(--pill-icon-color, #c9a68e);
-  transition: transform 0.3s ease, color 0.3s ease;
-}
-
-.pill-icon .glass {
-  fill: none;
-  stroke: rgba(59, 47, 47, 0.6);
-  stroke-width: 1.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.pill-icon .liquid {
-  fill: currentColor;
-  opacity: 0.92;
-}
-
 .pill-text {
+  display: block;
+  width: 100%;
   color: inherit;
   white-space: normal;
 }
 
-.choice-pill[data-drink="champagne"] {
-  --pill-icon-color: #d8c896;
-}
-
-.choice-pill[data-drink="white-dry"] {
-  --pill-icon-color: #efe2b3;
-}
-
-.choice-pill[data-drink="white-sweet"] {
-  --pill-icon-color: #f6d7a8;
-}
-
-.choice-pill[data-drink="red-dry"] {
-  --pill-icon-color: #d46c6c;
-}
-
-.choice-pill[data-drink="red-sweet"] {
-  --pill-icon-color: #e07f7f;
-}
-
-.choice-pill[data-drink="whiskey"] {
-  --pill-icon-color: #c08a4b;
-}
-
-.choice-pill[data-drink="vodka"] {
-  --pill-icon-color: #8ab7d1;
-}
-
-.choice-pill[data-drink="gin"] {
-  --pill-icon-color: #8bc3aa;
-}
-
-.choice-pill[data-drink="cognac"] {
-  --pill-icon-color: #b4753f;
-}
-
-.choice-pill[data-drink="soft"] {
-  --pill-icon-color: #7fb067;
-}
-
-.choice-pill input:checked + .pill-visual .pill-text {
+.choice-pill input:checked + .pill-text {
   color: #2f2117;
   font-weight: 600;
 }
@@ -1078,10 +1002,6 @@ img {
 .choice-pill.is-selected .pill-text {
   color: inherit;
   font-weight: 600;
-}
-
-.choice-pill.is-selected .pill-icon {
-  transform: scale(1.05);
 }
 
 .choice-extra {
@@ -1305,7 +1225,8 @@ img {
   }
 
   .choice-pill {
-    --pill-icon-size: 34px;
+    min-height: 60px;
+    font-size: 16px;
   }
 
   .wishlist-layout {
@@ -1367,11 +1288,12 @@ img {
   }
 
   .choice-pill {
-    --pill-icon-size: 22px;
+    min-height: 52px;
+    padding: 12px 16px;
   }
 
-  .pill-visual {
-    gap: 10px;
+  .pill-text {
+    font-size: 14px;
   }
 
   .wishlist-form-card {
