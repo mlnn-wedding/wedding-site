@@ -114,39 +114,305 @@ document.addEventListener('DOMContentLoaded', () => {
   window.Wedding.countdown.start();
   window.Wedding.miniCal.mount('mini-calendar', 'calendar-month', 'calendar-year');
 
+  const storage = (() => {
+    const prefix = 'wedding-site-v1';
+    const availability = (() => {
+      try {
+        const test = '__wedding_storage_test__';
+        window.localStorage.setItem(test, '1');
+        window.localStorage.removeItem(test);
+        return true;
+      } catch (err) {
+        console.warn('localStorage недоступен', err);
+        return false;
+      }
+    })();
+
+    const keyFor = (key) => `${prefix}:${key}`;
+
+    const read = (key) => {
+      if (!availability) return [];
+      try {
+        const raw = window.localStorage.getItem(keyFor(key));
+        return raw ? JSON.parse(raw) : [];
+      } catch (err) {
+        console.warn('Не удалось прочитать данные', err);
+        return [];
+      }
+    };
+
+    const write = (key, value) => {
+      if (!availability) return;
+      try {
+        window.localStorage.setItem(keyFor(key), JSON.stringify(value));
+      } catch (err) {
+        console.warn('Не удалось сохранить данные', err);
+      }
+    };
+
+    const append = (key, entry) => {
+      const list = read(key);
+      list.push(entry);
+      write(key, list);
+      return list;
+    };
+
+    return { available: availability, read, write, append };
+  })();
+
+  const counterConfig = {
+    rsvp: {
+      forms: ['ответ', 'ответа', 'ответов'],
+      empty: 'Пока нет сохранённых ответов',
+      suffix: 'сохранено'
+    },
+    anon: {
+      forms: ['сообщение', 'сообщения', 'сообщений'],
+      empty: 'Пока нет сохранённых пожеланий',
+      suffix: 'сохранено'
+    }
+  };
+
+  const pluralizeRu = (n, [one, few, many]) => {
+    const mod10 = n % 10;
+    const mod100 = n % 100;
+    if (mod10 === 1 && mod100 !== 11) return one;
+    if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) return few;
+    return many;
+  };
+
+  const updateCount = (key) => {
+    const config = counterConfig[key];
+    if (!config) return;
+    const counter = document.querySelector(`[data-count="${key}"]`);
+    if (!counter) return;
+    if (!storage.available) {
+      counter.textContent = 'Хранилище в браузере недоступно';
+      return;
+    }
+    const entries = storage.read(key);
+    if (!entries.length) {
+      counter.textContent = config.empty;
+      return;
+    }
+    const word = pluralizeRu(entries.length, config.forms);
+    counter.textContent = `${entries.length} ${word} ${config.suffix}`;
+  };
+
+  const updateStorageNote = (key) => {
+    const wrapper = document.querySelector(`[data-storage="${key}"]`);
+    if (!wrapper) return;
+    const note = wrapper.querySelector('.storage-note');
+    if (!storage.available) {
+      wrapper.classList.add('is-disabled');
+      if (note) {
+        note.textContent = 'Сохранение отключено: похоже, браузер работает в приватном режиме.';
+      }
+    } else {
+      wrapper.classList.remove('is-disabled');
+      if (note) {
+        const original = note.getAttribute('data-default');
+        if (original) {
+          note.textContent = original;
+        }
+      }
+    }
+  };
+
+  const downloadCSV = (entries, columns, filename) => {
+    if (!entries.length) return false;
+    const header = columns.map(col => `"${col.header.replace(/"/g, '""')}"`).join(';');
+    const rows = entries.map(entry => {
+      return columns.map(col => {
+        const value = typeof col.accessor === 'function' ? col.accessor(entry) : entry[col.accessor];
+        const safe = value == null ? '' : String(value);
+        return `"${safe.replace(/"/g, '""')}"`;
+      }).join(';');
+    });
+    const csv = [header, ...rows].join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    requestAnimationFrame(() => {
+      URL.revokeObjectURL(url);
+      link.remove();
+    });
+    return true;
+  };
+
+  const showFeedback = (el, message, isError = false) => {
+    if (!el) return;
+    el.textContent = message;
+    el.classList.toggle('is-error', Boolean(isError));
+  };
+
+  updateCount('rsvp');
+  updateCount('anon');
+  updateStorageNote('rsvp');
+  updateStorageNote('anon');
+
   const rsvp = document.querySelector('.rsvp-form');
   if (rsvp) {
+    const submitBtn = rsvp.querySelector('button[type="submit"]');
+    const exportBtn = rsvp.querySelector('[data-export="rsvp"]');
+    const feedbackEl = document.getElementById('rsvp-feedback');
+
+    const syncPills = () => {
+      rsvp.querySelectorAll('.choice-pill input[type="checkbox"]').forEach((input) => {
+        const pill = input.closest('.choice-pill');
+        if (!pill) return;
+        pill.classList.toggle('is-selected', input.checked);
+      });
+    };
+
+    rsvp.addEventListener('change', (ev) => {
+      const target = ev.target;
+      if (target instanceof HTMLInputElement && target.closest('.choice-pill')) {
+        const pill = target.closest('.choice-pill');
+        if (pill) {
+          pill.classList.toggle('is-selected', target.checked);
+        }
+      }
+    });
+
+    syncPills();
+
+    exportBtn?.addEventListener('click', () => {
+      if (!storage.available) {
+        showFeedback(feedbackEl, 'Экспорт недоступен в этом режиме браузера', true);
+        return;
+      }
+      const entries = storage.read('rsvp');
+      if (!entries.length) {
+        showFeedback(feedbackEl, 'Пока нечего экспортировать — нет сохранённых ответов', true);
+        return;
+      }
+      const columns = [
+        { header: 'Дата/время', accessor: (entry) => new Date(entry.submittedAt).toLocaleString('ru-RU') },
+        { header: 'Имя', accessor: 'name' },
+        { header: 'Статус присутствия', accessor: 'attendanceLabel' },
+        { header: 'Количество гостей', accessor: 'guests' },
+        { header: 'Дети до 12', accessor: 'kids' },
+        { header: 'Второй день', accessor: 'day2Label' },
+        { header: 'Напитки', accessor: (entry) => entry.drinks?.join(', ') || '' },
+        { header: 'Пожелания по напиткам', accessor: 'drinksNote' },
+        { header: 'Аллергии/особенности', accessor: 'allergy' }
+      ];
+      const ok = downloadCSV(entries, columns, 'wedding-rsvp.csv');
+      if (ok) {
+        showFeedback(feedbackEl, 'Файл с ответами скачан');
+      }
+    });
+
     rsvp.addEventListener('submit', (ev) => {
       ev.preventDefault();
-      const btn = rsvp.querySelector('button[type="submit"]');
-      if (btn) {
-        const original = btn.textContent;
-        btn.textContent = 'Спасибо!';
-        btn.disabled = true;
+      if (!rsvp.reportValidity()) {
+        return;
+      }
+      if (!storage.available) {
+        showFeedback(feedbackEl, 'Не удалось сохранить: включите обычный режим браузера', true);
+        return;
+      }
+
+      const formData = new FormData(rsvp);
+      const getSelectLabel = (name) => {
+        const option = rsvp.querySelector(`[name="${name}"] option:checked`);
+        return option ? option.textContent.trim() : '';
+      };
+      const entry = {
+        submittedAt: new Date().toISOString(),
+        name: (formData.get('name') || '').toString().trim(),
+        attendance: formData.get('attendance'),
+        attendanceLabel: getSelectLabel('attendance'),
+        guests: formData.get('guests'),
+        kids: formData.get('kids'),
+        day2: formData.get('day2'),
+        day2Label: getSelectLabel('day2'),
+        drinks: formData.getAll('drinks').map((v) => v.toString()),
+        drinksNote: (formData.get('drinksNote') || '').toString().trim(),
+        allergy: (formData.get('allergy') || '').toString().trim()
+      };
+      const entries = storage.append('rsvp', entry);
+      const count = entries.length;
+      updateCount('rsvp');
+      showFeedback(feedbackEl, `Ответ сохранён! Сейчас у нас ${count} ${pluralizeRu(count, counterConfig.rsvp.forms)}.`);
+      if (submitBtn) {
+        const original = submitBtn.textContent;
+        submitBtn.textContent = 'Спасибо!';
+        submitBtn.disabled = true;
         setTimeout(() => {
-          btn.textContent = original;
-          btn.disabled = false;
-          rsvp.reset();
+          submitBtn.textContent = original;
+          submitBtn.disabled = false;
         }, 2200);
       }
+      rsvp.reset();
+      syncPills();
     });
   }
 
   const anon = document.querySelector('.anon-form');
   if (anon) {
+    const submitBtn = anon.querySelector('button[type="submit"]');
+    const exportBtn = anon.querySelector('[data-export="anon"]');
+    const feedbackEl = document.getElementById('anon-feedback');
+
+    exportBtn?.addEventListener('click', () => {
+      if (!storage.available) {
+        showFeedback(feedbackEl, 'Экспорт недоступен в приватном режиме', true);
+        return;
+      }
+      const entries = storage.read('anon');
+      if (!entries.length) {
+        showFeedback(feedbackEl, 'Пока нет сохранённых пожеланий', true);
+        return;
+      }
+      const columns = [
+        { header: 'Дата/время', accessor: (entry) => new Date(entry.submittedAt).toLocaleString('ru-RU') },
+        { header: 'Сообщение', accessor: 'message' }
+      ];
+      const ok = downloadCSV(entries, columns, 'wedding-wishes.csv');
+      if (ok) {
+        showFeedback(feedbackEl, 'Файл с пожеланиями скачан');
+      }
+    });
+
     anon.addEventListener('submit', (ev) => {
       ev.preventDefault();
-      const btn = anon.querySelector('button[type="submit"]');
-      if (btn) {
-        const original = btn.textContent;
-        btn.textContent = 'Мы всё прочитаем!';
-        btn.disabled = true;
+      if (!anon.reportValidity()) {
+        return;
+      }
+      if (!storage.available) {
+        showFeedback(feedbackEl, 'Сохранение недоступно: отключён localStorage', true);
+        return;
+      }
+      const formData = new FormData(anon);
+      const message = (formData.get('anon') || '').toString().trim();
+      if (!message) {
+        showFeedback(feedbackEl, 'Введите сообщение, пожалуйста', true);
+        return;
+      }
+      const entry = {
+        submittedAt: new Date().toISOString(),
+        message
+      };
+      const entries = storage.append('anon', entry);
+      const count = entries.length;
+      updateCount('anon');
+      showFeedback(feedbackEl, `Пожелание сохранено ❤️ (${count} ${pluralizeRu(count, counterConfig.anon.forms)})`);
+      if (submitBtn) {
+        const original = submitBtn.textContent;
+        submitBtn.textContent = 'Мы всё прочитаем!';
+        submitBtn.disabled = true;
         setTimeout(() => {
-          btn.textContent = original;
-          btn.disabled = false;
-          anon.reset();
+          submitBtn.textContent = original;
+          submitBtn.disabled = false;
         }, 2200);
       }
+      anon.reset();
     });
   }
 });

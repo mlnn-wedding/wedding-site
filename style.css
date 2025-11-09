@@ -156,10 +156,58 @@ img {
   }
 }
 
+@keyframes float-sway {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(12px, -10px, 0) scale(1.05);
+  }
+}
+
+@keyframes drift {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+    opacity: 0.45;
+  }
+  40% {
+    transform: translate3d(-10px, 6px, 0) rotate(5deg);
+    opacity: 0.65;
+  }
+  70% {
+    transform: translate3d(14px, -12px, 0) rotate(-4deg);
+    opacity: 0.55;
+  }
+}
+
+@keyframes sparkle {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(0.9);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .hero-photo img {
     animation: none;
     transform: none;
+  }
+
+  .twig,
+  .bud,
+  .rsvp-card::before,
+  .rsvp-card::after,
+  .story-grid::before,
+  .story-grid::after,
+  .countdown-card::before,
+  .countdown-card::after,
+  .finale-card::before,
+  .finale-card::after {
+    animation: none !important;
   }
 }
 
@@ -292,6 +340,33 @@ img {
   display: grid;
   gap: clamp(28px, 6vw, 48px);
   justify-items: center;
+  position: relative;
+  isolation: isolate;
+}
+
+.story-grid::before,
+.story-grid::after {
+  content: "";
+  position: absolute;
+  width: clamp(160px, 38vw, 320px);
+  height: clamp(160px, 38vw, 320px);
+  border-radius: 46% 54% 58% 42%;
+  background: radial-gradient(circle at 30% 30%, rgba(201, 166, 142, 0.35), rgba(255, 255, 255, 0));
+  top: -20%;
+  left: -10%;
+  z-index: -1;
+  pointer-events: none;
+  animation: drift 22s ease-in-out infinite;
+}
+
+.story-grid::after {
+  top: auto;
+  bottom: -18%;
+  left: auto;
+  right: -12%;
+  background: radial-gradient(circle at 70% 70%, rgba(153, 131, 116, 0.28), rgba(255, 255, 255, 0));
+  animation-duration: 26s;
+  animation-delay: -8s;
 }
 
 .story-points {
@@ -520,6 +595,13 @@ img {
   box-shadow: 0 12px 24px rgba(33, 21, 12, 0.18);
 }
 
+.btn[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
 /* ====== VENUE ====== */
 
 .venue-photo {
@@ -583,6 +665,30 @@ img {
   background: linear-gradient(140deg, rgba(255, 255, 255, 0.9), rgba(232, 215, 200, 0.8));
   box-shadow: 0 18px 46px rgba(33, 21, 12, 0.15);
   text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.countdown-card::before,
+.countdown-card::after {
+  content: "";
+  position: absolute;
+  width: clamp(120px, 28vw, 220px);
+  height: clamp(120px, 28vw, 220px);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.6), rgba(201, 166, 142, 0));
+  top: -40px;
+  right: -60px;
+  pointer-events: none;
+  animation: sparkle 16s ease-in-out infinite;
+}
+
+.countdown-card::after {
+  top: auto;
+  right: auto;
+  bottom: -40px;
+  left: -60px;
+  animation-delay: -6s;
 }
 
 .countdown-grid {
@@ -663,6 +769,36 @@ img {
   text-align: center;
   display: grid;
   gap: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.rsvp-card::before,
+.rsvp-card::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  mix-blend-mode: multiply;
+  opacity: 0.2;
+  pointer-events: none;
+  animation: float-sway 18s ease-in-out infinite;
+}
+
+.rsvp-card::before {
+  width: clamp(160px, 35vw, 260px);
+  height: clamp(160px, 35vw, 260px);
+  background: radial-gradient(circle at 30% 30%, rgba(201, 166, 142, 0.7), rgba(255, 255, 255, 0));
+  top: -80px;
+  left: -60px;
+}
+
+.rsvp-card::after {
+  width: clamp(140px, 28vw, 220px);
+  height: clamp(140px, 28vw, 220px);
+  background: radial-gradient(circle at 70% 70%, rgba(153, 131, 116, 0.65), rgba(255, 255, 255, 0));
+  bottom: -70px;
+  right: -40px;
+  animation-delay: -6s;
 }
 
 .rsvp-form {
@@ -701,11 +837,6 @@ img {
   box-shadow: 0 0 0 2px rgba(184, 153, 131, 0.2);
 }
 
-.rsvp-form button {
-  justify-self: center;
-  min-width: 220px;
-}
-
 .rsvp-form fieldset {
   border: 1px solid rgba(100, 80, 64, 0.25);
   border-radius: 18px;
@@ -724,19 +855,101 @@ img {
   padding: 0 6px;
 }
 
-.checkbox {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-family: "Inter", sans-serif;
-  font-size: 15px;
-  color: rgba(59, 47, 47, 0.85);
+.drink-fieldset {
+  gap: 18px;
 }
 
-.checkbox input {
-  width: 18px;
-  height: 18px;
-  accent-color: #b7957d;
+.fieldset-hint {
+  margin: 0;
+  font-size: 14px;
+  font-family: "Inter", sans-serif;
+  color: rgba(59, 47, 47, 0.55);
+}
+
+.drink-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+}
+
+.choice-pill {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 10px 18px;
+  font-family: "Inter", sans-serif;
+  font-size: 15px;
+  letter-spacing: 0.04em;
+  color: #3b2f2f;
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(100, 80, 64, 0.25);
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+}
+
+.choice-pill::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 2px solid rgba(184, 153, 131, 0.55);
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+}
+
+.choice-pill input {
+  appearance: none;
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+}
+
+.choice-pill span {
+  pointer-events: none;
+  position: relative;
+  z-index: 1;
+}
+
+.choice-pill input:checked + span {
+  color: #2f2117;
+  font-weight: 600;
+}
+
+.choice-pill:hover,
+.choice-pill:focus-within {
+  background: rgba(201, 166, 142, 0.18);
+  box-shadow: 0 10px 20px rgba(33, 21, 12, 0.12);
+  transform: translateY(-1px);
+}
+
+.choice-pill.is-selected {
+  background: rgba(201, 166, 142, 0.22);
+  color: #2f2117;
+  font-weight: 600;
+  box-shadow: 0 14px 26px rgba(33, 21, 12, 0.14);
+}
+
+.choice-pill.is-selected::after {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.choice-pill.is-selected span {
+  color: inherit;
+  font-weight: 600;
+}
+
+.choice-extra {
+  display: grid;
+  gap: 6px;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  color: rgba(59, 47, 47, 0.75);
 }
 
 /* ====== FINALE ====== */
@@ -751,6 +964,33 @@ img {
   padding: 36px 32px;
   border-radius: 28px;
   box-shadow: 0 16px 40px rgba(33, 21, 12, 0.08);
+  position: relative;
+  overflow: hidden;
+}
+
+.finale-card::before,
+.finale-card::after {
+  content: "";
+  position: absolute;
+  width: clamp(140px, 32vw, 240px);
+  height: clamp(140px, 32vw, 240px);
+  background: radial-gradient(circle, rgba(201, 166, 142, 0.3), rgba(255, 255, 255, 0));
+  border-radius: 48% 52% 58% 42%;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+  animation: drift 24s ease-in-out infinite;
+  top: -60px;
+  left: -40px;
+  opacity: 0.35;
+}
+
+.finale-card::after {
+  top: auto;
+  bottom: -70px;
+  left: auto;
+  right: -50px;
+  animation-delay: -10s;
+  opacity: 0.28;
 }
 
 .anon-wish {
@@ -801,6 +1041,70 @@ img {
 .btn-secondary:hover,
 .btn-secondary:focus-visible {
   background: rgba(59, 47, 47, 0.08);
+}
+
+.btn-tertiary {
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px dashed rgba(59, 47, 47, 0.35);
+  color: rgba(59, 47, 47, 0.78);
+}
+
+.btn-tertiary:hover,
+.btn-tertiary:focus-visible {
+  background: rgba(201, 166, 142, 0.12);
+}
+
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}
+
+.form-storage {
+  margin: 0;
+  padding: 12px 16px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.85);
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  display: grid;
+  gap: 4px;
+  text-align: center;
+  color: rgba(59, 47, 47, 0.7);
+}
+
+.form-storage strong {
+  font-size: 15px;
+  color: #3b2f2f;
+}
+
+.storage-note {
+  font-size: 13px;
+  letter-spacing: 0.03em;
+}
+
+.form-feedback {
+  margin: 0;
+  text-align: center;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  color: #357a38;
+  min-height: 18px;
+}
+
+.form-feedback.is-error {
+  color: #b34747;
+}
+
+.form-storage.is-disabled {
+  border: 1px dashed rgba(59, 47, 47, 0.25);
+  background: rgba(255, 255, 255, 0.65);
+  color: rgba(59, 47, 47, 0.55);
+}
+
+.form-storage.is-disabled strong {
+  color: rgba(59, 47, 47, 0.6);
 }
 
 .site-credit {

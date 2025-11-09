@@ -187,7 +187,7 @@
       <div class="container rsvp-card">
         <h2 class="section-title">Подтверждение присутствия</h2>
         <p>Пожалуйста, дайте знать до 1 июня 2026 года, сможете ли вы быть с нами.</p>
-        <form class="rsvp-form">
+        <form class="rsvp-form" novalidate>
           <label>
             <span>Ваше имя</span>
             <input type="text" name="name" placeholder="Как вас представить?" required />
@@ -218,30 +218,69 @@
               <option value="no">Не получится</option>
             </select>
           </label>
-          <fieldset>
+          <fieldset class="drink-fieldset">
             <legend>Что предпочитаете из напитков?</legend>
-            <label class="checkbox">
-              <input type="checkbox" name="drinks" value="wine" />
-              <span>Вино</span>
-            </label>
-            <label class="checkbox">
-              <input type="checkbox" name="drinks" value="sparkling" />
-              <span>Игристое</span>
-            </label>
-            <label class="checkbox">
-              <input type="checkbox" name="drinks" value="strong" />
-              <span>Крепкие напитки</span>
-            </label>
-            <label class="checkbox">
-              <input type="checkbox" name="drinks" value="soft" />
-              <span>Безалкогольные</span>
+            <p class="fieldset-hint">Можно выбрать несколько вариантов</p>
+            <div class="drink-grid">
+              <label class="choice-pill">
+                <input type="checkbox" name="drinks" value="Шампанское" />
+                <span>Шампанское</span>
+              </label>
+              <label class="choice-pill">
+                <input type="checkbox" name="drinks" value="Белое вино полусухое" />
+                <span>Белое полусухое</span>
+              </label>
+              <label class="choice-pill">
+                <input type="checkbox" name="drinks" value="Белое вино полусладкое" />
+                <span>Белое полусладкое</span>
+              </label>
+              <label class="choice-pill">
+                <input type="checkbox" name="drinks" value="Красное вино полусухое" />
+                <span>Красное полусухое</span>
+              </label>
+              <label class="choice-pill">
+                <input type="checkbox" name="drinks" value="Красное вино полусладкое" />
+                <span>Красное полусладкое</span>
+              </label>
+              <label class="choice-pill">
+                <input type="checkbox" name="drinks" value="Виски" />
+                <span>Виски</span>
+              </label>
+              <label class="choice-pill">
+                <input type="checkbox" name="drinks" value="Водка" />
+                <span>Водка</span>
+              </label>
+              <label class="choice-pill">
+                <input type="checkbox" name="drinks" value="Джин" />
+                <span>Джин</span>
+              </label>
+              <label class="choice-pill">
+                <input type="checkbox" name="drinks" value="Коньяк" />
+                <span>Коньяк</span>
+              </label>
+              <label class="choice-pill">
+                <input type="checkbox" name="drinks" value="Безалкогольные" />
+                <span>Безалкогольные</span>
+              </label>
+            </div>
+            <label class="choice-extra">
+              <span>Если чего-то не хватает, напишите:</span>
+              <input type="text" name="drinksNote" placeholder="Например, сидр или ром" />
             </label>
           </fieldset>
           <label>
             <span>Аллергии или особенности</span>
             <textarea name="allergy" rows="3" placeholder="Расскажите, что нам учесть"></textarea>
           </label>
-          <button type="submit" class="btn">Отправить</button>
+          <div class="form-actions">
+            <button type="submit" class="btn">Отправить</button>
+            <button type="button" class="btn btn-secondary" data-export="rsvp">Скачать ответы (CSV)</button>
+          </div>
+          <p class="form-storage" data-storage="rsvp">
+            <strong data-count="rsvp">0 ответов сохранено</strong>
+            <span class="storage-note" data-default="Ответы сохраняются в браузере и доступны только вам">Ответы сохраняются в браузере и доступны только вам</span>
+          </p>
+          <p class="form-feedback" id="rsvp-feedback" aria-live="polite"></p>
         </form>
       </div>
     </section>
@@ -258,7 +297,15 @@
               <span class="visually-hidden">Анонимное пожелание</span>
               <textarea name="anon" rows="4" placeholder="Напишите нам пару строк..." required></textarea>
             </label>
-            <button type="submit" class="btn btn-secondary">Отправить пожелание</button>
+            <div class="form-actions">
+              <button type="submit" class="btn btn-secondary">Отправить пожелание</button>
+              <button type="button" class="btn btn-tertiary" data-export="anon">Скачать пожелания (CSV)</button>
+            </div>
+            <p class="form-storage" data-storage="anon">
+              <strong data-count="anon">0 сообщений сохранено</strong>
+              <span class="storage-note" data-default="Пожелания также остаются в вашем браузере">Пожелания также остаются в вашем браузере</span>
+            </p>
+            <p class="form-feedback" id="anon-feedback" aria-live="polite"></p>
           </form>
         </div>
         <p class="site-credit">Сайт разработан совместной работой жениха, невесты и ChatGPT, без использования сторонних сайт-мейкеров.</p>
