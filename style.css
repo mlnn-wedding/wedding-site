@@ -1006,6 +1006,20 @@ img {
     0 0 0 2px color-mix(in srgb, var(--c-coral) 32%, transparent);
 }
 
+.form-question {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 8px 0 0;
+}
+
+.form-question .question-title {
+  font-family: "Inter", sans-serif;
+  font-size: 16px;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+}
+
 .rsvp-form fieldset {
   border: 1px solid color-mix(in srgb, var(--c-teal) 22%, transparent);
   border-radius: 18px;
