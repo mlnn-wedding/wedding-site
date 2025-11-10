@@ -16,10 +16,10 @@
 window.Wedding = window.Wedding || {};
 window.Wedding.gallery = {
   photos: [
-    'photos/gallery-1-placeholder.svg',
-    'photos/gallery-2-placeholder.svg',
-    'photos/gallery-3-placeholder.svg',
-    'photos/gallery-4-placeholder.svg',
+    'photos/gallery-1-placeholder.jpg',
+    'photos/gallery-2-placeholder.jpg',
+    'photos/gallery-3-placeholder.jpg',
+    'photos/gallery-4-placeholder.jpg',
   ],
   index: 0,
   timer: null,
@@ -51,6 +51,22 @@ window.Wedding.gallery = {
     const setSource = (imgEl, src) => {
       if(!imgEl || !src) return;
       if(imgEl.getAttribute('data-src') === src) return;
+
+      const jpgMatch = src.match(/\.jpe?g(\?.*)?$/i);
+      if(jpgMatch){
+        const fallbackSrc = src.replace(/\.jpe?g(\?.*)?$/i, '.svg$1');
+        if(fallbackSrc !== src){
+          imgEl.onerror = () => {
+            imgEl.onerror = null;
+            if(imgEl.getAttribute('data-src') === fallbackSrc) return;
+            imgEl.setAttribute('data-src', fallbackSrc);
+            imgEl.src = fallbackSrc;
+          };
+        }
+      } else {
+        imgEl.onerror = null;
+      }
+
       imgEl.setAttribute('data-src', src);
       imgEl.src = src;
     };
