@@ -278,24 +278,14 @@ document.addEventListener('DOMContentLoaded', () => {
         items: ['#FECFB2', '#FFB386', '#FF833D', '#B35D2B']
       },
       purple: {
-        type: 'image',
-        label: 'Фиолетовый образ',
-        items: [
-          { src: 'photos/purple-color-1.jpg' },
-          { src: 'photos/purple-color-2.jpg' },
-          { src: 'photos/purple-color-3.jpg' },
-          { src: 'photos/purple-color-4.jpg' }
-        ]
+        type: 'color',
+        label: 'Фиолетовый оттенок',
+        items: ['#C8AFCC', '#9387AB', '#735577', '#44354D']
       },
       blue: {
-        type: 'image',
-        label: 'Голубой образ',
-        items: [
-          { src: 'photos/blue-color-1.jpg' },
-          { src: 'photos/blue-color-2.jpg' },
-          { src: 'photos/blue-color-3.jpg' },
-          { src: 'photos/blue-color-4.jpg' }
-        ]
+        type: 'color',
+        label: 'Голубой оттенок',
+        items: ['#A4B6C6', '#AABAD4', '#063759', '#141743']
       }
     };
 
