@@ -135,17 +135,13 @@
           <h2 class="section-title">Дресс-код</h2>
           <p>Будем рады, если вы поддержите атмосферу вечера и выберете наряды в нежных природных оттенках. Это поможет фотографиям получиться ещё более тёплыми и гармоничными.</p>
         </div>
-        <div class="dresscode-palette">
-          <div class="swatch" style="--c:#68A651"></div>
-          <div class="swatch" style="--c:#F09C6C"></div>
-          <div class="swatch" style="--c:#BD97E3"></div>
-          <div class="swatch" style="--c:#77CEE6"></div>
+        <div class="dresscode-palette" role="group" aria-label="Палитра дресс-кода">
+          <button type="button" class="swatch" style="--c:#68A651" data-palette="green" aria-label="Оттенки зелёного"></button>
+          <button type="button" class="swatch" style="--c:#F09C6C" data-palette="peach" aria-label="Тёплые персиковые оттенки"></button>
+          <button type="button" class="swatch" style="--c:#BD97E3" data-palette="purple" aria-label="Фиолетовые образы"></button>
+          <button type="button" class="swatch" style="--c:#77CEE6" data-palette="blue" aria-label="Нежные голубые образы"></button>
         </div>
-        <div class="dresscode-examples">
-          <img src="photos/dresscode-1-placeholder.jpg" alt="Пример образа 1" loading="lazy" decoding="async" />
-          <img src="photos/dresscode-2-placeholder.jpg" alt="Пример образа 2" loading="lazy" decoding="async" />
-          <img src="photos/dresscode-3-placeholder.jpg" alt="Пример образа 3" loading="lazy" decoding="async" />
-        </div>
+        <div class="dresscode-examples" id="dresscode-examples" aria-live="polite"></div>
       </div>
     </section>
 

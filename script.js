@@ -263,6 +263,102 @@ document.addEventListener('DOMContentLoaded', () => {
   window.Wedding.countdown.start();
   window.Wedding.miniCal.mount('mini-calendar', 'calendar-month', 'calendar-year');
 
+  const palette = document.querySelector('.dresscode-palette');
+  const examples = document.getElementById('dresscode-examples');
+  if (palette && examples) {
+    const palettes = {
+      green: {
+        type: 'color',
+        label: 'Зелёный оттенок',
+        items: ['#A7DAB5', '#84C76F', '#488F4F', '#455228']
+      },
+      peach: {
+        type: 'color',
+        label: 'Тёплый персиковый оттенок',
+        items: ['#FECFB2', '#FFB386', '#FF833D', '#B35D2B']
+      },
+      purple: {
+        type: 'image',
+        label: 'Фиолетовый образ',
+        items: [
+          { src: 'photos/purple-color-1.jpg' },
+          { src: 'photos/purple-color-2.jpg' },
+          { src: 'photos/purple-color-3.jpg' },
+          { src: 'photos/purple-color-4.jpg' }
+        ]
+      },
+      blue: {
+        type: 'image',
+        label: 'Голубой образ',
+        items: [
+          { src: 'photos/blue-color-1.jpg' },
+          { src: 'photos/blue-color-2.jpg' },
+          { src: 'photos/blue-color-3.jpg' },
+          { src: 'photos/blue-color-4.jpg' }
+        ]
+      }
+    };
+
+    const renderPalette = (key) => {
+      const config = palettes[key];
+      if (!config) return;
+      examples.innerHTML = '';
+      config.items.forEach((item, index) => {
+        if (config.type === 'color') {
+          const tone = typeof item === 'string' ? item : '';
+          if (!tone) return;
+          const block = document.createElement('div');
+          block.className = 'dresscode-example is-color';
+          block.style.setProperty('--tone', tone);
+          const caption = document.createElement('span');
+          caption.className = 'visually-hidden';
+          caption.textContent = `${config.label} ${index + 1}: ${tone}`;
+          block.appendChild(caption);
+          examples.appendChild(block);
+        } else if (config.type === 'image') {
+          const src = item?.src;
+          if (!src) return;
+          const wrapper = document.createElement('div');
+          wrapper.className = 'dresscode-example';
+          const img = document.createElement('img');
+          img.src = src;
+          img.loading = 'lazy';
+          img.decoding = 'async';
+          img.alt = `${config.label} ${index + 1}`;
+          wrapper.appendChild(img);
+          examples.appendChild(wrapper);
+        }
+      });
+    };
+
+    const setActiveSwatch = (active) => {
+      const buttons = Array.from(palette.querySelectorAll('.swatch'));
+      buttons.forEach((button) => {
+        const isActive = button === active;
+        button.classList.toggle('is-active', isActive);
+        button.setAttribute('aria-pressed', String(isActive));
+      });
+    };
+
+    palette.addEventListener('click', (event) => {
+      const button = event.target instanceof HTMLElement ? event.target.closest('.swatch') : null;
+      if (!button) return;
+      const key = button.dataset.palette;
+      if (!key || !(key in palettes)) return;
+      setActiveSwatch(button);
+      renderPalette(key);
+    });
+
+    const initial = palette.querySelector('.swatch[data-palette]');
+    if (initial instanceof HTMLElement) {
+      const key = initial.dataset.palette;
+      if (key && (key in palettes)) {
+        setActiveSwatch(initial);
+        renderPalette(key);
+      }
+    }
+  }
+
   const showFeedback = (el, message, isError = false) => {
     if (!el) return;
     el.textContent = message;
