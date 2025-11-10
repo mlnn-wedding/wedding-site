@@ -14,6 +14,10 @@
   --glass: rgba(255, 255, 255, 0.82);
 }
 
+html {
+  overflow-x: hidden;
+}
+
 *,
 *::before,
 *::after {
@@ -28,6 +32,7 @@ body {
   background-color: var(--c-soft);
   position: relative;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 body::before {
@@ -966,6 +971,12 @@ img {
   overflow: hidden;
 }
 
+.rsvp-card > * {
+  width: 100%;
+  max-width: 520px;
+  margin-inline: auto;
+}
+
 .rsvp-card::before,
 .rsvp-card::after {
   content: "";
@@ -1086,6 +1097,13 @@ img {
   text-transform: none;
   color: var(--text-muted);
   line-height: 1.45;
+}
+
+.rsvp-form legend.visually-hidden {
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
 }
 
 .drink-fieldset {
@@ -1446,8 +1464,13 @@ img {
   }
 
   .invite-illustration {
-    inset: auto -40% -20% auto;
+    inset: auto -4% -12% auto;
+    width: clamp(120px, 40vw, 180px);
     transform: rotate(180deg);
+  }
+
+  .rsvp-card .section-title {
+    letter-spacing: 0.1em;
   }
 
   .mini-calendar {
@@ -1457,7 +1480,7 @@ img {
   }
 
   .rsvp-card {
-    padding: 32px 20px;
+    padding: 28px 16px;
   }
 
   .mini-calendar .mark {
