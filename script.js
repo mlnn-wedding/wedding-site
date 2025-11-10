@@ -16,10 +16,10 @@
 window.Wedding = window.Wedding || {};
 window.Wedding.gallery = {
   photos: [
-    'https://i.ibb.co/yFmMfNxN/DSC-3612.jpg',
-    'https://i.ibb.co/CsTT9srS/DS-1455.webp',
-    'https://i.ibb.co/qLZ74QHP/20240928-130804.webp',
-    'https://i.ibb.co/fdQm8s1w/DS-0736.webp',
+    'photos/gallery-1-placeholder.svg',
+    'photos/gallery-2-placeholder.svg',
+    'photos/gallery-3-placeholder.svg',
+    'photos/gallery-4-placeholder.svg',
   ],
   index: 0,
   timer: null,

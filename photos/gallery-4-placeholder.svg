@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-labelledby="title desc">
+  <title id="title">Временная фотография для галереи</title>
+  <desc id="desc">Пастельный фон с подсказкой заменить изображение</desc>
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f0d1db" />
+      <stop offset="50%" stop-color="#d1e4f0" />
+      <stop offset="100%" stop-color="#d7f0d1" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#grad)" rx="60" ry="60" />
+  <g fill="#37454f" font-family="'Inter', sans-serif" text-anchor="middle">
+    <text x="50%" y="45%" font-size="70" font-weight="600">Галерея</text>
+    <text x="50%" y="55%" font-size="42">Замените на своё фото</text>
+    <text x="50%" y="65%" font-size="38">photos/gallery-1.jpg и др.</text>
+  </g>
+</svg>
