@@ -344,28 +344,6 @@ document.addEventListener('DOMContentLoaded', () => {
           caption.textContent = `${config.label} ${index + 1}: ${toneName || tone}`;
           front.appendChild(caption);
 
-          const pattern = document.createElement('span');
-          pattern.className = 'dresscode-front-pattern';
-          pattern.setAttribute('aria-hidden', 'true');
-          front.appendChild(pattern);
-
-          if (toneName) {
-            const name = document.createElement('span');
-            name.className = 'dresscode-tone-name';
-            name.textContent = toneName;
-            front.appendChild(name);
-          }
-
-          const chip = document.createElement('span');
-          chip.className = 'dresscode-tone-chip';
-          chip.setAttribute('aria-hidden', 'true');
-          front.appendChild(chip);
-
-          const hint = document.createElement('span');
-          hint.className = 'dresscode-tone-hint';
-          hint.textContent = 'Посмотреть образ';
-          front.appendChild(hint);
-
           const back = document.createElement('span');
           back.className = 'dresscode-face dresscode-face-back';
           if (photoName) {
@@ -380,7 +358,7 @@ document.addEventListener('DOMContentLoaded', () => {
           if (note) {
             const noteEl = document.createElement('span');
             noteEl.className = 'dresscode-look-note';
-            noteEl.textContent = note;
+            noteEl.textContent = toneName ? `${toneName}. ${note}` : note;
             back.appendChild(noteEl);
           }
 

@@ -793,13 +793,13 @@ img {
 
 .dresscode-example {
   position: relative;
-  border-radius: 20px;
-  box-shadow: 0 14px 30px var(--shadow-soft);
-  min-height: 200px;
+  border-radius: 24px;
+  display: block;
+  width: 100%;
+  min-height: clamp(200px, 32vw, 260px);
   aspect-ratio: 3 / 4;
   background: none;
-  overflow: hidden;
-  transition: box-shadow 260ms ease;
+  overflow: visible;
 }
 
 .dresscode-example.is-flippable {
@@ -808,14 +808,11 @@ img {
   cursor: pointer;
   font: inherit;
   color: inherit;
-  width: 100%;
-  display: block;
   background: none;
   --tone-base: var(--tone, var(--c-teal));
-  --tone-ink: color-mix(in srgb, var(--tone-base) 20%, #041f24);
-  --tone-chip: color-mix(in srgb, var(--tone-base) 70%, white);
-  perspective: 1100px;
-  overflow: visible;
+  --tone-ink: color-mix(in srgb, var(--tone-base) 22%, #041f24);
+  perspective: 1200px;
+  isolation: isolate;
 }
 
 .dresscode-example.is-flippable:focus-visible {
@@ -831,9 +828,12 @@ img {
   overflow: hidden;
   transform-style: preserve-3d;
   transition:
-    transform 640ms cubic-bezier(0.23, 1, 0.32, 1),
-    opacity 420ms ease var(--card-delay, 0ms);
-  box-shadow: inset 0 1px 12px rgba(255, 255, 255, 0.28);
+    transform 420ms cubic-bezier(0.33, 1, 0.68, 1),
+    box-shadow 280ms ease,
+    opacity 320ms ease var(--card-delay, 0ms);
+  box-shadow: 0 20px 46px color-mix(in srgb, var(--tone-base, var(--c-teal)) 22%, rgba(12, 37, 45, 0.32));
+  background: none;
+  will-change: transform;
   opacity: 0;
 }
 
@@ -848,26 +848,24 @@ img {
 .dresscode-example.is-flippable .dresscode-face {
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
   border-radius: inherit;
   backface-visibility: hidden;
 }
 
+.dresscode-face-front,
+.dresscode-face-back {
+  border: 1px solid color-mix(in srgb, var(--tone-base) 35%, white);
+}
+
 .dresscode-face-front {
-  background: linear-gradient(140deg, color-mix(in srgb, var(--tone-base) 95%, white) 0%, var(--tone-base) 58%, color-mix(in srgb, var(--tone-base) 70%, #14262d) 100%);
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-end;
-  padding: clamp(18px, 4vw, 28px);
-  gap: clamp(12px, 2vw, 20px);
-  color: color-mix(in srgb, white 90%, var(--tone-base) 10%);
-  font-family: "Libre Bodoni", serif;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--tone-base) 92%, white 8%);
   position: relative;
   overflow: hidden;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    inset 0 -22px 46px rgba(4, 16, 22, 0.12);
 }
 
 .dresscode-face-front::after {
@@ -875,19 +873,18 @@ img {
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  background:
-    radial-gradient(180px 220px at 20% 18%, rgba(255, 255, 255, 0.45), transparent 70%),
-    radial-gradient(220px 260px at 82% -10%, rgba(255, 255, 255, 0.35), transparent 74%),
-    linear-gradient(165deg, rgba(255, 255, 255, 0.38), rgba(255, 255, 255, 0));
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0));
   mix-blend-mode: screen;
+  opacity: 0.55;
   pointer-events: none;
 }
 
 .dresscode-face-back {
   transform: rotateY(180deg);
-  background: var(--glass);
+  background: var(--tone-base);
   position: relative;
   overflow: hidden;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
 }
 
 .dresscode-face-back img {
@@ -904,8 +901,13 @@ img {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(4, 16, 22, 0) 40%, rgba(4, 16, 22, 0.48) 100%);
+  background: linear-gradient(180deg, rgba(4, 16, 22, 0) 42%, rgba(4, 16, 22, 0.55) 100%);
   pointer-events: none;
+}
+
+.dresscode-example:not(.is-flippable) {
+  overflow: hidden;
+  box-shadow: 0 18px 40px var(--shadow-soft);
 }
 
 .dresscode-example:not(.is-flippable) img {
@@ -915,80 +917,26 @@ img {
   display: block;
 }
 
-.dresscode-front-pattern {
-  position: absolute;
-  inset: -24% -30% auto auto;
-  width: clamp(140px, 38vw, 240px);
-  height: clamp(120px, 32vw, 200px);
-  border-radius: 160px;
-  background:
-    radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.52), rgba(255, 255, 255, 0)),
-    radial-gradient(circle at 70% 60%, rgba(255, 255, 255, 0.38), rgba(255, 255, 255, 0));
-  box-shadow: 0 20px 46px color-mix(in srgb, rgba(0, 0, 0, 0.38) 32%, transparent);
-  opacity: 0.6;
-  mix-blend-mode: soft-light;
-}
-
-.dresscode-tone-name {
-  position: relative;
-  font-size: clamp(22px, 4vw, 32px);
-  text-shadow: 0 14px 28px rgba(4, 31, 36, 0.32);
-  letter-spacing: 0.14em;
-  line-height: 1.12;
-  max-width: 80%;
-}
-
-.dresscode-tone-chip {
-  position: relative;
-  width: clamp(44px, 9vw, 60px);
-  height: clamp(44px, 9vw, 60px);
-  border-radius: 50%;
-  background:
-    radial-gradient(circle at 30% 25%, rgba(255, 255, 255, 0.68), rgba(255, 255, 255, 0)),
-    radial-gradient(circle at 70% 70%, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0)),
-    var(--tone-chip);
-  box-shadow:
-    inset 0 0 0 2px rgba(255, 255, 255, 0.6),
-    0 18px 32px color-mix(in srgb, rgba(4, 31, 36, 0.35) 30%, transparent);
-}
-
-.dresscode-tone-hint {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 8px 16px;
-  border-radius: 999px;
-  font-family: "Inter", sans-serif;
-  font-size: clamp(11px, 2.6vw, 13px);
-  letter-spacing: 0.32em;
-  text-transform: uppercase;
-  color: color-mix(in srgb, white 84%, var(--tone-base) 16%);
-  background: linear-gradient(120deg, rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0));
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65), 0 10px 24px rgba(4, 31, 36, 0.28);
-}
-
 .dresscode-look-note {
   position: absolute;
   inset: auto 18px 18px 18px;
-  padding: 12px 16px;
-  border-radius: 16px;
-  background: color-mix(in srgb, var(--tone-base) 22%, rgba(255, 255, 255, 0.92));
-  color: color-mix(in srgb, var(--tone-ink) 40%, white);
+  padding: 14px 18px;
+  border-radius: 18px;
+  background: color-mix(in srgb, var(--tone-base) 18%, rgba(255, 255, 255, 0.9));
+  color: color-mix(in srgb, var(--tone-ink) 50%, white);
   font-family: "Inter", sans-serif;
   font-size: 14px;
   line-height: 1.45;
   letter-spacing: 0.02em;
-  box-shadow: 0 14px 30px rgba(4, 16, 22, 0.28);
+  box-shadow: 0 16px 36px rgba(4, 16, 22, 0.25);
+  border: 1px solid color-mix(in srgb, var(--tone-base) 30%, rgba(255, 255, 255, 0.72));
   z-index: 1;
 }
 
 @media (hover: hover) and (pointer: fine) {
   .dresscode-example.is-flippable:hover .dresscode-flip {
-    transform: translateY(-4px) rotateY(var(--flip-angle, 0deg));
-  }
-
-  .dresscode-example.is-flippable:hover {
-    box-shadow: 0 18px 36px color-mix(in srgb, var(--tone-base, var(--c-teal)) 30%, rgba(0, 0, 0, 0.12));
+    transform: translateY(-6px) rotateY(var(--flip-angle, 0deg));
+    box-shadow: 0 28px 60px color-mix(in srgb, var(--tone-base, var(--c-teal)) 30%, rgba(12, 37, 45, 0.36));
   }
 }
 
