@@ -190,9 +190,12 @@
               <option value="Нет">Не получится</option>
             </select>
           </label>
-          <fieldset class="drink-fieldset">
-            <legend>Что предпочитаете из напитков?</legend>
+          <div class="form-question">
+            <span class="question-title">Что предпочитаете из напитков?</span>
             <p class="fieldset-hint">Можно выбрать несколько вариантов</p>
+          </div>
+          <fieldset class="drink-fieldset" aria-labelledby="drinks-question">
+            <legend id="drinks-question" class="visually-hidden">Что предпочитаете из напитков?</legend>
             <div class="drink-grid">
               <label class="choice-pill">
                 <input type="checkbox" name="drinks" value="Шампанское" />
