@@ -84,7 +84,7 @@ img {
 .hero::before {
   content: "";
   position: absolute;
-  inset: -18% -12% -46%;
+  inset: -18% 0 -46%;
   background:
     radial-gradient(circle at 15% 20%, color-mix(in srgb, var(--c-coral) 28%, transparent) 0, transparent 70%),
     radial-gradient(circle at 80% 78%, color-mix(in srgb, var(--c-lime) 22%, transparent) 0, transparent 68%);
@@ -101,9 +101,9 @@ img {
   grid-template-columns: minmax(300px, 0.85fr) minmax(420px, 1.25fr);
   align-items: center;
   gap: clamp(32px, 5vw, 96px);
-  width: min(1600px, 95%);
+  width: min(1200px, 100%);
   margin: 0 auto;
-  padding-left: clamp(24px, 6vw, 120px);
+  padding-inline: clamp(24px, 6vw, 120px);
 }
 
 .hero-text {
@@ -262,7 +262,7 @@ img {
     grid-template-columns: 1fr;
     gap: 28px;
     margin: 0 auto;
-    padding-left: clamp(18px, 6vw, 32px);
+    padding-inline: clamp(18px, 6vw, 32px);
   }
 
   .hero-text {
