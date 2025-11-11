@@ -344,6 +344,18 @@ document.addEventListener('DOMContentLoaded', () => {
           caption.textContent = `${config.label} ${index + 1}: ${toneName || tone}`;
           front.appendChild(caption);
 
+          const chip = document.createElement('span');
+          chip.className = 'dresscode-tone-chip';
+          chip.setAttribute('aria-hidden', 'true');
+          front.appendChild(chip);
+
+          if (toneName || tone) {
+            const title = document.createElement('span');
+            title.className = 'dresscode-tone-name';
+            title.textContent = toneName || tone;
+            front.appendChild(title);
+          }
+
           const back = document.createElement('span');
           back.className = 'dresscode-face dresscode-face-back';
           if (photoName) {
