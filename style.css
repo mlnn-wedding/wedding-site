@@ -762,6 +762,34 @@ img {
   gap: 18px;
 }
 
+.ripple {
+  position: absolute;
+  pointer-events: none;
+  border-radius: inherit;
+  display: block;
+  transform: translate(-50%, -50%) scale(0);
+  animation: ripple-expand 520ms ease-out;
+  opacity: 0.5;
+  will-change: transform, opacity;
+  z-index: 5;
+}
+
+@keyframes ripple-expand {
+  to {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0;
+  }
+}
+
+.swatch .ripple {
+  background: color-mix(in srgb, var(--c, var(--c-teal)) 28%, white 72%);
+}
+
+.dresscode-flip .ripple {
+  background: color-mix(in srgb, var(--tone-base, var(--c-teal)) 22%, white 78%);
+  mix-blend-mode: screen;
+}
+
 .swatch {
   width: 68px;
   height: 68px;
@@ -773,6 +801,8 @@ img {
   padding: 0;
   appearance: none;
   transition: transform 180ms ease, box-shadow 220ms ease;
+  position: relative;
+  overflow: hidden;
 }
 
 .swatch:focus-visible {

@@ -266,6 +266,29 @@ document.addEventListener('DOMContentLoaded', () => {
   const palette = document.querySelector('.dresscode-palette');
   const examples = document.getElementById('dresscode-examples');
   if (palette && examples) {
+    const createRipple = (target, event) => {
+      if (!target || !event) return;
+      if (typeof event.button === 'number' && event.button !== 0) return;
+      if (typeof event.clientX !== 'number' || typeof event.clientY !== 'number') return;
+      const rect = target.getBoundingClientRect();
+      if (!rect.width || !rect.height) return;
+      const diagonal = Math.sqrt((rect.width ** 2) + (rect.height ** 2)) || Math.max(rect.width, rect.height);
+      const size = diagonal * 1.05;
+      const ripple = document.createElement('span');
+      ripple.className = 'ripple';
+      ripple.style.width = `${size}px`;
+      ripple.style.height = `${size}px`;
+      ripple.style.left = `${event.clientX - rect.left}px`;
+      ripple.style.top = `${event.clientY - rect.top}px`;
+      Array.from(target.querySelectorAll('.ripple')).forEach((node) => {
+        if (node !== ripple) node.remove();
+      });
+      target.appendChild(ripple);
+      ripple.addEventListener('animationend', () => {
+        ripple.remove();
+      }, { once: true });
+    };
+
     const palettes = {
       green: {
         type: 'color',
@@ -422,6 +445,12 @@ document.addEventListener('DOMContentLoaded', () => {
       renderPalette(key);
     });
 
+    palette.addEventListener('pointerdown', (event) => {
+      const button = event.target instanceof HTMLElement ? event.target.closest('.swatch') : null;
+      if (!button) return;
+      createRipple(button, event);
+    });
+
     examples.addEventListener('click', (event) => {
       const target = event.target instanceof HTMLElement ? event.target.closest('.dresscode-example.is-flippable') : null;
       if (!target) return;
@@ -435,6 +464,13 @@ document.addEventListener('DOMContentLoaded', () => {
           card.setAttribute('aria-pressed', 'false');
         });
       }
+    });
+
+    examples.addEventListener('pointerdown', (event) => {
+      const target = event.target instanceof HTMLElement ? event.target.closest('.dresscode-example.is-flippable') : null;
+      if (!target) return;
+      const surface = target.querySelector('.dresscode-flip');
+      createRipple(surface || target, event);
     });
 
     const initial = palette.querySelector('.swatch[data-palette]');
