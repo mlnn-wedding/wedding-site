@@ -825,7 +825,8 @@ img {
 }
 
 .dresscode-example.is-flippable .dresscode-flip {
-  position: relative;
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   border-radius: inherit;
