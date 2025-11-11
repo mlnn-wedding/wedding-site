@@ -846,8 +846,7 @@ img {
 }
 
 .dresscode-example.is-flippable:focus-visible {
-  outline: 3px solid color-mix(in srgb, var(--tone, var(--c-teal)) 45%, white);
-  outline-offset: 6px;
+  outline: none;
 }
 
 .dresscode-example.is-flippable:focus-visible .dresscode-flip {
