@@ -356,10 +356,10 @@ document.addEventListener('DOMContentLoaded', () => {
           const ariaName = toneName ? ` — ${toneName}` : '';
           block.setAttribute('aria-label', `${config.label} ${index + 1}${ariaName}`);
 
-          const inner = document.createElement('span');
+          const inner = document.createElement('div');
           inner.className = 'color-card-inner';
 
-          const front = document.createElement('span');
+          const front = document.createElement('div');
           front.className = 'color-card-face color-card-front';
           const caption = document.createElement('span');
           caption.className = 'visually-hidden';
@@ -378,7 +378,7 @@ document.addEventListener('DOMContentLoaded', () => {
             front.appendChild(title);
           }
 
-          const back = document.createElement('span');
+          const back = document.createElement('div');
           back.className = 'color-card-face color-card-back';
           if (photoName) {
             const img = document.createElement('img');
