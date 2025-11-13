@@ -295,10 +295,10 @@ document.addEventListener('DOMContentLoaded', () => {
         label: 'Зелёный оттенок',
         photoLabel: 'Образ в зелёной палитре',
         items: [
-          { tone: '#A7DAB5', name: 'Мята на рассвете', note: 'Льняная рубашка, струящееся платье и светлый костюм.', photo: 'green-color-2.jpg' },
-          { tone: '#84C76F', name: 'Садовая свежесть', note: 'Комбинация цвета шалфея и костюм цвета фисташки.', photo: 'green-color-1.jpg' },
-          { tone: '#488F4F', name: 'Глубина хвои', note: 'Тёмно-зелёный костюм и сатиновое платье цвета хвои.', photo: 'green-color-4.jpg' },
-          { tone: '#455228', name: 'Оливковая ночь', note: 'Бархатный пиджак и шелковое платье в оттенках оливы.', photo: 'green-color-3.jpg' }
+          { tone: '#A7DAB5', name: 'Мята на рассвете', photo: 'green-color-2.jpg' },
+          { tone: '#84C76F', name: 'Садовая свежесть', photo: 'green-color-1.jpg' },
+          { tone: '#488F4F', name: 'Глубина хвои', photo: 'green-color-4.jpg' },
+          { tone: '#455228', name: 'Оливковая ночь', photo: 'green-color-3.jpg' }
         ]
       },
       peach: {
@@ -306,10 +306,10 @@ document.addEventListener('DOMContentLoaded', () => {
         label: 'Тёплый персиковый оттенок',
         photoLabel: 'Образ в персиковой палитре',
         items: [
-          { tone: '#FECFB2', name: 'Розовый кварц', note: 'Воздушное платье-комбинация и карамельный пиджак.', photo: 'peach-color-2.jpg' },
-          { tone: '#FFB386', name: 'Персиковый софт', note: 'Льняной костюм и сарафан миди с вышивкой.', photo: 'peach-color-1.jpg' },
-          { tone: '#FF833D', name: 'Апероль на закате', note: 'Костюм-тройка и струящееся платье цвета заката.', photo: 'peach-color-4.jpg' },
-          { tone: '#B35D2B', name: 'Пряная корица', note: 'Бархатный пиджак и шелковое платье оттенка корицы.', photo: 'peach-color-3.jpg' }
+          { tone: '#FECFB2', name: 'Розовый кварц', photo: 'peach-color-2.jpg' },
+          { tone: '#FFB386', name: 'Персиковый софт', photo: 'peach-color-1.jpg' },
+          { tone: '#FF833D', name: 'Апероль на закате', photo: 'peach-color-4.jpg' },
+          { tone: '#B35D2B', name: 'Пряная корица', photo: 'peach-color-3.jpg' }
         ]
       },
       purple: {
@@ -317,10 +317,10 @@ document.addEventListener('DOMContentLoaded', () => {
         label: 'Фиолетовый оттенок',
         photoLabel: 'Образ в фиолетовой палитре',
         items: [
-          { tone: '#C8AFCC', name: 'Сиреневая дымка', note: 'Тюлевое платье и костюм цвета весенней сирени.', photo: 'purple-color-4.jpg' },
-          { tone: '#9387AB', name: 'Лавандовый штрих', note: 'Сатиновое платье и строгий костюм в тон.', photo: 'purple-color-3.jpg' },
-          { tone: '#735577', name: 'Сливочный ирис', note: 'Костюм-тройка и топ из шёлка глубокого сливового оттенка.', photo: 'purple-color-2.jpg' },
-          { tone: '#44354D', name: 'Спелая ежевика', note: 'Смокинг и бархатное платье цвета ежевики.', photo: 'purple-color-1.jpg' }
+          { tone: '#C8AFCC', name: 'Сиреневая дымка', photo: 'purple-color-4.jpg' },
+          { tone: '#9387AB', name: 'Лавандовый штрих', photo: 'purple-color-3.jpg' },
+          { tone: '#735577', name: 'Сливочный ирис', photo: 'purple-color-2.jpg' },
+          { tone: '#44354D', name: 'Спелая ежевика', photo: 'purple-color-1.jpg' }
         ]
       },
       blue: {
@@ -328,10 +328,10 @@ document.addEventListener('DOMContentLoaded', () => {
         label: 'Голубой оттенок',
         photoLabel: 'Образ в голубой палитре',
         items: [
-          { tone: '#A4B6C6', name: 'Голубой лёд', note: 'Платье-футляр и клетчатый костюм цвета утреннего неба.', photo: 'blue-color-1.jpg' },
-          { tone: '#AABAD4', name: 'Пудровый деним', note: 'Шифоновое платье и структурный костюм из твида.', photo: 'blue-color-2.jpg' },
-          { tone: '#063759', name: 'Полуночный индиго', note: 'Глубокий синий костюм и платье с пайетками.', photo: 'blue-color-3.jpg' },
-          { tone: '#141743', name: 'Чернильный вельвет', note: 'Смокинг и бархатное платье насыщенного синего оттенка.', photo: 'blue-color-4.jpg' }
+          { tone: '#A4B6C6', name: 'Голубой лёд', photo: 'blue-color-1.jpg' },
+          { tone: '#AABAD4', name: 'Пудровый деним', photo: 'blue-color-2.jpg' },
+          { tone: '#063759', name: 'Полуночный индиго', photo: 'blue-color-3.jpg' },
+          { tone: '#141743', name: 'Чернильный вельвет', photo: 'blue-color-4.jpg' }
         ]
       }
     };
@@ -345,7 +345,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (config.type === 'color') {
           const tone = typeof item === 'string' ? item : item?.tone;
           const toneName = typeof item === 'object' ? item?.name : '';
-          const note = typeof item === 'object' ? item?.note : '';
           const photoName = typeof item === 'object' ? item?.photo : undefined;
           if (!tone || !photoName) return;
           const block = document.createElement('button');
@@ -364,11 +363,7 @@ document.addEventListener('DOMContentLoaded', () => {
           front.className = 'dresscode-face dresscode-face-front';
           const caption = document.createElement('span');
           caption.className = 'visually-hidden';
-          const captionParts = [`${config.label} ${index + 1}: ${toneName || tone}`];
-          if (note) {
-            captionParts.push(note);
-          }
-          caption.textContent = captionParts.join('. ');
+          caption.textContent = `${config.label} ${index + 1}: ${toneName || tone}`;
           front.appendChild(caption);
 
           const chip = document.createElement('span');
