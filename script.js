@@ -393,7 +393,10 @@ document.addEventListener('DOMContentLoaded', () => {
             img.src = photoPath;
             img.loading = 'lazy';
             img.decoding = 'async';
-            img.alt = `${config.photoLabel ?? config.label} ${index + 1}`;
+            const toneDescription = toneName || tone;
+            const baseLabel = config.photoLabel ?? config.label;
+            const alt = toneDescription ? `${baseLabel}: ${toneDescription}` : `${baseLabel} ${index + 1}`;
+            img.alt = alt;
             back.appendChild(img);
           }
 

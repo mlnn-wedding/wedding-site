@@ -850,7 +850,7 @@ img {
 }
 
 .dresscode-example.is-flippable:focus-visible .dresscode-flip {
-  transform: rotateY(180deg);
+  transform: translateY(-6px) rotateY(180deg);
 }
 
 .dresscode-example.is-flippable .dresscode-flip {
@@ -869,6 +869,7 @@ img {
   background: none;
   will-change: transform;
   opacity: 0;
+  transform: rotateY(0deg);
 }
 
 .dresscode-example.is-flippable.is-flipped .dresscode-flip {
@@ -928,6 +929,9 @@ img {
   position: relative;
   overflow: hidden;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
 }
 
 .dresscode-face-back img {
@@ -938,6 +942,7 @@ img {
   object-fit: cover;
   display: block;
   transform: scale(1.02);
+  z-index: 0;
 }
 
 .dresscode-face-back::after {
@@ -946,6 +951,7 @@ img {
   inset: 0;
   background: linear-gradient(180deg, rgba(4, 16, 22, 0) 42%, rgba(4, 16, 22, 0.55) 100%);
   pointer-events: none;
+  z-index: 1;
 }
 
 .dresscode-tone-chip {
@@ -1003,23 +1009,14 @@ img {
   letter-spacing: 0.02em;
   box-shadow: 0 16px 36px rgba(4, 16, 22, 0.25);
   border: 1px solid color-mix(in srgb, var(--tone-base) 30%, rgba(255, 255, 255, 0.72));
-  z-index: 1;
+  z-index: 2;
 }
 
 @media (hover: hover) and (pointer: fine) {
   .dresscode-example.is-flippable:hover .dresscode-flip {
-    transform: translateY(-6px) rotateY(var(--flip-angle, 0deg));
+    transform: translateY(-6px) rotateY(180deg);
     box-shadow: 0 28px 60px color-mix(in srgb, var(--tone-base, var(--c-teal)) 30%, rgba(12, 37, 45, 0.36));
   }
-
-  .dresscode-example.is-flippable:hover,
-  .dresscode-example.is-flippable:focus-visible {
-    --flip-angle: 180deg;
-  }
-}
-
-.dresscode-example.is-flippable.is-flipped:hover .dresscode-flip {
-  --flip-angle: 180deg;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1029,7 +1026,11 @@ img {
   }
 
   .dresscode-example.is-flippable:hover .dresscode-flip {
-    transform: rotateY(var(--flip-angle, 0deg));
+    transform: rotateY(180deg);
+  }
+
+  .dresscode-example.is-flippable:focus-visible .dresscode-flip {
+    transform: rotateY(180deg);
   }
 }
 
