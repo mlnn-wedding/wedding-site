@@ -349,18 +349,18 @@ document.addEventListener('DOMContentLoaded', () => {
           if (!tone || !photoName) return;
           const block = document.createElement('button');
           block.type = 'button';
-          block.className = 'dresscode-example is-flippable';
+          block.className = 'color-card dresscode-card';
           block.style.setProperty('--tone', tone);
           block.style.setProperty('--tone-base', tone);
           block.setAttribute('aria-pressed', 'false');
           const ariaName = toneName ? ` — ${toneName}` : '';
           block.setAttribute('aria-label', `${config.label} ${index + 1}${ariaName}`);
 
-          const flip = document.createElement('span');
-          flip.className = 'dresscode-flip';
+          const inner = document.createElement('span');
+          inner.className = 'color-card-inner';
 
           const front = document.createElement('span');
-          front.className = 'dresscode-face dresscode-face-front';
+          front.className = 'color-card-face color-card-front';
           const caption = document.createElement('span');
           caption.className = 'visually-hidden';
           caption.textContent = `${config.label} ${index + 1}: ${toneName || tone}`;
@@ -379,7 +379,7 @@ document.addEventListener('DOMContentLoaded', () => {
           }
 
           const back = document.createElement('span');
-          back.className = 'dresscode-face dresscode-face-back';
+          back.className = 'color-card-face color-card-back';
           if (photoName) {
             const img = document.createElement('img');
             let photoPath = photoName;
@@ -399,9 +399,9 @@ document.addEventListener('DOMContentLoaded', () => {
             back.appendChild(img);
           }
 
-          flip.appendChild(front);
-          flip.appendChild(back);
-          block.appendChild(flip);
+          inner.appendChild(front);
+          inner.appendChild(back);
+          block.appendChild(inner);
           examples.appendChild(block);
           cards.push(block);
         } else if (config.type === 'image') {
@@ -454,12 +454,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     examples.addEventListener('click', (event) => {
-      const target = event.target instanceof HTMLElement ? event.target.closest('.dresscode-example.is-flippable') : null;
+      const target = event.target instanceof HTMLElement ? event.target.closest('.dresscode-card') : null;
       if (!target) return;
       const isNowFlipped = target.classList.toggle('is-flipped');
       target.setAttribute('aria-pressed', String(isNowFlipped));
       if (isNowFlipped) {
-        const others = examples.querySelectorAll('.dresscode-example.is-flippable.is-flipped');
+        const others = examples.querySelectorAll('.dresscode-card.is-flipped');
         others.forEach((card) => {
           if (card === target) return;
           card.classList.remove('is-flipped');
@@ -469,9 +469,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     examples.addEventListener('pointerdown', (event) => {
-      const target = event.target instanceof HTMLElement ? event.target.closest('.dresscode-example.is-flippable') : null;
+      const target = event.target instanceof HTMLElement ? event.target.closest('.dresscode-card') : null;
       if (!target) return;
-      const surface = target.querySelector('.dresscode-flip');
+      const surface = target.querySelector('.color-card-inner');
       createRipple(surface || target, event);
     });
 
