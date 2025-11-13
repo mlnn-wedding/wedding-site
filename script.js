@@ -364,7 +364,11 @@ document.addEventListener('DOMContentLoaded', () => {
           front.className = 'dresscode-face dresscode-face-front';
           const caption = document.createElement('span');
           caption.className = 'visually-hidden';
-          caption.textContent = `${config.label} ${index + 1}: ${toneName || tone}`;
+          const captionParts = [`${config.label} ${index + 1}: ${toneName || tone}`];
+          if (note) {
+            captionParts.push(note);
+          }
+          caption.textContent = captionParts.join('. ');
           front.appendChild(caption);
 
           const chip = document.createElement('span');
@@ -398,13 +402,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const alt = toneDescription ? `${baseLabel}: ${toneDescription}` : `${baseLabel} ${index + 1}`;
             img.alt = alt;
             back.appendChild(img);
-          }
-
-          if (note) {
-            const noteEl = document.createElement('span');
-            noteEl.className = 'dresscode-look-note';
-            noteEl.textContent = toneName ? `${toneName}. ${note}` : note;
-            back.appendChild(noteEl);
           }
 
           flip.appendChild(front);

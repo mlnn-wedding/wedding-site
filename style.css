@@ -898,8 +898,12 @@ img {
   justify-items: center;
   gap: 16px;
   padding: 28px 20px;
-  background-color: var(--tone-base);
-  background: color-mix(in srgb, var(--tone-base) 92%, white 8%);
+  background: linear-gradient(
+    142deg,
+    color-mix(in srgb, var(--tone-base) 88%, white 12%),
+    color-mix(in srgb, var(--tone-base) 86%, white 14%) 32%,
+    color-mix(in srgb, var(--tone-base) 82%, black 18%) 76%
+  );
   position: relative;
   overflow: hidden;
   box-shadow:
@@ -925,12 +929,10 @@ img {
 
 .dresscode-face-back {
   transform: rotateY(180deg);
-  background: var(--tone-base);
   position: relative;
   overflow: hidden;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
   display: flex;
-  align-items: flex-end;
+  align-items: stretch;
   justify-content: center;
 }
 
@@ -941,25 +943,18 @@ img {
   height: 100%;
   object-fit: cover;
   display: block;
-  transform: scale(1.02);
-  z-index: 0;
-}
-
-.dresscode-face-back::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(4, 16, 22, 0) 42%, rgba(4, 16, 22, 0.55) 100%);
-  pointer-events: none;
-  z-index: 1;
+  transform: scale(1.01);
 }
 
 .dresscode-tone-chip {
   width: clamp(72px, 12vw, 96px);
   height: clamp(72px, 12vw, 96px);
   border-radius: 50%;
-  background-color: var(--tone-base);
-  background: var(--tone-base);
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--tone-base) 88%, white 12%),
+    color-mix(in srgb, var(--tone-base) 80%, rgba(4, 16, 22, 0.12))
+  );
   box-shadow:
     inset 0 0 0 3px rgba(255, 255, 255, 0.6),
     0 16px 32px color-mix(in srgb, var(--tone-base) 35%, rgba(12, 37, 45, 0.28));
@@ -994,22 +989,6 @@ img {
   height: 100%;
   object-fit: cover;
   display: block;
-}
-
-.dresscode-look-note {
-  position: absolute;
-  inset: auto 18px 18px 18px;
-  padding: 14px 18px;
-  border-radius: 18px;
-  background: color-mix(in srgb, var(--tone-base) 18%, rgba(255, 255, 255, 0.9));
-  color: color-mix(in srgb, var(--tone-ink) 50%, white);
-  font-family: "Inter", sans-serif;
-  font-size: 14px;
-  line-height: 1.45;
-  letter-spacing: 0.02em;
-  box-shadow: 0 16px 36px rgba(4, 16, 22, 0.25);
-  border: 1px solid color-mix(in srgb, var(--tone-base) 30%, rgba(255, 255, 255, 0.72));
-  z-index: 2;
 }
 
 @media (hover: hover) and (pointer: fine) {
