@@ -942,7 +942,24 @@ img {
 }
 
 .dresscode-card .color-card-front {
-  background: var(--tone-base, var(--c-teal));
+  position: relative;
+  background:
+    radial-gradient(circle at 20% 20%, color-mix(in srgb, var(--tone-base, var(--c-teal)) 40%, white 60%) 0, transparent 65%),
+    linear-gradient(150deg,
+      color-mix(in srgb, var(--tone-base, var(--c-teal)) 65%, white 35%) 0%,
+      color-mix(in srgb, var(--tone-base, var(--c-teal)) 82%, black 18%) 100%);
+  overflow: hidden;
+}
+
+.dresscode-card .color-card-front::after {
+  content: "";
+  position: absolute;
+  inset: 10% 16% auto 12%;
+  height: 55%;
+  border-radius: 999px;
+  background: radial-gradient(circle, color-mix(in srgb, white 75%, var(--tone-base, var(--c-teal)) 25%) 0, transparent 70%);
+  opacity: 0.55;
+  pointer-events: none;
 }
 
 .dresscode-card .color-card-back {
@@ -976,8 +993,10 @@ img {
   color: var(--tone-ink);
   background: color-mix(in srgb, white 55%, var(--tone-base, var(--c-teal)) 45%);
   box-shadow: 0 8px 16px rgba(6, 24, 32, 0.22);
-  pointer-events: auto;
-  transition: transform 160ms ease, opacity 160ms ease;
+  pointer-events: none;
+  transition: transform 180ms ease, opacity 220ms ease;
+  opacity: 0;
+  transform: translate3d(12%, 12%, 0) scale(0.9);
   border: none;
   cursor: pointer;
   padding: 0;
@@ -1004,9 +1023,11 @@ img {
   backdrop-filter: blur(6px);
 }
 
-.flip-hint[data-side="back"] {
-  bottom: auto;
-  top: clamp(10px, 2vw, 16px);
+.dresscode-card.is-ready .flip-hint {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+  transition-delay: var(--card-delay, 0ms);
+  pointer-events: auto;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1423,11 +1444,19 @@ img {
   font-weight: 600;
 }
 
-.choice-pill:hover,
-.choice-pill:focus-within {
+.choice-pill:hover {
   background: color-mix(in srgb, var(--c-peach) 28%, white);
   box-shadow: 0 10px 20px var(--shadow-soft);
   transform: translateY(-1px);
+}
+
+.choice-pill:focus-within {
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--c-teal) 35%, white 65%), 0 10px 20px var(--shadow-soft);
+  transform: translateY(-1px);
+}
+
+.choice-pill:focus-within:not(.is-selected) {
+  background: color-mix(in srgb, white 85%, var(--c-aqua) 15%);
 }
 
 .choice-pill.is-selected {
@@ -1706,6 +1735,7 @@ img {
   align-self: center;
   display: flex;
   align-items: center;
+  padding-left: clamp(10px, 2vw, 20px);
 }
 
 .timeline h3 {

@@ -449,7 +449,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     palette.addEventListener('click', (event) => {
-      const button = event.target instanceof HTMLElement ? event.target.closest('.swatch') : null;
+      const button = event.target instanceof Element ? event.target.closest('.swatch') : null;
       if (!button) return;
       const key = button.dataset.palette;
       if (!key || !(key in palettes)) return;
@@ -458,7 +458,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     palette.addEventListener('pointerdown', (event) => {
-      const button = event.target instanceof HTMLElement ? event.target.closest('.swatch') : null;
+      const button = event.target instanceof Element ? event.target.closest('.swatch') : null;
       if (!button) return;
       createRipple(button, event);
     });
@@ -471,7 +471,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     examples.addEventListener('click', (event) => {
-      const hint = event.target instanceof HTMLElement ? event.target.closest('.flip-hint') : null;
+      const hint = event.target instanceof Element ? event.target.closest('.flip-hint') : null;
       if (hint) {
         event.stopPropagation();
         const card = hint.closest('.dresscode-card');
@@ -479,7 +479,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setCardFlipped(card, hint.dataset.flip === 'back');
         return;
       }
-      const target = event.target instanceof HTMLElement ? event.target.closest('.dresscode-card') : null;
+      const target = event.target instanceof Element ? event.target.closest('.dresscode-card') : null;
       if (!target) return;
       setCardFlipped(target, !target.classList.contains('is-flipped'));
     });
