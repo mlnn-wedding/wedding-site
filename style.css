@@ -1023,10 +1023,17 @@ img {
   backdrop-filter: blur(6px);
 }
 
-.dresscode-card.is-ready .flip-hint {
+.dresscode-card.is-ready:not(.is-flipped) .color-card-front .flip-hint {
   opacity: 1;
   transform: translate3d(0, 0, 0) scale(1);
   transition-delay: var(--card-delay, 0ms);
+  pointer-events: auto;
+}
+
+.dresscode-card.is-flipped .color-card-back .flip-hint {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+  transition-delay: 0ms;
   pointer-events: auto;
 }
 
@@ -1685,6 +1692,7 @@ img {
   flex-direction: column;
   gap: clamp(16px, 2vw, 24px);
   position: relative;
+  --timeline-time-offset: clamp(36px, 5vw, 80px);
 }
 
 .timeline::before {
@@ -1699,7 +1707,11 @@ img {
 
 .timeline li {
   display: grid;
-  grid-template-columns: minmax(120px, 140px) 1fr;
+  grid-template-columns: minmax(
+      calc(120px + var(--timeline-time-offset)),
+      calc(150px + var(--timeline-time-offset))
+    )
+    1fr;
   gap: 32px;
   align-items: center;
   position: relative;
@@ -1735,7 +1747,9 @@ img {
   align-self: center;
   display: flex;
   align-items: center;
-  padding-left: clamp(10px, 2vw, 20px);
+  padding-left: var(--timeline-time-offset);
+  position: relative;
+  z-index: 1;
 }
 
 .timeline h3 {
@@ -1769,6 +1783,7 @@ img {
   .timeline time {
     font-size: 20px;
     align-self: flex-start;
+    padding-left: 0;
   }
 
   .timeline li > div {
