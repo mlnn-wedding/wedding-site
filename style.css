@@ -902,7 +902,7 @@ img {
 
 .dresscode-examples {
   display: grid;
-  gap: 18px;
+  gap: clamp(18px, 4vw, 32px);
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   justify-items: center;
 }
@@ -914,6 +914,8 @@ img {
   box-shadow: 0 18px 40px var(--shadow-soft);
   display: block;
   width: 100%;
+  max-width: 260px;
+  aspect-ratio: 3 / 4;
 }
 
 .dresscode-example img {
@@ -958,11 +960,9 @@ img {
 
 .dresscode-card .color-card-front {
   background: var(--tone-base, var(--c-teal));
-  position: relative;
 }
 
 .dresscode-card .color-card-back {
-  position: relative;
   overflow: hidden;
 }
 
