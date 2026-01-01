@@ -31,6 +31,9 @@ window.Wedding.gallery = {
     const current = document.getElementById(imgId);
     if(!current) return;
     const frame = current.closest('.gallery-frame');
+    const trio = frame ? frame.closest('.gallery-trio') : null;
+    const prevImg = trio ? trio.querySelector('#gallery-prev') : null;
+    const nextImg = trio ? trio.querySelector('#gallery-next') : null;
     let buffer = frame ? frame.querySelector('#gallery-buffer') : null;
     if(!buffer && frame){
       buffer = document.createElement('img');
@@ -71,6 +74,31 @@ window.Wedding.gallery = {
       imgEl.src = src;
     };
 
+    const setAlt = (imgEl, index) => {
+      if(!imgEl) return;
+      const total = this.photos.length;
+      imgEl.alt = `Фотография ${index + 1} из ${total}`;
+    };
+
+    const setSideImages = (centerIndex) => {
+      if(!this.photos.length) return;
+      const total = this.photos.length;
+      const prevIndex = (centerIndex - 1 + total) % total;
+      const nextIndex = (centerIndex + 1) % total;
+      if(prevImg){
+        setSource(prevImg, this.photos[prevIndex]);
+        prevImg.classList.add('is-updating');
+        setAlt(prevImg, prevIndex);
+        window.setTimeout(() => prevImg.classList.remove('is-updating'), 260);
+      }
+      if(nextImg){
+        setSource(nextImg, this.photos[nextIndex]);
+        nextImg.classList.add('is-updating');
+        setAlt(nextImg, nextIndex);
+        window.setTimeout(() => nextImg.classList.remove('is-updating'), 260);
+      }
+    };
+
     const showInitial = this.photos[0];
     let active = front;
     let standby = back;
@@ -90,8 +118,10 @@ window.Wedding.gallery = {
 
     if(showInitial){
       setSource(active, showInitial);
+      setAlt(active, 0);
       makeVisible(active);
       this.index = 0;
+      setSideImages(0);
     }
     makeHidden(standby);
     standby.removeAttribute('data-src');
@@ -103,6 +133,7 @@ window.Wedding.gallery = {
       const nextSrc = this.photos[normalized];
       if(!nextSrc || active.getAttribute('data-src') === nextSrc){
         this.index = normalized;
+        setSideImages(normalized);
         return;
       }
 
@@ -135,6 +166,7 @@ window.Wedding.gallery = {
           standby = currentActive;
           active = upcoming;
           this.index = normalized;
+          setSideImages(normalized);
           isTransitioning = false;
           return;
         }
@@ -152,7 +184,9 @@ window.Wedding.gallery = {
         beginSwap();
       };
 
+      setSideImages(normalized);
       setSource(standby, nextSrc);
+      setAlt(standby, normalized);
       if(standby.complete && standby.naturalWidth){
         prepare();
       } else {
@@ -259,6 +293,35 @@ window.Wedding.miniCal = {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
+  const createRipple = (target, eventOrOptions) => {
+    if (!target) return;
+    const rect = target.getBoundingClientRect();
+    if (!rect.width || !rect.height) return;
+    const diagonal = Math.sqrt((rect.width ** 2) + (rect.height ** 2)) || Math.max(rect.width, rect.height);
+    const size = diagonal * 1.05;
+    let x = rect.width / 2;
+    let y = rect.height / 2;
+    const source = eventOrOptions || {};
+    if (typeof source.clientX === 'number' && typeof source.clientY === 'number') {
+      x = source.clientX - rect.left;
+      y = source.clientY - rect.top;
+    } else if (source.center === true) {
+      x = rect.width / 2;
+      y = rect.height / 2;
+    }
+    const ripple = document.createElement('span');
+    ripple.className = 'ripple';
+    ripple.style.width = `${size}px`;
+    ripple.style.height = `${size}px`;
+    ripple.style.left = `${x}px`;
+    ripple.style.top = `${y}px`;
+    Array.from(target.querySelectorAll('.ripple')).forEach((node) => {
+      if (node !== ripple) node.remove();
+    });
+    target.appendChild(ripple);
+    ripple.addEventListener('animationend', () => ripple.remove(), { once: true });
+  };
+
   window.Wedding.gallery.mount('gallery-current');
   window.Wedding.countdown.start();
   window.Wedding.miniCal.mount('mini-calendar', 'calendar-month', 'calendar-year');
@@ -266,29 +329,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const palette = document.querySelector('.dresscode-palette');
   const examples = document.getElementById('dresscode-examples');
   if (palette && examples) {
-    const createRipple = (target, event) => {
-      if (!target || !event) return;
-      if (typeof event.button === 'number' && event.button !== 0) return;
-      if (typeof event.clientX !== 'number' || typeof event.clientY !== 'number') return;
-      const rect = target.getBoundingClientRect();
-      if (!rect.width || !rect.height) return;
-      const diagonal = Math.sqrt((rect.width ** 2) + (rect.height ** 2)) || Math.max(rect.width, rect.height);
-      const size = diagonal * 1.05;
-      const ripple = document.createElement('span');
-      ripple.className = 'ripple';
-      ripple.style.width = `${size}px`;
-      ripple.style.height = `${size}px`;
-      ripple.style.left = `${event.clientX - rect.left}px`;
-      ripple.style.top = `${event.clientY - rect.top}px`;
-      Array.from(target.querySelectorAll('.ripple')).forEach((node) => {
-        if (node !== ripple) node.remove();
-      });
-      target.appendChild(ripple);
-      ripple.addEventListener('animationend', () => {
-        ripple.remove();
-      }, { once: true });
-    };
-
     const palettes = {
       green: {
         type: 'color',
@@ -458,9 +498,16 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     palette.addEventListener('pointerdown', (event) => {
+      if (typeof event.button === 'number' && event.button !== 0) return;
       const button = event.target instanceof Element ? event.target.closest('.swatch') : null;
       if (!button) return;
       createRipple(button, event);
+    });
+
+    palette.addEventListener('focusin', (event) => {
+      const button = event.target instanceof Element ? event.target.closest('.swatch') : null;
+      if (!button || !button.matches(':focus-visible')) return;
+      createRipple(button, { center: true });
     });
 
     const setCardFlipped = (card, shouldFlip) => {
@@ -482,6 +529,18 @@ document.addEventListener('DOMContentLoaded', () => {
       const target = event.target instanceof Element ? event.target.closest('.dresscode-card') : null;
       if (!target) return;
       setCardFlipped(target, !target.classList.contains('is-flipped'));
+    });
+
+    examples.addEventListener('pointerdown', (event) => {
+      const card = event.target instanceof Element ? event.target.closest('.dresscode-card') : null;
+      if (!card) return;
+      createRipple(card, event);
+    });
+
+    examples.addEventListener('focusin', (event) => {
+      const card = event.target instanceof Element ? event.target.closest('.dresscode-card') : null;
+      if (!card || !card.matches(':focus-visible')) return;
+      createRipple(card, { center: true });
     });
 
     examples.addEventListener('keydown', (event) => {
