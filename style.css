@@ -931,10 +931,12 @@ img {
   font: inherit;
   color: inherit;
   width: 100%;
+  border-radius: 28px;
   --tone-base: var(--tone, var(--c-teal));
   --tone-ink: color-mix(in srgb, var(--tone-base, var(--c-teal)) 22%, #041f24);
   cursor: pointer;
   outline: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .dresscode-card .color-card-inner {
@@ -1016,6 +1018,7 @@ img {
   border: none;
   cursor: pointer;
   padding: 0;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .flip-hint svg {
@@ -1024,13 +1027,18 @@ img {
 }
 
 .flip-hint:focus-visible {
-  outline: 2px solid color-mix(in srgb, var(--tone-base, var(--c-teal)) 65%, white);
-  outline-offset: 3px;
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--tone-base, var(--c-teal)) 65%, white);
 }
 
 .dresscode-card:focus-visible {
-  outline: 3px solid color-mix(in srgb, var(--tone-base, var(--c-teal)) 45%, white);
-  outline-offset: 8px;
+  outline: none;
+}
+
+.dresscode-card:focus-visible .color-card-inner {
+  box-shadow:
+    0 0 0 4px color-mix(in srgb, var(--tone-base, var(--c-teal)) 45%, white),
+    0 22px 42px color-mix(in srgb, var(--tone-base, var(--c-teal)) 22%, rgba(12, 37, 45, 0.32));
 }
 
 .dresscode-card .color-card-back .flip-hint {
@@ -1708,13 +1716,14 @@ img {
   flex-direction: column;
   gap: clamp(16px, 2vw, 24px);
   position: relative;
-  --timeline-time-offset: clamp(36px, 5vw, 80px);
+  --timeline-line-left: clamp(56px, 9vw, 124px);
+  --timeline-time-offset: calc(var(--timeline-line-left) + 24px);
 }
 
 .timeline::before {
   content: "";
   position: absolute;
-  left: clamp(68px, 12vw, 140px);
+  left: var(--timeline-line-left);
   top: 6px;
   bottom: 6px;
   width: 2px;
@@ -1744,7 +1753,7 @@ img {
 .timeline li::before {
   content: "";
   position: absolute;
-  left: clamp(52px, 9vw, 120px);
+  left: var(--timeline-line-left);
   top: 50%;
   transform: translate(-50%, -50%);
   width: 14px;
@@ -1822,12 +1831,14 @@ img {
   grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
   gap: clamp(28px, 5vw, 56px);
   align-items: start;
+  overflow: hidden;
 }
 
 .gifts-text p {
   font-family: "Inter", sans-serif;
   line-height: 1.6;
   color: var(--text-muted);
+  overflow-wrap: anywhere;
 }
 
 .gift-options {
@@ -1855,6 +1866,7 @@ img {
   font-family: "Inter", sans-serif;
   color: var(--text-muted);
   line-height: 1.6;
+  overflow-wrap: anywhere;
 }
 
 .gift-icon {
