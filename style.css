@@ -858,11 +858,12 @@ img {
 }
 
 .swatch {
+  --swatch-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.8), 0 6px 18px var(--shadow-soft);
   width: 68px;
   height: 68px;
   border-radius: 50%;
   background: var(--c);
-  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.8), 0 6px 18px var(--shadow-soft);
+  box-shadow: var(--swatch-shadow);
   border: none;
   cursor: pointer;
   padding: 0;
@@ -870,16 +871,31 @@ img {
   transition: transform 180ms ease, box-shadow 220ms ease;
   position: relative;
   overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.swatch:focus {
+  outline: none;
 }
 
 .swatch:focus-visible {
-  outline: 3px solid color-mix(in srgb, var(--c, var(--c-teal)) 45%, white);
-  outline-offset: 4px;
+  outline: none;
+  --swatch-shadow:
+    inset 0 0 0 2px rgba(255, 255, 255, 0.9),
+    0 0 0 4px color-mix(in srgb, var(--c, var(--c-teal)) 45%, white),
+    0 10px 22px var(--shadow-soft);
 }
 
 .swatch.is-active {
   transform: translateY(-6px) scale(1.05);
-  box-shadow: inset 0 0 0 4px rgba(255, 255, 255, 0.85), 0 14px 28px color-mix(in srgb, var(--c) 40%, rgba(0, 0, 0, 0.12));
+  --swatch-shadow: inset 0 0 0 4px rgba(255, 255, 255, 0.85), 0 14px 28px color-mix(in srgb, var(--c) 40%, rgba(0, 0, 0, 0.12));
+}
+
+.swatch.is-active:focus-visible {
+  --swatch-shadow:
+    inset 0 0 0 4px rgba(255, 255, 255, 0.85),
+    0 0 0 4px color-mix(in srgb, var(--c, var(--c-teal)) 45%, white),
+    0 14px 28px color-mix(in srgb, var(--c) 40%, rgba(0, 0, 0, 0.12));
 }
 
 .dresscode-examples {
@@ -1862,6 +1878,32 @@ img {
   }
 }
 
+@media (max-width: 720px) {
+  .gifts-card {
+    padding: 28px 20px;
+    gap: 18px;
+    text-align: center;
+  }
+
+  .gifts-text {
+    display: grid;
+    gap: 14px;
+  }
+
+  .gifts-text .section-title {
+    margin-bottom: 12px;
+  }
+
+  .gift-options {
+    gap: 16px;
+  }
+
+  .gift-option {
+    text-align: left;
+    padding: 20px 18px;
+  }
+}
+
 .visually-hidden {
   position: absolute;
   width: 1px;
@@ -1994,4 +2036,3 @@ img {
     justify-content: center;
   }
 }
-
