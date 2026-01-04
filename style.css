@@ -30,6 +30,15 @@ body {
   color: var(--c-deep);
   -webkit-font-smoothing: antialiased;
   background-color: var(--c-soft);
+  background-image: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--c-soft) 96%, white 4%) 0%,
+    color-mix(in srgb, var(--c-soft) 90%, var(--c-aqua) 10%) 36%,
+    color-mix(in srgb, var(--c-soft) 90%, var(--c-peach) 10%) 68%,
+    color-mix(in srgb, var(--c-soft) 94%, white 6%) 100%
+  );
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   position: relative;
   min-height: 100vh;
   overflow-x: hidden;
