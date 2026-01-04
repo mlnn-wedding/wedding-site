@@ -44,23 +44,6 @@ body {
   overflow-x: hidden;
 }
 
-body::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background:
-    radial-gradient(220px 320px at 12% 18%, color-mix(in srgb, var(--c-aqua) 30%, transparent) 0, transparent 100%),
-    radial-gradient(180px 260px at 78% 22%, color-mix(in srgb, var(--c-peach) 32%, transparent) 0, transparent 100%),
-    radial-gradient(240px 280px at 18% 78%, color-mix(in srgb, var(--c-teal) 26%, transparent) 0, transparent 100%),
-    radial-gradient(200px 240px at 88% 72%, color-mix(in srgb, var(--c-coral) 28%, transparent) 0, transparent 100%),
-    radial-gradient(220px 300px at 50% 52%, color-mix(in srgb, var(--c-lime) 22%, transparent) 0, transparent 100%);
-  opacity: 0.32;
-  z-index: -1;
-  will-change: transform, opacity;
-  transform: translate3d(0, 0, 0);
-}
-
 img {
   max-width: 100%;
   display: block;
@@ -119,21 +102,6 @@ img {
   background: none;
   position: relative;
   isolation: isolate;
-}
-
-.hero::before {
-  content: "";
-  position: absolute;
-  inset: -18% 0 -46%;
-  background:
-    radial-gradient(circle at 15% 20%, color-mix(in srgb, var(--c-coral) 28%, transparent) 0, transparent 70%),
-    radial-gradient(circle at 80% 78%, color-mix(in srgb, var(--c-lime) 22%, transparent) 0, transparent 68%);
-  opacity: 0.38;
-  z-index: -1;
-  pointer-events: none;
-  mix-blend-mode: multiply;
-  -webkit-mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.92) 8%, rgba(0, 0, 0, 0.8) 58%, rgba(0, 0, 0, 0) 100%);
-  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.92) 8%, rgba(0, 0, 0, 0.8) 58%, rgba(0, 0, 0, 0) 100%);
 }
 
 .hero-grid {
@@ -428,32 +396,6 @@ img {
   gap: clamp(28px, 6vw, 48px);
   justify-items: center;
   position: relative;
-  isolation: isolate;
-}
-
-.story-grid::before,
-.story-grid::after {
-  content: "";
-  position: absolute;
-  width: clamp(160px, 38vw, 320px);
-  height: clamp(160px, 38vw, 320px);
-  border-radius: 46% 54% 58% 42%;
-  background: radial-gradient(circle at 30% 30%, color-mix(in srgb, var(--c-aqua) 55%, transparent), rgba(255, 255, 255, 0));
-  top: -20%;
-  left: -10%;
-  z-index: -1;
-  pointer-events: none;
-  animation: drift 22s ease-in-out infinite;
-}
-
-.story-grid::after {
-  top: auto;
-  bottom: -18%;
-  left: auto;
-  right: -12%;
-  background: radial-gradient(circle at 70% 70%, color-mix(in srgb, var(--c-peach) 55%, transparent), rgba(255, 255, 255, 0));
-  animation-duration: 26s;
-  animation-delay: -8s;
 }
 
 .story-points {
@@ -1124,34 +1066,11 @@ img {
 .countdown-card {
   padding: clamp(32px, 6vw, 60px);
   border-radius: 36px;
-  background: linear-gradient(140deg, color-mix(in srgb, var(--c-aqua) 35%, white), color-mix(in srgb, var(--c-peach) 45%, white));
+  background: var(--glass);
   box-shadow: 0 18px 46px var(--shadow-strong);
   text-align: center;
   position: relative;
   overflow: hidden;
-}
-
-.countdown-card::before,
-.countdown-card::after {
-  content: "";
-  position: absolute;
-  width: clamp(120px, 28vw, 220px);
-  height: clamp(120px, 28vw, 220px);
-  border-radius: 50%;
-  background: radial-gradient(circle, color-mix(in srgb, var(--c-teal) 45%, transparent), rgba(255, 255, 255, 0));
-  top: -40px;
-  right: -60px;
-  pointer-events: none;
-  animation: sparkle 16s ease-in-out infinite;
-}
-
-.countdown-card::after {
-  top: auto;
-  right: auto;
-  bottom: -40px;
-  left: -60px;
-  animation-delay: -6s;
-  background: radial-gradient(circle, color-mix(in srgb, var(--c-lime) 40%, transparent), rgba(255, 255, 255, 0));
 }
 
 .countdown-grid {
@@ -1233,7 +1152,7 @@ img {
 }
 
 .wishlist-form-card {
-  background: color-mix(in srgb, var(--c-soft) 85%, var(--c-aqua));
+  background: var(--glass);
   border-radius: 28px;
   box-shadow: 0 16px 36px var(--shadow-soft);
   padding: clamp(24px, 5vw, 36px);
@@ -1309,7 +1228,7 @@ img {
 .rsvp-card {
   padding: clamp(32px, 8vw, 64px);
   border-radius: 36px;
-  background: color-mix(in srgb, var(--c-soft) 80%, var(--c-aqua));
+  background: var(--glass);
   box-shadow: 0 20px 48px var(--shadow-strong);
   text-align: center;
   display: grid;
@@ -1322,34 +1241,6 @@ img {
   width: 100%;
   max-width: 520px;
   margin-inline: auto;
-}
-
-.rsvp-card::before,
-.rsvp-card::after {
-  content: "";
-  position: absolute;
-  border-radius: 50%;
-  opacity: 0.26;
-  pointer-events: none;
-  animation: float-sway 18s ease-in-out infinite;
-  will-change: transform;
-}
-
-.rsvp-card::before {
-  width: clamp(160px, 35vw, 260px);
-  height: clamp(160px, 35vw, 260px);
-  background: radial-gradient(circle at 30% 30%, color-mix(in srgb, var(--c-teal) 55%, transparent), rgba(255, 255, 255, 0));
-  top: -80px;
-  left: -60px;
-}
-
-.rsvp-card::after {
-  width: clamp(140px, 28vw, 220px);
-  height: clamp(140px, 28vw, 220px);
-  background: radial-gradient(circle at 70% 70%, color-mix(in srgb, var(--c-peach) 55%, transparent), rgba(255, 255, 255, 0));
-  bottom: -70px;
-  right: -40px;
-  animation-delay: -6s;
 }
 
 .rsvp-form {
@@ -1625,38 +1516,12 @@ img {
   margin: 0 auto;
   font-size: 20px;
   line-height: 1.6;
-  background: color-mix(in srgb, var(--c-soft) 85%, var(--c-peach));
+  background: var(--glass);
   padding: 36px 32px;
   border-radius: 28px;
   box-shadow: 0 16px 40px var(--shadow-soft);
   position: relative;
   overflow: hidden;
-}
-
-.finale-card::before,
-.finale-card::after {
-  content: "";
-  position: absolute;
-  width: clamp(140px, 32vw, 240px);
-  height: clamp(140px, 32vw, 240px);
-  background: radial-gradient(circle, color-mix(in srgb, var(--c-lime) 38%, transparent), rgba(255, 255, 255, 0));
-  border-radius: 48% 52% 58% 42%;
-  pointer-events: none;
-  mix-blend-mode: screen;
-  animation: drift 24s ease-in-out infinite;
-  top: -60px;
-  left: -40px;
-  opacity: 0.35;
-}
-
-.finale-card::after {
-  top: auto;
-  bottom: -70px;
-  left: auto;
-  right: -50px;
-  animation-delay: -10s;
-  opacity: 0.32;
-  background: radial-gradient(circle, color-mix(in srgb, var(--c-coral) 40%, transparent), rgba(255, 255, 255, 0));
 }
 
 .anon-wish {
@@ -1785,7 +1650,7 @@ img {
 /* ====== DAY PLAN ====== */
 
 .day-plan {
-  background: radial-gradient(circle at top, color-mix(in srgb, var(--c-aqua) 28%, transparent) 0, transparent 65%), var(--c-soft);
+  background: var(--c-soft);
 }
 
 .day-plan-card {
@@ -1921,7 +1786,7 @@ img {
 /* ====== GIFTS ====== */
 
 .gifts {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(154, 240, 234, 0.25));
+  background: var(--c-soft);
 }
 
 .gifts-card {
