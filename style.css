@@ -1546,6 +1546,61 @@ img {
 
 /* ====== FINALE ====== */
 
+.chat {
+  background: linear-gradient(150deg, color-mix(in srgb, var(--c-aqua) 20%, white), color-mix(in srgb, var(--c-peach) 14%, white));
+}
+
+.chat-card {
+  background: white;
+  border-radius: 30px;
+  box-shadow: 0 24px 60px rgba(31, 59, 64, 0.12);
+  padding: clamp(28px, 6vw, 64px);
+  display: grid;
+  gap: clamp(18px, 3vw, 28px);
+  justify-items: center;
+  text-align: center;
+}
+
+.chat-text {
+  display: grid;
+  gap: 12px;
+  max-width: 720px;
+}
+
+.chat-text p {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+.chat-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+}
+
+.chat-link {
+  font-family: "Inter", sans-serif;
+  font-size: 15px;
+  letter-spacing: 0.04em;
+  color: var(--c-teal);
+  text-decoration: underline;
+  word-break: break-all;
+}
+
+.chat-link:hover,
+.chat-link:focus-visible {
+  color: var(--c-coral);
+}
+
+.chat .btn {
+  min-width: 200px;
+}
+
 .finale-card {
   text-align: center;
   max-width: 720px;
