@@ -458,12 +458,20 @@ img {
   height: 100%;
   object-fit: cover;
   aspect-ratio: 3/4;
-  transition: transform 280ms ease, opacity 220ms ease;
+  opacity: 0;
+  transform: scale(1.035);
+  transition: opacity 1.4s cubic-bezier(0.4, 0, 0.2, 1), transform 7s ease;
+  will-change: opacity, transform;
+}
+
+.gallery-side img.is-visible {
+  opacity: 1;
+  transform: scale(1.01);
 }
 
 .gallery-side img.is-updating {
-  opacity: 0.86;
-  transform: scale(0.98);
+  opacity: 0;
+  transform: scale(1.045);
 }
 
 .gallery-side-left {
@@ -574,6 +582,7 @@ img {
 .mini-calendar {
   --cal-gap: clamp(6px, 1.5vw, 8px);
   --cal-cell: clamp(32px, 10vw, 48px);
+  --cal-mark: var(--cal-cell);
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: var(--cal-gap);
@@ -605,16 +614,18 @@ img {
   background: var(--c-coral);
   color: white;
   border-radius: 50%;
-  width: var(--cal-cell);
-  height: var(--cal-cell);
-  aspect-ratio: 1;
   font-weight: 700;
   box-shadow: 0 10px 24px rgba(101, 182, 191, 0.35);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: grid;
+  place-items: center;
   place-self: center;
   line-height: 1;
+  inline-size: var(--cal-mark);
+  block-size: var(--cal-mark);
+  min-inline-size: var(--cal-mark);
+  min-block-size: var(--cal-mark);
+  max-inline-size: var(--cal-mark);
+  max-block-size: var(--cal-mark);
 }
 
 /* ====== CONTACTS ====== */
@@ -1122,7 +1133,8 @@ img {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .gallery-frame img {
+  .gallery-frame img,
+  .gallery-side img {
     transition: none;
     transform: none;
   }
@@ -1504,6 +1516,22 @@ img {
 
 .chat .btn {
   min-width: 200px;
+}
+
+@media (max-width: 640px) {
+  .chat-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .chat .btn {
+    width: 100%;
+  }
+
+  .chat-link {
+    width: 100%;
+    text-align: center;
+  }
 }
 
 .finale-card {
@@ -1975,15 +2003,11 @@ img {
     --cal-cell: clamp(28px, 11vw, 32px);
     --cal-gap: 4px;
     padding: 18px;
+    --cal-mark: clamp(28px, 11vw, 32px);
   }
 
   .rsvp-card {
     padding: 28px 16px;
-  }
-
-  .mini-calendar .mark {
-    width: 28px;
-    height: 28px;
   }
 
   .choice-pill {

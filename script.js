@@ -34,6 +34,7 @@ window.Wedding.gallery = {
     const trio = frame ? frame.closest('.gallery-trio') : null;
     const prevImg = trio ? trio.querySelector('#gallery-prev') : null;
     const nextImg = trio ? trio.querySelector('#gallery-next') : null;
+    const sideReady = { prev: false, next: false };
     let buffer = frame ? frame.querySelector('#gallery-buffer') : null;
     if(!buffer && frame){
       buffer = document.createElement('img');
@@ -80,23 +81,49 @@ window.Wedding.gallery = {
       imgEl.alt = `Фотография ${index + 1} из ${total}`;
     };
 
+    const updateSideImage = (imgEl, photoIndex, key) => {
+      if(!imgEl || !this.photos.length) return;
+      const src = this.photos[photoIndex];
+      if(!src) return;
+      const markReady = () => {
+        imgEl.classList.add('is-visible');
+        requestAnimationFrame(() => {
+          imgEl.classList.remove('is-updating');
+        });
+        sideReady[key] = true;
+      };
+      if(this._motionQuery && this._motionQuery.matches){
+        setSource(imgEl, src);
+        setAlt(imgEl, photoIndex);
+        imgEl.classList.add('is-visible');
+        imgEl.classList.remove('is-updating');
+        sideReady[key] = true;
+        return;
+      }
+      imgEl.classList.add('is-updating');
+      if(sideReady[key] && imgEl.getAttribute('data-src') !== src){
+        imgEl.classList.remove('is-visible');
+      }
+      setSource(imgEl, src);
+      setAlt(imgEl, photoIndex);
+      const reveal = () => {
+        imgEl.onload = null;
+        requestAnimationFrame(markReady);
+      };
+      if(imgEl.complete && imgEl.naturalWidth){
+        reveal();
+      } else {
+        imgEl.onload = reveal;
+      }
+    };
+
     const setSideImages = (centerIndex) => {
       if(!this.photos.length) return;
       const total = this.photos.length;
       const prevIndex = (centerIndex - 1 + total) % total;
       const nextIndex = (centerIndex + 1) % total;
-      if(prevImg){
-        setSource(prevImg, this.photos[prevIndex]);
-        prevImg.classList.add('is-updating');
-        setAlt(prevImg, prevIndex);
-        window.setTimeout(() => prevImg.classList.remove('is-updating'), 260);
-      }
-      if(nextImg){
-        setSource(nextImg, this.photos[nextIndex]);
-        nextImg.classList.add('is-updating');
-        setAlt(nextImg, nextIndex);
-        window.setTimeout(() => nextImg.classList.remove('is-updating'), 260);
-      }
+      updateSideImage(prevImg, prevIndex, 'prev');
+      updateSideImage(nextImg, nextIndex, 'next');
     };
 
     const showInitial = this.photos[0];
