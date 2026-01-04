@@ -1455,10 +1455,6 @@ img {
 
 /* ====== FINALE ====== */
 
-.chat {
-  background: var(--c-soft);
-}
-
 .chat-card {
   background: white;
   border-radius: 30px;
@@ -1649,10 +1645,6 @@ img {
 
 /* ====== DAY PLAN ====== */
 
-.day-plan {
-  background: var(--c-soft);
-}
-
 .day-plan-card {
   background: var(--glass);
   backdrop-filter: blur(10px);
@@ -1784,10 +1776,6 @@ img {
 }
 
 /* ====== GIFTS ====== */
-
-.gifts {
-  background: var(--c-soft);
-}
 
 .gifts-card {
   background: white;
