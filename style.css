@@ -82,11 +82,14 @@ img {
   font-family: "Libre Bodoni", serif;
   font-size: clamp(32px, 4vw, 52px);
   text-transform: uppercase;
-  letter-spacing: 0.18em;
+  letter-spacing: clamp(0.08em, calc(0.12em + 0.1vw), 0.18em);
   margin: 0 0 32px;
   color: var(--c-teal);
   text-shadow: 0 10px 32px color-mix(in srgb, var(--c-teal) 25%, transparent);
   text-align: center;
+  text-wrap: balance;
+  overflow-wrap: break-word;
+  hyphens: auto;
 }
 
 .eyebrow {
