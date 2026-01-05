@@ -24,7 +24,7 @@ window.Wedding.gallery = {
   index: 0,
   timer: null,
   intervalMs: 5000,
-  disableAuto: true,
+  disableAuto: false,
   _visibilityHandler: null,
   _motionQuery: null,
   _motionHandler: null,
@@ -53,7 +53,7 @@ window.Wedding.gallery = {
     const front = current;
     const back = buffer;
     let syncRaf = null;
-    const disableAnimations = true;
+    const disableAnimations = false;
     const resetAnimations = () => {
       [front, back, prevImg, nextImg].forEach((img) => {
         if (img) img.classList.remove('gallery-animated');
@@ -183,7 +183,88 @@ window.Wedding.gallery = {
     standby.removeAttribute('data-src');
     standby.removeAttribute('src');
 
-    const show = (i) => {
+    const runSynchronizedSlide = (targetIndex) => {
+      const prefersReduced = this._motionQuery && this._motionQuery.matches;
+      if (disableAnimations || prefersReduced || !trio || !prevImg || !nextImg) return null;
+      const prevStyles = window.getComputedStyle(prevImg);
+      const nextStyles = window.getComputedStyle(nextImg);
+      if (prevStyles.display === 'none' || nextStyles.display === 'none') return null;
+
+      const prevRect = prevImg.getBoundingClientRect();
+      const currentRect = active.getBoundingClientRect();
+      const nextRect = nextImg.getBoundingClientRect();
+      if (!prevRect.width || !currentRect.width || !nextRect.width) return null;
+
+      const trioRect = trio.getBoundingClientRect();
+      const gapEstimate = Math.max(18, Math.min(48, (trioRect.width - (prevRect.width + currentRect.width + nextRect.width)) / 2));
+      const flyerClass = 'gallery-flyer';
+      const flyers = [];
+      const duration = 640;
+      trio.classList.add('is-animating');
+
+      const baseRadius = (el) => {
+        const radius = window.getComputedStyle(el).borderRadius;
+        if (radius && radius !== '0px') return radius;
+        const parent = el.parentElement;
+        return parent ? window.getComputedStyle(parent).borderRadius : radius;
+      };
+      const createFlyer = (img, rectOverride) => {
+        const rect = rectOverride || img.getBoundingClientRect();
+        const flyer = img.cloneNode(true);
+        flyer.classList.add(flyerClass);
+        flyer.style.position = 'fixed';
+        flyer.style.left = `${rect.left}px`;
+        flyer.style.top = `${rect.top}px`;
+        flyer.style.width = `${rect.width}px`;
+        flyer.style.height = `${rect.height}px`;
+        flyer.style.borderRadius = baseRadius(img);
+        flyer.style.transform = 'translate3d(0,0,0)';
+        flyer.style.opacity = '1';
+        document.body.appendChild(flyer);
+        return flyer;
+      };
+
+      const pushFlyer = (img, fromRect, toRect, opts = {}) => {
+        const flyer = createFlyer(img, fromRect);
+        flyers.push({ node: flyer, from: fromRect, to: toRect, ...opts });
+      };
+
+      pushFlyer(prevImg, prevRect, currentRect);
+      pushFlyer(active, currentRect, nextRect);
+      pushFlyer(nextImg, nextRect, { left: nextRect.left + nextRect.width + gapEstimate, top: nextRect.top, width: nextRect.width, height: nextRect.height }, { fadeOut: true });
+
+      const incomingIndex = (targetIndex - 1 + this.photos.length) % this.photos.length;
+      const incomingSrc = this.photos[incomingIndex];
+      if (incomingSrc) {
+        const startRect = { left: prevRect.left - prevRect.width - gapEstimate, top: prevRect.top, width: prevRect.width, height: prevRect.height };
+        const incoming = createFlyer(prevImg, startRect);
+        incoming.src = incomingSrc;
+        incoming.style.opacity = '0';
+        incoming.style.backgroundColor = 'color-mix(in srgb, #fdf8f3 85%, white)';
+        incoming.onload = () => { incoming.style.opacity = '0'; };
+        flyers.push({ node: incoming, from: startRect, to: prevRect, fadeIn: true });
+      }
+
+      requestAnimationFrame(() => {
+        flyers.forEach(({ node, from, to, fadeIn, fadeOut }) => {
+          const dx = (to.left - from.left) || 0;
+          const dy = (to.top - from.top) || 0;
+          node.style.transform = `translate3d(${dx}px, ${dy}px, 0)`;
+          if (fadeOut) node.style.opacity = '0';
+          if (fadeIn) node.style.opacity = '1';
+        });
+      });
+
+      return new Promise((resolve) => {
+        window.setTimeout(() => {
+          flyers.forEach(({ node }) => node.remove());
+          trio.classList.remove('is-animating');
+          resolve();
+        }, duration);
+      });
+    };
+
+    const show = (i, options = {}) => {
       if(!this.photos.length || isTransitioning) return;
       const normalized = (i + this.photos.length) % this.photos.length;
       const nextSrc = this.photos[normalized];
@@ -199,15 +280,7 @@ window.Wedding.gallery = {
         const upcoming = standby;
         const currentActive = active;
 
-        let fallbackTimer = null;
-        const finalize = (event) => {
-          if(event && (event.target !== upcoming || event.propertyName !== 'opacity')){
-            return;
-          }
-          upcoming.removeEventListener('transitionend', finalize);
-          if(fallbackTimer){
-            window.clearTimeout(fallbackTimer);
-          }
+        const finalize = () => {
           upcoming.onload = null;
           standby = currentActive;
           active = upcoming;
@@ -215,34 +288,30 @@ window.Wedding.gallery = {
           isTransitioning = false;
         };
 
-        if(this._motionQuery && this._motionQuery.matches){
+        const motionReduced = this._motionQuery && this._motionQuery.matches;
+        const slidePromise = motionReduced ? null : runSynchronizedSlide(normalized);
+
+        const revealNewState = () => {
           makeHidden(currentActive);
           makeVisible(upcoming);
-          upcoming.onload = null;
-          standby = currentActive;
-          active = upcoming;
-          this.index = normalized;
           setSideImages(normalized);
-          isTransitioning = false;
           scheduleSync();
-          return;
-        }
+          finalize();
+        };
 
-        fallbackTimer = window.setTimeout(() => finalize(), 1200);
-        upcoming.addEventListener('transitionend', finalize);
-
-        requestAnimationFrame(() => {
-          makeVisible(upcoming);
+        if(slidePromise){
+          slidePromise.then(revealNewState);
+        } else {
           makeHidden(currentActive);
-          scheduleSync();
-        });
+          makeVisible(upcoming);
+          revealNewState();
+        }
       };
 
       const prepare = () => {
         beginSwap();
       };
 
-      setSideImages(normalized);
       setSource(standby, nextSrc);
       setAlt(standby, normalized);
       if(standby.complete && standby.naturalWidth){
@@ -258,7 +327,7 @@ window.Wedding.gallery = {
 
     const start = () => {
       if(this.disableAuto || this.timer || (this._motionQuery && this._motionQuery.matches)) return;
-      this.timer = window.setInterval(() => show(this.index + 1), this.intervalMs);
+      this.timer = window.setInterval(() => show(this.index - 1), this.intervalMs);
     };
 
     const stop = () => {
@@ -299,7 +368,7 @@ window.Wedding.gallery = {
       start();
     }
 
-    return { next: () => show(this.index + 1) };
+    return { next: () => show(this.index - 1) };
   }
 };
 
@@ -443,8 +512,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const cards = [];
       const flipIcon = `
         <svg viewBox="0 0 24 24" role="presentation" focusable="false" aria-hidden="true">
-          <path d="M7.2 6.2A6 6 0 0 1 17.4 9h1.1a.65.65 0 0 1 .46 1.1l-2.38 2.38a.65.65 0 0 1-.92 0L13.28 10.7a.65.65 0 0 1 .46-1.1h1.04A4.7 4.7 0 0 0 8 8.5a.65.65 0 1 1-.8-1.03Z" fill="currentColor"/>
-          <path d="M16.8 17.8A6 6 0 0 1 6.6 15.1H5.5a.65.65 0 0 1-.46-1.1L7.42 11.6a.65.65 0 0 1 .92 0l2.38 2.38a.65.65 0 0 1-.46 1.1H9.22a4.7 4.7 0 0 0 6.78 1.1.65.65 0 0 1 .8 1.02Z" fill="currentColor"/>
+          <path d="M8.8 5.6a.65.65 0 0 0-.46 1.1L13.64 12l-5.3 5.3a.65.65 0 0 0 .92.92l5.76-5.76a.65.65 0 0 0 0-.92L9.06 5.76a.65.65 0 0 0-.26-.16.65.65 0 0 0-.01 0Z" fill="currentColor"/>
         </svg>
       `;
 

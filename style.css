@@ -372,6 +372,97 @@ img {
   animation: bloom 6s ease-in-out infinite alternate;
 }
 
+.twig-ornament {
+  position: absolute;
+  inset: auto;
+  opacity: 0.4;
+  pointer-events: none;
+  filter: drop-shadow(0 12px 24px rgba(31, 59, 64, 0.14));
+  z-index: 0;
+}
+
+.twig-ornament svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+@media (max-width: 640px) {
+  .twig-ornament {
+    opacity: 0.3;
+  }
+}
+
+.location-card .twig-ornament--a {
+  width: clamp(140px, 26vw, 220px);
+  top: clamp(-40px, -8vw, -12px);
+  left: clamp(-28px, -6vw, 8px);
+  transform: rotate(8deg);
+}
+
+.location-card .twig-ornament--b {
+  width: clamp(150px, 30vw, 240px);
+  bottom: clamp(-60px, -14vw, -24px);
+  right: clamp(-36px, -8vw, 12px);
+  transform: rotate(-14deg) scaleX(-1);
+}
+
+.day-plan-card .twig-ornament--a {
+  width: clamp(160px, 30vw, 240px);
+  top: clamp(-36px, -7vw, -12px);
+  right: clamp(-46px, -10vw, 6px);
+  transform: rotate(10deg);
+}
+
+.day-plan-card .twig-ornament--b {
+  width: clamp(140px, 26vw, 220px);
+  bottom: clamp(-44px, -8vw, -18px);
+  left: clamp(-26px, -5vw, 10px);
+  transform: rotate(-12deg);
+}
+
+.rsvp-card .twig-ornament--a {
+  width: clamp(170px, 32vw, 250px);
+  top: clamp(-42px, -9vw, -14px);
+  left: clamp(-42px, -9vw, 6px);
+  transform: rotate(6deg);
+}
+
+.rsvp-card .twig-ornament--b {
+  width: clamp(160px, 30vw, 240px);
+  bottom: clamp(-50px, -10vw, -18px);
+  right: clamp(-38px, -8vw, 10px);
+  transform: rotate(-16deg) scaleX(-1);
+}
+
+.chat-card .twig-ornament--a {
+  width: clamp(150px, 28vw, 230px);
+  top: clamp(-32px, -6vw, -12px);
+  right: clamp(-32px, -7vw, 10px);
+  transform: rotate(12deg);
+}
+
+.chat-card .twig-ornament--b {
+  width: clamp(150px, 28vw, 230px);
+  bottom: clamp(-48px, -9vw, -16px);
+  left: clamp(-28px, -6vw, 12px);
+  transform: rotate(-8deg);
+}
+
+.gifts-card .twig-ornament--a {
+  width: clamp(160px, 28vw, 240px);
+  top: clamp(-34px, -6vw, -12px);
+  left: clamp(-24px, -5vw, 10px);
+  transform: rotate(8deg);
+}
+
+.gifts-card .twig-ornament--b {
+  width: clamp(150px, 26vw, 220px);
+  bottom: clamp(-42px, -8vw, -16px);
+  right: clamp(-32px, -7vw, 10px);
+  transform: rotate(-10deg) scaleX(-1);
+}
+
 @keyframes dash {
   to {
     stroke-dashoffset: -60;
@@ -509,6 +600,26 @@ img {
 .gallery-frame img.is-visible {
   opacity: 1;
   z-index: 2;
+}
+
+.gallery-trio.is-animating img {
+  opacity: 0;
+}
+
+.gallery-flyer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  margin: 0;
+  object-fit: cover;
+  border-radius: 26px;
+  box-shadow: 0 16px 44px var(--shadow-soft);
+  pointer-events: none;
+  z-index: 9;
+  transition:
+    transform 620ms cubic-bezier(0.22, 0.78, 0.28, 0.96),
+    opacity 620ms ease;
+  will-change: transform, opacity;
 }
 
 .gallery-frame img[aria-hidden="true"] {
@@ -704,6 +815,8 @@ img {
   border-radius: 36px;
   box-shadow: 0 16px 40px var(--shadow-soft);
   border: 1px solid color-mix(in srgb, var(--c-teal) 22%, transparent);
+  position: relative;
+  overflow: hidden;
 }
 
 .location-info p {
@@ -874,6 +987,8 @@ img {
 
 .swatch {
   --swatch-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.8), 0 6px 18px var(--shadow-soft);
+  --swatch-check-bg: color-mix(in srgb, white 82%, var(--c, var(--c-teal)) 18%);
+  --swatch-check-ink: color-mix(in srgb, var(--c, var(--c-teal)) 12%, #0c1e22 88%);
   width: clamp(60px, 14vw, 68px);
   height: clamp(60px, 14vw, 68px);
   border-radius: 50%;
@@ -887,6 +1002,33 @@ img {
   position: relative;
   overflow: hidden;
   -webkit-tap-highlight-color: transparent;
+}
+
+.swatch::after {
+  content: "✓";
+  position: absolute;
+  inset: 50%;
+  width: clamp(30px, 6.4vw, 34px);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%) scale(0.6);
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--swatch-check-bg);
+  color: var(--swatch-check-ink);
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: clamp(16px, 3.8vw, 18px);
+  line-height: 1;
+  box-shadow:
+    0 10px 20px color-mix(in srgb, var(--c, var(--c-teal)) 35%, rgba(0, 0, 0, 0.18)),
+    0 0 0 1px rgba(255, 255, 255, 0.8),
+    0 0 0 3px color-mix(in srgb, white 55%, var(--c, var(--c-teal)) 45%);
+  opacity: 0;
+  transition: opacity 160ms ease, transform 180ms ease;
+  text-shadow:
+    0 0 6px rgba(255, 255, 255, 0.6),
+    0 2px 12px rgba(12, 20, 25, 0.28);
 }
 
 .swatch:focus {
@@ -904,6 +1046,15 @@ img {
 .swatch.is-active {
   transform: translateY(-6px) scale(1.05);
   --swatch-shadow: inset 0 0 0 4px rgba(255, 255, 255, 0.85), 0 14px 28px color-mix(in srgb, var(--c) 40%, rgba(0, 0, 0, 0.12));
+  box-shadow:
+    inset 0 0 0 4px rgba(255, 255, 255, 0.85),
+    0 0 0 2px color-mix(in srgb, var(--c, var(--c-teal)) 25%, white 75%),
+    0 14px 28px color-mix(in srgb, var(--c) 40%, rgba(0, 0, 0, 0.12));
+}
+
+.swatch.is-active::after {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
 }
 
 .swatch.is-active:focus-visible {
@@ -1026,8 +1177,10 @@ img {
   align-items: center;
   justify-content: center;
   color: var(--tone-ink);
-  background: color-mix(in srgb, white 55%, var(--tone-base, var(--c-teal)) 45%);
-  box-shadow: 0 8px 16px rgba(6, 24, 32, 0.22);
+  background: color-mix(in srgb, white 70%, var(--tone-base, var(--c-teal)) 30%);
+  box-shadow:
+    0 12px 20px rgba(6, 24, 32, 0.22),
+    0 0 0 1px color-mix(in srgb, white 70%, var(--tone-base, var(--c-teal)) 30%);
   pointer-events: none;
   transition: transform 180ms ease, opacity 220ms ease;
   opacity: 0;
@@ -1258,12 +1411,13 @@ img {
 .rsvp,
 .chat {
   margin-block: clamp(20px, 6vw, 48px);
+  padding-inline: clamp(12px, 4vw, 32px);
 }
 
 @media (max-width: 600px) {
   .rsvp,
   .chat {
-    margin-block: clamp(14px, 7vw, 28px);
+    margin-block: clamp(18px, 8vw, 32px);
   }
 }
 
@@ -1279,6 +1433,10 @@ img {
   overflow: hidden;
   width: min(860px, 100%);
   margin-inline: auto;
+}
+
+.chat-card {
+  position: relative;
 }
 
 .rsvp-card > * {
@@ -1519,6 +1677,8 @@ img {
   text-align: center;
   width: min(860px, 100%);
   margin-inline: auto;
+  position: relative;
+  overflow: hidden;
 }
 
 .chat-text {
@@ -1572,6 +1732,12 @@ img {
   .chat-link {
     width: 100%;
     text-align: center;
+  }
+
+  .rsvp-card,
+  .chat-card {
+    width: min(100%, calc(100% - 12px));
+    padding-inline: clamp(18px, 6vw, 22px);
   }
 }
 
@@ -1720,6 +1886,8 @@ img {
   border-radius: 28px;
   padding: clamp(32px, 6vw, 64px);
   box-shadow: 0 25px 70px var(--shadow-soft);
+  position: relative;
+  overflow: hidden;
 }
 
 .day-plan-header {
@@ -1856,6 +2024,7 @@ img {
   gap: clamp(28px, 5vw, 56px);
   align-items: start;
   overflow: hidden;
+  position: relative;
 }
 
 .gifts-text p {
