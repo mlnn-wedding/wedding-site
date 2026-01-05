@@ -24,6 +24,7 @@ window.Wedding.gallery = {
   index: 0,
   timer: null,
   intervalMs: 5000,
+  disableAuto: true,
   _visibilityHandler: null,
   _motionQuery: null,
   _motionHandler: null,
@@ -52,6 +53,7 @@ window.Wedding.gallery = {
     const front = current;
     const back = buffer;
     let syncRaf = null;
+    const disableAnimations = true;
     const resetAnimations = () => {
       [front, back, prevImg, nextImg].forEach((img) => {
         if (img) img.classList.remove('gallery-animated');
@@ -59,7 +61,7 @@ window.Wedding.gallery = {
     };
 
     const scheduleSync = () => {
-      if (this._motionQuery && this._motionQuery.matches) {
+      if (disableAnimations || (this._motionQuery && this._motionQuery.matches)) {
         resetAnimations();
         return;
       }
@@ -255,7 +257,7 @@ window.Wedding.gallery = {
     };
 
     const start = () => {
-      if(this.timer || (this._motionQuery && this._motionQuery.matches)) return;
+      if(this.disableAuto || this.timer || (this._motionQuery && this._motionQuery.matches)) return;
       this.timer = window.setInterval(() => show(this.index + 1), this.intervalMs);
     };
 
@@ -265,7 +267,7 @@ window.Wedding.gallery = {
       this.timer = null;
     };
 
-    if(!this._motionQuery){
+    if(!this._motionQuery && !this.disableAuto){
       this._motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
       this._motionHandler = () => {
         if(this._motionQuery.matches){
@@ -282,7 +284,7 @@ window.Wedding.gallery = {
       }
     }
 
-    if(!this._visibilityHandler){
+    if(!this._visibilityHandler && !this.disableAuto){
       this._visibilityHandler = () => {
         if(document.hidden){
           stop();
@@ -293,7 +295,7 @@ window.Wedding.gallery = {
       document.addEventListener('visibilitychange', this._visibilityHandler);
     }
 
-    if(!(this._motionQuery && this._motionQuery.matches)){
+    if(!(this._motionQuery && this._motionQuery.matches) && !this.disableAuto){
       start();
     }
 
@@ -675,16 +677,19 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     if (drinkGrid) {
+      const syncFromInput = (input) => {
+        if (!(input instanceof HTMLInputElement)) return;
+        requestAnimationFrame(() => {
+          updatePillState(input);
+          ensureDrinksValidity();
+        });
+      };
+
       drinkGrid.addEventListener('click', (event) => {
         const pill = event.target instanceof Element ? event.target.closest('.choice-pill') : null;
         if (!pill) return;
         const input = pill.querySelector('input[type="checkbox"]');
-        if (!(input instanceof HTMLInputElement)) return;
-        event.preventDefault();
-        input.checked = !input.checked;
-        updatePillState(input);
-        ensureDrinksValidity();
-        input.dispatchEvent(new Event('change', { bubbles: true }));
+        syncFromInput(input);
       });
 
       drinkGrid.addEventListener('keydown', (event) => {
@@ -692,11 +697,21 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!pill) return;
         if (event.key !== 'Enter' && event.key !== ' ' && event.key !== 'Spacebar') return;
         event.preventDefault();
-        pill.click();
+        const input = pill.querySelector('input[type="checkbox"]');
+        if (!(input instanceof HTMLInputElement)) return;
+        input.click();
+        syncFromInput(input);
       });
     }
 
     drinkNote?.addEventListener('input', ensureDrinksValidity);
+
+    rsvp.addEventListener('reset', () => {
+      requestAnimationFrame(() => {
+        syncPills();
+        ensureDrinksValidity();
+      });
+    });
 
     syncPills();
     ensureDrinksValidity();
