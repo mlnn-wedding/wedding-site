@@ -51,6 +51,29 @@ window.Wedding.gallery = {
 
     const front = current;
     const back = buffer;
+    let syncRaf = null;
+    const resetAnimations = () => {
+      [front, back, prevImg, nextImg].forEach((img) => {
+        if (img) img.classList.remove('gallery-animated');
+      });
+    };
+
+    const scheduleSync = () => {
+      if (this._motionQuery && this._motionQuery.matches) {
+        resetAnimations();
+        return;
+      }
+      if (syncRaf) return;
+      syncRaf = requestAnimationFrame(() => {
+        syncRaf = null;
+        const visible = [active, prevImg, nextImg].filter((img) => img && img.classList.contains('is-visible'));
+        resetAnimations();
+        if (visible.length) {
+          void visible[0].offsetWidth;
+          visible.forEach((img) => img.classList.add('gallery-animated'));
+        }
+      });
+    };
 
     const setSource = (imgEl, src) => {
       if(!imgEl || !src) return;
@@ -91,6 +114,7 @@ window.Wedding.gallery = {
           imgEl.classList.remove('is-updating');
         });
         sideReady[key] = true;
+        scheduleSync();
       };
       if(this._motionQuery && this._motionQuery.matches){
         setSource(imgEl, src);
@@ -98,6 +122,7 @@ window.Wedding.gallery = {
         imgEl.classList.add('is-visible');
         imgEl.classList.remove('is-updating');
         sideReady[key] = true;
+        resetAnimations();
         return;
       }
       imgEl.classList.add('is-updating');
@@ -124,6 +149,7 @@ window.Wedding.gallery = {
       const nextIndex = (centerIndex + 1) % total;
       updateSideImage(prevImg, prevIndex, 'prev');
       updateSideImage(nextImg, nextIndex, 'next');
+      scheduleSync();
     };
 
     const showInitial = this.photos[0];
@@ -149,6 +175,7 @@ window.Wedding.gallery = {
       makeVisible(active);
       this.index = 0;
       setSideImages(0);
+      scheduleSync();
     }
     makeHidden(standby);
     standby.removeAttribute('data-src');
@@ -195,6 +222,7 @@ window.Wedding.gallery = {
           this.index = normalized;
           setSideImages(normalized);
           isTransitioning = false;
+          scheduleSync();
           return;
         }
 
@@ -204,6 +232,7 @@ window.Wedding.gallery = {
         requestAnimationFrame(() => {
           makeVisible(upcoming);
           makeHidden(currentActive);
+          scheduleSync();
         });
       };
 
@@ -220,6 +249,7 @@ window.Wedding.gallery = {
         standby.onload = () => {
           standby.onload = null;
           prepare();
+          scheduleSync();
         };
       }
     };
@@ -243,6 +273,7 @@ window.Wedding.gallery = {
         } else {
           start();
         }
+        scheduleSync();
       };
       if(typeof this._motionQuery.addEventListener === 'function'){
         this._motionQuery.addEventListener('change', this._motionHandler);
@@ -600,12 +631,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const feedbackEl = document.getElementById('rsvp-feedback');
     const drinkInputs = Array.from(rsvp.querySelectorAll('input[name="drinks"]'));
     const drinkNote = rsvp.querySelector('input[name="drinksNote"]');
+    const drinkGrid = rsvp.querySelector('.drink-grid');
+
+    const updatePillState = (input) => {
+      if (!(input instanceof HTMLInputElement)) return;
+      const pill = input.closest('.choice-pill');
+      if (!pill) return;
+      const isChecked = input.checked;
+      pill.classList.toggle('is-selected', isChecked);
+      pill.setAttribute('aria-pressed', String(isChecked));
+      input.setAttribute('aria-checked', String(isChecked));
+    };
 
     const syncPills = () => {
       rsvp.querySelectorAll('.choice-pill input[type="checkbox"]').forEach((input) => {
-        const pill = input.closest('.choice-pill');
-        if (!pill) return;
-        pill.classList.toggle('is-selected', input.checked);
+        updatePillState(input);
       });
     };
 
@@ -626,16 +666,35 @@ document.addEventListener('DOMContentLoaded', () => {
     rsvp.addEventListener('change', (ev) => {
       const target = ev.target;
       if (target instanceof HTMLInputElement && target.closest('.choice-pill')) {
-        const pill = target.closest('.choice-pill');
-        if (pill) {
-          pill.classList.toggle('is-selected', target.checked);
-        }
+        updatePillState(target);
         ensureDrinksValidity();
       }
       if (target instanceof HTMLInputElement && target === drinkNote) {
         ensureDrinksValidity();
       }
     });
+
+    if (drinkGrid) {
+      drinkGrid.addEventListener('click', (event) => {
+        const pill = event.target instanceof Element ? event.target.closest('.choice-pill') : null;
+        if (!pill) return;
+        const input = pill.querySelector('input[type="checkbox"]');
+        if (!(input instanceof HTMLInputElement)) return;
+        event.preventDefault();
+        input.checked = !input.checked;
+        updatePillState(input);
+        ensureDrinksValidity();
+        input.dispatchEvent(new Event('change', { bubbles: true }));
+      });
+
+      drinkGrid.addEventListener('keydown', (event) => {
+        const pill = event.target instanceof Element ? event.target.closest('.choice-pill') : null;
+        if (!pill) return;
+        if (event.key !== 'Enter' && event.key !== ' ' && event.key !== 'Spacebar') return;
+        event.preventDefault();
+        pill.click();
+      });
+    }
 
     drinkNote?.addEventListener('input', ensureDrinksValidity);
 
