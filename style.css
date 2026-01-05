@@ -141,18 +141,21 @@ img {
 
 .hero-portrait {
   position: relative;
+  z-index: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
 }
 
 .hero-photo {
+  position: relative;
   margin: 0;
   overflow: hidden;
-  border-radius: clamp(26px, 3vw, 36px);
-  box-shadow: 0 24px 60px rgba(31, 59, 64, 0.18);
-  border: 5px solid rgba(255, 255, 255, 0.9);
-  background: white;
+  border-radius: clamp(18px, 2.4vw, 28px);
+  box-shadow: 0 20px 50px rgba(31, 59, 64, 0.16);
+  border: 6px solid color-mix(in srgb, #fdf8f3 88%, var(--c-peach) 12%);
+  background: #fff;
+  z-index: 1;
 }
 
 .hero-photo img {
@@ -171,6 +174,8 @@ img {
   top: 8%;
   opacity: 0.74;
   filter: drop-shadow(0 18px 28px rgba(31, 59, 64, 0.14));
+  pointer-events: none;
+  z-index: 0;
 }
 
 .hero-ornament--left {
