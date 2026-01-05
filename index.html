@@ -16,40 +16,46 @@
     <div class="container hero-centered">
       <span class="hero-heart" aria-hidden="true">❤</span>
       <div class="hero-portrait" data-reveal>
-        <svg class="hero-ornament hero-ornament--left" viewBox="0 0 230 420" role="presentation" aria-hidden="true">
-          <path class="hero-branch" d="M194 38C122 90 88 156 78 222 66 304 90 362 128 404" />
-          <ellipse class="hero-leaf" cx="150" cy="94" rx="20" ry="11" transform="rotate(-24 150 94)" />
-          <ellipse class="hero-leaf" cx="126" cy="152" rx="22" ry="12" transform="rotate(-18 126 152)" />
-          <ellipse class="hero-leaf" cx="104" cy="208" rx="22" ry="12" transform="rotate(-12 104 208)" />
-          <ellipse class="hero-leaf" cx="98" cy="260" rx="22" ry="12" transform="rotate(-8 98 260)" />
-          <ellipse class="hero-leaf" cx="118" cy="318" rx="20" ry="11" transform="rotate(-6 118 318)" />
-          <ellipse class="hero-leaf" cx="142" cy="364" rx="18" ry="10" transform="rotate(-4 142 364)" />
-          <circle class="hero-berry" cx="110" cy="134" r="4" />
-          <circle class="hero-berry" cx="124" cy="244" r="4.5" />
-          <circle class="hero-berry" cx="134" cy="326" r="4" />
-        </svg>
+        <div class="hero-frame">
+          <svg class="hero-wreath" viewBox="0 0 780 560" role="presentation" aria-hidden="true">
+            <g class="hero-wreath__branch hero-wreath__branch--left">
+              <path class="hero-branch" d="M394 64C284 74 194 148 152 244 110 340 128 448 230 506" />
+              <ellipse class="hero-leaf" cx="260" cy="124" rx="26" ry="14" transform="rotate(-20 260 124)" />
+              <ellipse class="hero-leaf" cx="214" cy="190" rx="28" ry="16" transform="rotate(-18 214 190)" />
+              <ellipse class="hero-leaf" cx="188" cy="262" rx="28" ry="16" transform="rotate(-10 188 262)" />
+              <ellipse class="hero-leaf" cx="186" cy="330" rx="26" ry="15" transform="rotate(-6 186 330)" />
+              <ellipse class="hero-leaf" cx="210" cy="402" rx="24" ry="14" transform="rotate(-4 210 402)" />
+              <ellipse class="hero-leaf" cx="254" cy="460" rx="22" ry="13" transform="rotate(-2 254 460)" />
+              <circle class="hero-berry" cx="238" cy="150" r="5" />
+              <circle class="hero-berry" cx="202" cy="236" r="5" />
+              <circle class="hero-berry" cx="196" cy="366" r="5" />
+            </g>
 
-        <figure class="hero-photo">
-          <img
-            src="photos/hero-placeholder.jpg"
-            alt="Иван и Дана"
-            fetchpriority="high"
-            decoding="async"
-          />
-        </figure>
+            <g class="hero-wreath__branch hero-wreath__branch--right">
+              <path class="hero-branch" d="M386 64C496 74 586 148 628 244 670 340 652 448 550 506" />
+              <ellipse class="hero-leaf" cx="520" cy="124" rx="26" ry="14" transform="rotate(20 520 124)" />
+              <ellipse class="hero-leaf" cx="566" cy="190" rx="28" ry="16" transform="rotate(18 566 190)" />
+              <ellipse class="hero-leaf" cx="592" cy="262" rx="28" ry="16" transform="rotate(10 592 262)" />
+              <ellipse class="hero-leaf" cx="594" cy="330" rx="26" ry="15" transform="rotate(6 594 330)" />
+              <ellipse class="hero-leaf" cx="570" cy="402" rx="24" ry="14" transform="rotate(4 570 402)" />
+              <ellipse class="hero-leaf" cx="526" cy="460" rx="22" ry="13" transform="rotate(2 526 460)" />
+              <circle class="hero-berry" cx="542" cy="150" r="5" />
+              <circle class="hero-berry" cx="578" cy="236" r="5" />
+              <circle class="hero-berry" cx="584" cy="366" r="5" />
+            </g>
 
-        <svg class="hero-ornament hero-ornament--right" viewBox="0 0 230 420" role="presentation" aria-hidden="true">
-          <path class="hero-branch" d="M36 38C108 90 142 156 152 222 164 304 140 362 102 404" />
-          <ellipse class="hero-leaf" cx="74" cy="94" rx="20" ry="11" transform="rotate(24 74 94)" />
-          <ellipse class="hero-leaf" cx="98" cy="152" rx="22" ry="12" transform="rotate(18 98 152)" />
-          <ellipse class="hero-leaf" cx="120" cy="208" rx="22" ry="12" transform="rotate(12 120 208)" />
-          <ellipse class="hero-leaf" cx="126" cy="260" rx="22" ry="12" transform="rotate(8 126 260)" />
-          <ellipse class="hero-leaf" cx="106" cy="318" rx="20" ry="11" transform="rotate(6 106 318)" />
-          <ellipse class="hero-leaf" cx="82" cy="364" rx="18" ry="10" transform="rotate(4 82 364)" />
-          <circle class="hero-berry" cx="114" cy="134" r="4" />
-          <circle class="hero-berry" cx="100" cy="244" r="4.5" />
-          <circle class="hero-berry" cx="90" cy="326" r="4" />
-        </svg>
+            <path class="hero-frame-outline" d="M180 102C198 78 240 58 312 52l156-12c62-5 112 16 146 52 40 42 54 106 52 178l-2 86c-1 66-26 116-78 144-30 16-65 24-114 26l-128 6c-74 3-136-34-168-102-22-48-30-104-22-180 6-60 28-112 56-148Z" />
+          </svg>
+
+          <figure class="hero-photo">
+            <img
+              src="photos/hero-placeholder.jpg"
+              alt="Иван и Дана"
+              fetchpriority="high"
+              decoding="async"
+            />
+          </figure>
+        </div>
       </div>
 
       <div class="hero-title" data-reveal>
