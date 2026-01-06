@@ -158,10 +158,11 @@ img {
   aspect-ratio: 780 / 560;
   padding: clamp(14px, 3vw, 28px);
   isolation: isolate;
-  --wreath-hole-w: 76%;
-  --wreath-hole-h: 74%;
-  --wreath-gap-x: calc((100% - var(--wreath-hole-w)) / 2);
-  --wreath-gap-y: calc((100% - var(--wreath-hole-h)) / 2);
+  --hole-cx: 50%;
+  --hole-cy: 50%;
+  --hole-w: 76%;
+  --hole-h: 74%;
+  --hole-r: 12%;
 }
 
 .hero-photo {
@@ -197,37 +198,14 @@ img {
   filter: drop-shadow(0 16px 34px rgba(31, 59, 64, 0.14));
   z-index: 1;
   mix-blend-mode: multiply;
-  -webkit-mask-image: linear-gradient(#000 0 0), linear-gradient(#000 0 0), linear-gradient(#000 0 0), linear-gradient(#000 0 0);
-  -webkit-mask-size:
-    100% var(--wreath-gap-y),
-    100% var(--wreath-gap-y),
-    var(--wreath-gap-x) var(--wreath-hole-h),
-    var(--wreath-gap-x) var(--wreath-hole-h);
-  -webkit-mask-position:
-    top,
-    bottom,
-    left center,
-    right center;
-  -webkit-mask-repeat: no-repeat;
-  -webkit-mask-composite: source-over, source-over, source-over, source-over;
-  mask-image: linear-gradient(#000 0 0), linear-gradient(#000 0 0), linear-gradient(#000 0 0), linear-gradient(#000 0 0);
-  mask-size:
-    100% var(--wreath-gap-y),
-    100% var(--wreath-gap-y),
-    var(--wreath-gap-x) var(--wreath-hole-h),
-    var(--wreath-gap-x) var(--wreath-hole-h);
-  mask-position:
-    top,
-    bottom,
-    left center,
-    right center;
-  mask-repeat: no-repeat;
-  mask-composite: add, add, add, add;
+  -webkit-mask: url(#hero-wreath-mask) no-repeat center / 100% 100%;
+  mask: url(#hero-wreath-mask) no-repeat center / 100% 100%;
+  mask-mode: luminance;
 }
 
 .hero-frame:not(:has(.hero-photo)) .hero-wreath {
-  -webkit-mask-image: none;
-  mask-image: none;
+  -webkit-mask: none;
+  mask: none;
 }
 
 .hero-wreath__branch {
@@ -262,6 +240,16 @@ img {
 .hero-berry {
   fill: color-mix(in srgb, var(--c-peach) 70%, var(--c-coral) 30%);
   opacity: 0.9;
+}
+
+.hero-wreath-mask__hole {
+  x: calc(var(--hole-cx) - (var(--hole-w) / 2));
+  y: calc(var(--hole-cy) - (var(--hole-h) / 2));
+  width: var(--hole-w);
+  height: var(--hole-h);
+  rx: var(--hole-r);
+  ry: var(--hole-r);
+  transition: x 160ms ease, y 160ms ease, width 160ms ease, height 160ms ease, rx 160ms ease, ry 160ms ease;
 }
 
 .hero-title {
@@ -401,8 +389,8 @@ img {
   }
 
   .hero-frame {
-    --wreath-hole-w: 84%;
-    --wreath-hole-h: 78%;
+    --hole-w: 84%;
+    --hole-h: 78%;
   }
 
   .hero-photo {
@@ -423,8 +411,8 @@ img {
   }
 
   .hero-frame {
-    --wreath-hole-w: 92%;
-    --wreath-hole-h: 86%;
+    --hole-w: 92%;
+    --hole-h: 86%;
   }
 
   .hero-photo {

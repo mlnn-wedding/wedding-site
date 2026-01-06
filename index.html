@@ -17,7 +17,22 @@
       <span class="hero-heart" aria-hidden="true">❤</span>
       <div class="hero-portrait" data-reveal>
         <div class="hero-frame">
-          <svg class="hero-wreath" viewBox="0 0 780 560" role="presentation" aria-hidden="true">
+          <svg class="hero-wreath" viewBox="0 0 780 560" role="presentation" aria-hidden="true" aria-label="Декоративный венок" mask="url(#hero-wreath-mask)">
+            <defs>
+              <mask id="hero-wreath-mask" maskUnits="objectBoundingBox">
+                <rect class="hero-wreath-mask__bg" x="0" y="0" width="100%" height="100%" fill="white" />
+                <rect
+                  class="hero-wreath-mask__hole"
+                  x="12%"
+                  y="13%"
+                  width="76%"
+                  height="74%"
+                  rx="12%"
+                  ry="12%"
+                  fill="black"
+                />
+              </mask>
+            </defs>
             <g class="hero-wreath__branch hero-wreath__branch--left">
               <path class="hero-branch" d="M394 64C284 74 194 148 152 244 110 340 128 448 230 506" />
               <ellipse class="hero-leaf" cx="260" cy="124" rx="26" ry="14" transform="rotate(-20 260 124)" />

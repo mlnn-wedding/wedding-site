@@ -11,6 +11,57 @@
   document.querySelectorAll('[data-reveal]').forEach(el => io.observe(el));
 })();
 
+// === Hero wreath masking: keep wreath around the photo only ===
+(() => {
+  const frame = document.querySelector('.hero-frame');
+  const photo = frame?.querySelector('.hero-photo');
+  const wreath = frame?.querySelector('.hero-wreath');
+  const photoImg = photo?.querySelector('img');
+  if (!frame || !photo || !wreath) return;
+
+  const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+
+  const updateMaskVars = () => {
+    const frameRect = frame.getBoundingClientRect();
+    const photoRect = photo.getBoundingClientRect();
+    if (!frameRect.width || !frameRect.height || !photoRect.width || !photoRect.height) return;
+
+    const cx = ((photoRect.left - frameRect.left) + (photoRect.width / 2)) / frameRect.width * 100;
+    const cy = ((photoRect.top - frameRect.top) + (photoRect.height / 2)) / frameRect.height * 100;
+    const w = (photoRect.width / frameRect.width) * 100;
+    const h = (photoRect.height / frameRect.height) * 100;
+
+    const computed = window.getComputedStyle(photo);
+    const radiusMatch = computed.borderRadius.match(/[\d.]+/);
+    const radiusPx = radiusMatch ? parseFloat(radiusMatch[0]) : 0;
+    const base = Math.max(1, Math.min(frameRect.width, frameRect.height));
+    const r = clamp((radiusPx / base) * 100, 4, 40);
+
+    frame.style.setProperty('--hole-cx', `${cx}%`);
+    frame.style.setProperty('--hole-cy', `${cy}%`);
+    frame.style.setProperty('--hole-w', `${w}%`);
+    frame.style.setProperty('--hole-h', `${h}%`);
+    frame.style.setProperty('--hole-r', `${r}%`);
+  };
+
+  let resizeRaf = null;
+  const handleResize = () => {
+    if (resizeRaf) return;
+    resizeRaf = window.requestAnimationFrame(() => {
+      resizeRaf = null;
+      updateMaskVars();
+    });
+  };
+
+  window.addEventListener('resize', handleResize, { passive: true });
+  window.addEventListener('load', updateMaskVars, { once: true });
+  if (photoImg && !photoImg.complete) {
+    photoImg.addEventListener('load', updateMaskVars, { once: true });
+  }
+
+  updateMaskVars();
+})();
+
 // === Placeholders for upcoming sections ===
 // Gallery slider (will be wired when gallery section added)
 window.Wedding = window.Wedding || {};

@@ -1,0 +1,12 @@
+{
+  "name": "wedding-site",
+  "version": "1.0.0",
+  "description": "Wedding landing page with automated wreath masking check",
+  "scripts": {
+    "check:wreath": "node visual-check.js"
+  },
+  "devDependencies": {
+    "playwright": "^1.43.1",
+    "pngjs": "^7.0.0"
+  }
+}
