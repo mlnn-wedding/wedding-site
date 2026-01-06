@@ -157,6 +157,7 @@ img {
   width: 100%;
   aspect-ratio: 780 / 560;
   padding: clamp(14px, 3vw, 28px);
+  isolation: isolate;
 }
 
 .hero-photo {
@@ -190,7 +191,8 @@ img {
   height: 100%;
   pointer-events: none;
   filter: drop-shadow(0 16px 34px rgba(31, 59, 64, 0.14));
-  z-index: 0;
+  z-index: 2;
+  mix-blend-mode: multiply;
 }
 
 .hero-wreath__branch {
@@ -198,7 +200,9 @@ img {
 }
 
 .hero-wreath__branch--right {
-  transform: none;
+  transform: scale(-1, 1) translate(-780px, 0);
+  transform-origin: center;
+  transform-box: fill-box;
 }
 
 .hero-frame-outline {
