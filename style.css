@@ -197,7 +197,7 @@ img {
   pointer-events: none;
   filter: drop-shadow(0 16px 34px rgba(31, 59, 64, 0.14));
   z-index: 1;
-  mix-blend-mode: multiply;
+  mix-blend-mode: normal;
   -webkit-mask: url(#hero-wreath-mask) no-repeat center / 100% 100%;
   mask: url(#hero-wreath-mask) no-repeat center / 100% 100%;
   mask-mode: luminance;
@@ -209,7 +209,7 @@ img {
 }
 
 .hero-wreath__branch {
-  opacity: 0.9;
+  opacity: 1;
 }
 
 .hero-wreath__branch--right {
@@ -228,18 +228,22 @@ img {
 
 .hero-branch {
   fill: none;
-  stroke: color-mix(in srgb, var(--c-deep) 50%, var(--c-teal) 30%, white 20%);
+  stroke: color-mix(in srgb, #3f6b48 70%, #7bbf7f 30%);
   stroke-width: 5;
   stroke-linecap: round;
+  filter: drop-shadow(0 10px 22px rgba(63, 107, 72, 0.18));
 }
 
 .hero-leaf {
-  fill: color-mix(in srgb, #c7d7ce 70%, white 30%);
+  fill: url(#hero-leaf-gradient);
+  stroke: color-mix(in srgb, #2f5d3a 50%, #8ec78c 50%);
+  stroke-width: 1.4;
+  filter: drop-shadow(0 6px 16px rgba(63, 107, 72, 0.18));
 }
 
 .hero-berry {
-  fill: color-mix(in srgb, var(--c-peach) 70%, var(--c-coral) 30%);
-  opacity: 0.9;
+  fill: url(#hero-leaf-glow);
+  opacity: 0.82;
 }
 
 .hero-wreath-mask__hole {
