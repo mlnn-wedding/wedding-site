@@ -159,6 +159,10 @@ img {
   aspect-ratio: 780 / 560;
   padding: clamp(14px, 3vw, 28px);
   isolation: isolate;
+  --hero-photo-width: min(74%, 640px);
+  --hero-photo-border: 8px;
+  --hero-ornament-gap: clamp(18px, 3vw, 34px);
+  --hero-ornament-size: clamp(120px, 18vw, 210px);
   --hole-cx: 50%;
   --hole-cy: 50%;
   --hole-w: 76%;
@@ -171,7 +175,6 @@ img {
   filter: drop-shadow(0 10px 22px rgba(31, 59, 64, 0.14));
   z-index: 1;
   animation: hero-ornament-float 7s ease-in-out infinite;
-  --twist: 0deg;
   --flip: 1;
 }
 
@@ -179,7 +182,6 @@ img {
   width: clamp(130px, 22vw, 220px);
   top: clamp(-30px, -6vw, -8px);
   left: clamp(6px, 4vw, 40px);
-  --twist: -6deg;
   animation-delay: -1s;
 }
 
@@ -187,7 +189,6 @@ img {
   width: clamp(130px, 22vw, 220px);
   top: clamp(-34px, -6vw, -10px);
   right: clamp(6px, 4vw, 40px);
-  --twist: 8deg;
   --flip: -1;
   animation-delay: -3s;
 }
@@ -196,28 +197,36 @@ img {
   position: relative;
   margin: 0;
   overflow: hidden;
-  width: min(74%, 640px);
+  width: var(--hero-photo-width);
   max-width: 100%;
   min-width: min(320px, 92vw);
   aspect-ratio: 16 / 11;
   border-radius: var(--hero-radius);
   box-shadow: 0 20px 50px rgba(31, 59, 64, 0.16);
-  border: 8px solid var(--hero-outline);
+  border: var(--hero-photo-border) solid var(--hero-outline);
   background: #fff;
   z-index: 2;
 }
 
 .hero-ornament-ring {
   position: absolute;
-  inset: clamp(-32px, -4vw, -12px);
-  z-index: 3;
+  top: 50%;
+  left: 50%;
+  width: calc(
+    var(--hero-photo-width) +
+    (var(--hero-photo-border) * 2) +
+    (var(--hero-ornament-gap) + (var(--hero-ornament-size) / 2)) * 2
+  );
+  aspect-ratio: 16 / 11;
+  transform: translate(-50%, -50%);
+  z-index: 1;
   pointer-events: none;
-  animation: hero-ornament-spin 18s linear infinite;
+  animation: hero-ornament-breathe 9s ease-in-out infinite;
 }
 
 .hero-ornament-ring .ring-ornament {
   position: absolute;
-  width: clamp(120px, 18vw, 210px);
+  width: var(--hero-ornament-size);
   opacity: 0.55;
   filter: drop-shadow(0 12px 26px rgba(31, 59, 64, 0.16));
 }
@@ -225,25 +234,25 @@ img {
 .ring-ornament--top {
   top: 0;
   left: 50%;
-  transform: translate(-50%, -30%) rotate(-8deg);
+  transform: translate(-50%, -50%);
 }
 
 .ring-ornament--right {
   top: 50%;
   right: 0;
-  transform: translate(28%, -50%) rotate(84deg);
+  transform: translate(50%, -50%) scaleX(-1);
 }
 
 .ring-ornament--bottom {
   bottom: 0;
   left: 50%;
-  transform: translate(-50%, 30%) rotate(172deg);
+  transform: translate(-50%, 50%) scaleY(-1);
 }
 
 .ring-ornament--left {
   top: 50%;
   left: 0;
-  transform: translate(-28%, -50%) rotate(-96deg);
+  transform: translate(-50%, -50%);
 }
 
 .hero-photo img {
@@ -362,19 +371,21 @@ img {
 
 @keyframes hero-ornament-float {
   0%, 100% {
-    transform: translate3d(0, 0, 0) rotate(var(--twist)) scaleX(var(--flip));
+    transform: translate3d(0, 0, 0) scaleX(var(--flip)) scale(1);
+    opacity: 0.45;
   }
   50% {
-    transform: translate3d(8px, -10px, 0) rotate(calc(var(--twist) + 4deg)) scaleX(var(--flip));
+    transform: translate3d(8px, -10px, 0) scaleX(var(--flip)) scale(1.04);
+    opacity: 0.6;
   }
 }
 
-@keyframes hero-ornament-spin {
-  0% {
-    transform: rotate(0deg);
+@keyframes hero-ornament-breathe {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(1);
   }
-  100% {
-    transform: rotate(360deg);
+  50% {
+    transform: translate3d(-6px, 6px, 0) scale(1.02);
   }
 }
 
