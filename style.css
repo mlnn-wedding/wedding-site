@@ -207,6 +207,45 @@ img {
   z-index: 2;
 }
 
+.hero-ornament-ring {
+  position: absolute;
+  inset: clamp(-32px, -4vw, -12px);
+  z-index: 3;
+  pointer-events: none;
+  animation: hero-ornament-spin 18s linear infinite;
+}
+
+.hero-ornament-ring .ring-ornament {
+  position: absolute;
+  width: clamp(120px, 18vw, 210px);
+  opacity: 0.55;
+  filter: drop-shadow(0 12px 26px rgba(31, 59, 64, 0.16));
+}
+
+.ring-ornament--top {
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -30%) rotate(-8deg);
+}
+
+.ring-ornament--right {
+  top: 50%;
+  right: 0;
+  transform: translate(28%, -50%) rotate(84deg);
+}
+
+.ring-ornament--bottom {
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 30%) rotate(172deg);
+}
+
+.ring-ornament--left {
+  top: 50%;
+  left: 0;
+  transform: translate(-28%, -50%) rotate(-96deg);
+}
+
 .hero-photo img {
   width: 100%;
   height: 100%;
@@ -330,6 +369,15 @@ img {
   }
 }
 
+@keyframes hero-ornament-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .hero-photo img {
     animation: none;
@@ -350,6 +398,10 @@ img {
   }
 
   .hero-ornament {
+    animation: none;
+  }
+
+  .hero-ornament-ring {
     animation: none;
   }
 }
@@ -373,6 +425,10 @@ img {
   .hero-photo {
     width: min(78%, 560px);
     border-radius: clamp(42px, 14vw, 110px);
+  }
+
+  .hero-ornament-ring {
+    inset: clamp(-24px, -4vw, -10px);
   }
 }
 
@@ -398,6 +454,10 @@ img {
     min-width: 74vw;
     border-radius: clamp(36px, 18vw, 90px);
     border-width: 7px;
+  }
+
+  .hero-ornament-ring .ring-ornament {
+    width: clamp(96px, 24vw, 160px);
   }
 
   .hero-date::before,
