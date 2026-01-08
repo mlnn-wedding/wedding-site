@@ -146,23 +146,32 @@ img {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: min(860px, 92vw, 92vmin);
+  width: min(100%, 900px);
+  max-width: 100%;
+  overflow: visible;
   --hero-radius: clamp(46px, 10vw, 120px);
   --hero-outline: color-mix(in srgb, #fdf8f3 82%, var(--c-peach) 18%);
 }
 
-.hero-frame {
+.hero-media {
   position: relative;
   display: grid;
   place-items: center;
-  width: 100%;
+  width: var(--hero-photo-width);
+  max-width: 100%;
   aspect-ratio: 780 / 560;
-  padding: clamp(16px, 3vmin, 28px);
+  padding: clamp(16px, 3vw, 28px);
   isolation: isolate;
-  --hero-photo-width: min(72%, 58vmin, 620px);
-  --hero-photo-border: clamp(6px, 1vmin, 8px);
-  --hero-ornament-gap: clamp(14px, 2.4vmin, 28px);
-  --hero-ornament-size: clamp(110px, 16vmin, 190px);
+  overflow: visible;
+  --hero-photo-width: clamp(260px, 72vw, 680px);
+  --hero-photo-border: clamp(6px, 1.6vw, 8px);
+  --hero-ornament-gap: clamp(14px, 3vw, 28px);
+  --hero-ornament-size: clamp(110px, 18vw, 190px);
+  --hero-ornament-width: calc(
+    var(--hero-photo-width) +
+    (var(--hero-photo-border) * 2) +
+    (var(--hero-ornament-gap) + (var(--hero-ornament-size) / 2)) * 2
+  );
   --hole-cx: 50%;
   --hole-cy: 50%;
   --hole-w: 76%;
@@ -171,24 +180,26 @@ img {
 }
 
 .hero-ornament {
+  position: absolute;
   opacity: 0.5;
   filter: drop-shadow(0 10px 22px rgba(31, 59, 64, 0.14));
-  z-index: 1;
+  z-index: 4;
   animation: hero-ornament-float 7s ease-in-out infinite;
   --flip: 1;
+  pointer-events: none;
 }
 
 .hero-ornament--left {
   width: clamp(120px, 20vmin, 210px);
-  top: clamp(-16px, -2vmin, 4px);
-  left: clamp(18px, 6vmin, 46px);
+  top: clamp(-18px, -2vw, 6px);
+  left: clamp(10px, 4vw, 46px);
   animation-delay: -1s;
 }
 
 .hero-ornament--right {
   width: clamp(120px, 20vmin, 210px);
-  top: clamp(-18px, -2vmin, 4px);
-  right: clamp(18px, 6vmin, 46px);
+  top: clamp(-18px, -2vw, 6px);
+  right: clamp(10px, 4vw, 46px);
   --flip: -1;
   animation-delay: -3s;
 }
@@ -197,9 +208,8 @@ img {
   position: relative;
   margin: 0;
   overflow: hidden;
-  width: var(--hero-photo-width);
+  width: 100%;
   max-width: 100%;
-  min-width: min(280px, 88vw);
   aspect-ratio: 16 / 11;
   border-radius: var(--hero-radius);
   box-shadow: 0 20px 50px rgba(31, 59, 64, 0.16);
@@ -212,14 +222,11 @@ img {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: calc(
-    var(--hero-photo-width) +
-    (var(--hero-photo-border) * 2) +
-    (var(--hero-ornament-gap) + (var(--hero-ornament-size) / 2)) * 2
-  );
+  width: var(--hero-ornament-width);
   aspect-ratio: 16 / 11;
   transform: translate(-50%, -50%);
-  z-index: 1;
+  max-width: calc(100vw - 32px);
+  z-index: 3;
   pointer-events: none;
   animation: hero-ornament-breathe 9s ease-in-out infinite;
 }
@@ -415,6 +422,7 @@ img {
   .hero-ornament-ring {
     animation: none;
   }
+
 }
 
 
@@ -425,21 +433,18 @@ img {
   }
 
   .hero-portrait {
-    width: min(780px, 92vw, 90vmin);
+    width: min(100%, 820px);
+    max-width: 100%;
   }
 
-  .hero-frame {
+  .hero-media {
     --hole-w: 84%;
     --hole-h: 78%;
+    --hero-photo-width: clamp(240px, 78vw, 600px);
   }
 
   .hero-photo {
-    width: min(74%, 56vmin, 560px);
     border-radius: clamp(42px, 14vw, 110px);
-  }
-
-  .hero-ornament-ring {
-    inset: clamp(-24px, -4vw, -10px);
   }
 }
 
@@ -455,25 +460,47 @@ img {
     margin-bottom: -4px;
   }
 
-  .hero-frame {
+  .hero-media {
     --hole-w: 92%;
     --hole-h: 86%;
+    --hero-photo-width: clamp(240px, 86vw, 560px);
+    --hero-ornament-gap: clamp(12px, 4vw, 22px);
+    --hero-ornament-size: clamp(96px, 22vw, 150px);
   }
 
   .hero-photo {
-    width: min(76%, 52vmin, 520px);
-    min-width: 72vw;
     border-radius: clamp(36px, 18vw, 90px);
     border-width: 7px;
-  }
-
-  .hero-ornament-ring .ring-ornament {
-    width: clamp(92px, 22vmin, 150px);
   }
 
   .hero-date::before,
   .hero-date::after {
     width: clamp(32px, 18vw, 80px);
+  }
+}
+
+@media (max-width: 560px) {
+  .hero {
+    padding-top: 32px;
+    padding-bottom: 64px;
+  }
+
+  .hero-media {
+    --hero-ornament-gap: clamp(10px, 4vw, 18px);
+    --hero-ornament-size: clamp(86px, 24vw, 132px);
+  }
+
+  .hero-photo {
+    border-radius: clamp(32px, 20vw, 80px);
+    border-width: 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-media {
+    --hero-photo-width: clamp(240px, 90vw, 520px);
+    --hero-ornament-gap: 10px;
+    --hero-ornament-size: 90px;
   }
 }
 
