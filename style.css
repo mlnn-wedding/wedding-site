@@ -212,12 +212,6 @@ img {
   opacity: 1;
 }
 
-.hero-wreath__branch--right {
-  transform: scale(-1, 1) translate(-780px, 0);
-  transform-origin: center;
-  transform-box: fill-box;
-}
-
 .hero-frame-outline {
   fill: none;
   stroke: var(--hero-outline);
@@ -228,22 +222,24 @@ img {
 
 .hero-branch {
   fill: none;
-  stroke: color-mix(in srgb, #3f6b48 70%, #7bbf7f 30%);
-  stroke-width: 5;
+  stroke: #aeb6ad;
+  stroke-width: 4.2;
   stroke-linecap: round;
-  filter: drop-shadow(0 10px 22px rgba(63, 107, 72, 0.18));
+  filter: drop-shadow(0 10px 18px rgba(122, 130, 124, 0.25));
 }
 
 .hero-leaf {
   fill: url(#hero-leaf-gradient);
-  stroke: color-mix(in srgb, #2f5d3a 50%, #8ec78c 50%);
-  stroke-width: 1.4;
-  filter: drop-shadow(0 6px 16px rgba(63, 107, 72, 0.18));
+  stroke: url(#hero-leaf-stroke);
+  stroke-width: 1.1;
+  filter: drop-shadow(0 6px 14px rgba(122, 130, 124, 0.18));
 }
 
 .hero-berry {
-  fill: url(#hero-leaf-glow);
-  opacity: 0.82;
+  fill: url(#hero-berry-glow);
+  stroke: #cbb7a6;
+  stroke-width: 0.6;
+  opacity: 0.86;
 }
 
 .hero-wreath-mask__hole {
