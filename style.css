@@ -97,8 +97,8 @@ img {
 /* ====== HERO ====== */
 
 .hero {
-  padding-top: clamp(64px, 13vh, 160px);
-  padding-bottom: clamp(80px, 16vh, 220px);
+  padding-top: clamp(52px, 12vh, 150px);
+  padding-bottom: clamp(68px, 15vh, 190px);
   background: radial-gradient(circle at 50% 18%, rgba(250, 196, 160, 0.2), transparent 28%),
     radial-gradient(circle at 50% 20%, rgba(156, 240, 234, 0.14), transparent 36%),
     var(--c-soft);
@@ -146,7 +146,7 @@ img {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: min(880px, 94vw);
+  width: min(860px, 92vw, 92vmin);
   --hero-radius: clamp(46px, 10vw, 120px);
   --hero-outline: color-mix(in srgb, #fdf8f3 82%, var(--c-peach) 18%);
 }
@@ -157,12 +157,12 @@ img {
   place-items: center;
   width: 100%;
   aspect-ratio: 780 / 560;
-  padding: clamp(14px, 3vw, 28px);
+  padding: clamp(16px, 3vmin, 28px);
   isolation: isolate;
-  --hero-photo-width: min(74%, 640px);
-  --hero-photo-border: 8px;
-  --hero-ornament-gap: clamp(18px, 3vw, 34px);
-  --hero-ornament-size: clamp(120px, 18vw, 210px);
+  --hero-photo-width: min(72%, 58vmin, 620px);
+  --hero-photo-border: clamp(6px, 1vmin, 8px);
+  --hero-ornament-gap: clamp(14px, 2.4vmin, 28px);
+  --hero-ornament-size: clamp(110px, 16vmin, 190px);
   --hole-cx: 50%;
   --hole-cy: 50%;
   --hole-w: 76%;
@@ -179,16 +179,16 @@ img {
 }
 
 .hero-ornament--left {
-  width: clamp(130px, 22vw, 220px);
-  top: clamp(-30px, -6vw, -8px);
-  left: clamp(6px, 4vw, 40px);
+  width: clamp(120px, 20vmin, 210px);
+  top: clamp(-16px, -2vmin, 4px);
+  left: clamp(18px, 6vmin, 46px);
   animation-delay: -1s;
 }
 
 .hero-ornament--right {
-  width: clamp(130px, 22vw, 220px);
-  top: clamp(-34px, -6vw, -10px);
-  right: clamp(6px, 4vw, 40px);
+  width: clamp(120px, 20vmin, 210px);
+  top: clamp(-18px, -2vmin, 4px);
+  right: clamp(18px, 6vmin, 46px);
   --flip: -1;
   animation-delay: -3s;
 }
@@ -199,7 +199,7 @@ img {
   overflow: hidden;
   width: var(--hero-photo-width);
   max-width: 100%;
-  min-width: min(320px, 92vw);
+  min-width: min(280px, 88vw);
   aspect-ratio: 16 / 11;
   border-radius: var(--hero-radius);
   box-shadow: 0 20px 50px rgba(31, 59, 64, 0.16);
@@ -420,12 +420,12 @@ img {
 
 @media (max-width: 920px) {
   .hero {
-    padding-top: 56px;
-    padding-bottom: 120px;
+    padding-top: 48px;
+    padding-bottom: 110px;
   }
 
   .hero-portrait {
-    width: min(820px, 96vw);
+    width: min(780px, 92vw, 90vmin);
   }
 
   .hero-frame {
@@ -434,7 +434,7 @@ img {
   }
 
   .hero-photo {
-    width: min(78%, 560px);
+    width: min(74%, 56vmin, 560px);
     border-radius: clamp(42px, 14vw, 110px);
   }
 
@@ -445,8 +445,8 @@ img {
 
 @media (max-width: 640px) {
   .hero {
-    padding-top: 46px;
-    padding-bottom: 88px;
+    padding-top: 42px;
+    padding-bottom: 78px;
   }
 
   .hero-heart {
@@ -461,14 +461,14 @@ img {
   }
 
   .hero-photo {
-    width: min(82%, 520px);
-    min-width: 74vw;
+    width: min(76%, 52vmin, 520px);
+    min-width: 72vw;
     border-radius: clamp(36px, 18vw, 90px);
     border-width: 7px;
   }
 
   .hero-ornament-ring .ring-ornament {
-    width: clamp(96px, 24vw, 160px);
+    width: clamp(92px, 22vmin, 150px);
   }
 
   .hero-date::before,
