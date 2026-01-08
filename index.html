@@ -17,78 +17,22 @@
       <span class="hero-heart" aria-hidden="true">❤</span>
       <div class="hero-portrait" data-reveal>
         <div class="hero-frame">
-          <svg class="hero-wreath" viewBox="0 0 780 560" role="presentation" aria-hidden="true" aria-label="Декоративный венок" mask="url(#hero-wreath-mask)">
-            <defs>
-              <linearGradient id="hero-leaf-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stop-color="#e4e9e2" />
-                <stop offset="45%" stop-color="#cdd6cc" />
-                <stop offset="100%" stop-color="#b4c0b3" />
-              </linearGradient>
-              <linearGradient id="hero-leaf-stroke" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#c6d1c4" />
-                <stop offset="100%" stop-color="#8f9b91" />
-              </linearGradient>
-              <radialGradient id="hero-berry-glow" cx="50%" cy="45%" r="70%">
-                <stop offset="0%" stop-color="#f3e6da" stop-opacity="0.95" />
-                <stop offset="55%" stop-color="#d9c6b7" stop-opacity="0.85" />
-                <stop offset="100%" stop-color="#bfa892" stop-opacity="0.9" />
-              </radialGradient>
-              <mask id="hero-wreath-mask" maskUnits="objectBoundingBox">
-                <rect class="hero-wreath-mask__bg" x="0" y="0" width="100%" height="100%" fill="white" />
-                <rect
-                  class="hero-wreath-mask__hole"
-                  x="12%"
-                  y="13%"
-                  width="76%"
-                  height="74%"
-                  rx="12%"
-                  ry="12%"
-                  fill="black"
-                />
-              </mask>
-            </defs>
-            <g class="hero-wreath__branch hero-wreath__branch--left">
-              <path class="hero-branch" d="M388 76C300 84 220 150 178 238 134 330 156 430 254 496" />
-              <ellipse class="hero-leaf" cx="308" cy="106" rx="22" ry="10" transform="rotate(-28 308 106)" />
-              <ellipse class="hero-leaf" cx="274" cy="126" rx="24" ry="11" transform="rotate(-24 274 126)" />
-              <ellipse class="hero-leaf" cx="244" cy="156" rx="22" ry="11" transform="rotate(-22 244 156)" />
-              <ellipse class="hero-leaf" cx="214" cy="196" rx="23" ry="12" transform="rotate(-16 214 196)" />
-              <ellipse class="hero-leaf" cx="196" cy="238" rx="23" ry="12" transform="rotate(-12 196 238)" />
-              <ellipse class="hero-leaf" cx="186" cy="278" rx="22" ry="12" transform="rotate(-8 186 278)" />
-              <ellipse class="hero-leaf" cx="184" cy="320" rx="22" ry="12" transform="rotate(-6 184 320)" />
-              <ellipse class="hero-leaf" cx="194" cy="362" rx="22" ry="11" transform="rotate(-4 194 362)" />
-              <ellipse class="hero-leaf" cx="214" cy="404" rx="21" ry="11" transform="rotate(-3 214 404)" />
-              <ellipse class="hero-leaf" cx="242" cy="446" rx="20" ry="10" transform="rotate(-2 242 446)" />
-              <ellipse class="hero-leaf" cx="276" cy="478" rx="19" ry="10" transform="rotate(-2 276 478)" />
-              <circle class="hero-berry" cx="258" cy="144" r="3" />
-              <circle class="hero-berry" cx="222" cy="214" r="3" />
-              <circle class="hero-berry" cx="202" cy="258" r="3" />
-              <circle class="hero-berry" cx="198" cy="346" r="3" />
-              <circle class="hero-berry" cx="232" cy="430" r="3" />
-            </g>
-
-            <g class="hero-wreath__branch hero-wreath__branch--right">
-              <path class="hero-branch" d="M392 76C480 84 560 150 602 238 646 330 624 430 526 496" />
-              <ellipse class="hero-leaf" cx="472" cy="106" rx="22" ry="10" transform="rotate(28 472 106)" />
-              <ellipse class="hero-leaf" cx="506" cy="126" rx="24" ry="11" transform="rotate(24 506 126)" />
-              <ellipse class="hero-leaf" cx="536" cy="156" rx="22" ry="11" transform="rotate(22 536 156)" />
-              <ellipse class="hero-leaf" cx="566" cy="196" rx="23" ry="12" transform="rotate(16 566 196)" />
-              <ellipse class="hero-leaf" cx="584" cy="238" rx="23" ry="12" transform="rotate(12 584 238)" />
-              <ellipse class="hero-leaf" cx="594" cy="278" rx="22" ry="12" transform="rotate(8 594 278)" />
-              <ellipse class="hero-leaf" cx="596" cy="320" rx="22" ry="12" transform="rotate(6 596 320)" />
-              <ellipse class="hero-leaf" cx="586" cy="362" rx="22" ry="11" transform="rotate(4 586 362)" />
-              <ellipse class="hero-leaf" cx="566" cy="404" rx="21" ry="11" transform="rotate(3 566 404)" />
-              <ellipse class="hero-leaf" cx="538" cy="446" rx="20" ry="10" transform="rotate(2 538 446)" />
-              <ellipse class="hero-leaf" cx="504" cy="478" rx="19" ry="10" transform="rotate(2 504 478)" />
-              <circle class="hero-berry" cx="522" cy="144" r="3" />
-              <circle class="hero-berry" cx="558" cy="214" r="3" />
-              <circle class="hero-berry" cx="578" cy="258" r="3" />
-              <circle class="hero-berry" cx="582" cy="346" r="3" />
-              <circle class="hero-berry" cx="548" cy="430" r="3" />
-            </g>
-
-            <path class="hero-frame-outline" d="M180 102C198 78 240 58 312 52l156-12c62-5 112 16 146 52 40 42 54 106 52 178l-2 86c-1 66-26 116-78 144-30 16-65 24-114 26l-128 6c-74 3-136-34-168-102-22-48-30-104-22-180 6-60 28-112 56-148Z" />
-          </svg>
+          <div class="twig-ornament hero-ornament hero-ornament--left" aria-hidden="true">
+            <svg viewBox="0 0 160 120" role="presentation">
+              <path class="twig" d="M12 108 Q78 26 150 32" />
+              <circle class="bud" cx="36" cy="74" r="6" />
+              <circle class="bud" cx="96" cy="52" r="7" />
+              <circle class="bud" cx="130" cy="38" r="5" />
+            </svg>
+          </div>
+          <div class="twig-ornament hero-ornament hero-ornament--right" aria-hidden="true">
+            <svg viewBox="0 0 160 120" role="presentation">
+              <path class="twig" d="M10 108 Q82 20 150 28" />
+              <circle class="bud" cx="34" cy="72" r="6" />
+              <circle class="bud" cx="92" cy="50" r="7" />
+              <circle class="bud" cx="126" cy="36" r="5" />
+            </svg>
+          </div>
 
           <figure class="hero-photo">
             <img
