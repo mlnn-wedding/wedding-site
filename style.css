@@ -112,20 +112,24 @@ img {
 
 .hero-bokeh-layer {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 35%;
   overflow: hidden;
   z-index: 0;
   pointer-events: none;
+  mix-blend-mode: screen;
 }
 
 .hero-bokeh-blob {
   position: absolute;
   border-radius: 50%;
   background: var(--blob-color, rgba(101, 182, 191, 0.6));
-  filter: blur(var(--blur, 18px));
-  opacity: var(--opacity, 0.35);
+  filter: blur(var(--blur, 32px));
+  opacity: var(--opacity, 0.2);
   transform: translate3d(var(--parallax-x, 0px), var(--parallax-y, 0px), 0) scale(var(--scale, 1));
-  animation: hero-bokeh-drift var(--duration, 20s) ease-in-out infinite;
+  animation: hero-bokeh-drift var(--duration, 48s) ease-in-out infinite;
   animation-delay: var(--delay, 0s);
   will-change: transform;
 }
@@ -477,6 +481,10 @@ img {
     padding-bottom: 110px;
   }
 
+  .hero-bokeh-layer {
+    bottom: 52%;
+  }
+
   .hero-portrait {
     width: min(100%, 820px);
     max-width: 100%;
@@ -497,6 +505,10 @@ img {
   .hero {
     padding-top: 42px;
     padding-bottom: 78px;
+  }
+
+  .hero-bokeh-layer {
+    bottom: 58%;
   }
 
   .hero-heart {
