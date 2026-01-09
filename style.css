@@ -105,6 +105,46 @@ img {
   overflow: hidden;
 }
 
+.hero-bokeh-host {
+  position: relative;
+  isolation: isolate;
+}
+
+.hero-bokeh-layer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.hero-bokeh-blob {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--blob-color, rgba(101, 182, 191, 0.6));
+  filter: blur(var(--blur, 18px));
+  opacity: var(--opacity, 0.35);
+  transform: translate3d(var(--parallax-x, 0px), var(--parallax-y, 0px), 0) scale(var(--scale, 1));
+  animation: hero-bokeh-drift var(--duration, 20s) ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+  will-change: transform;
+}
+
+@keyframes hero-bokeh-drift {
+  0%, 100% {
+    transform: translate3d(var(--parallax-x, 0px), var(--parallax-y, 0px), 0) scale(var(--scale, 1));
+    opacity: var(--opacity, 0.35);
+  }
+  50% {
+    transform: translate3d(
+      calc(var(--parallax-x, 0px) + var(--drift-x, 0px)),
+      calc(var(--parallax-y, 0px) + var(--drift-y, 0px)),
+      0
+    ) scale(calc(var(--scale, 1) + var(--drift-scale, 0.04)));
+    opacity: var(--opacity-peak, 0.55);
+  }
+}
+
 .hero::before {
   content: "";
   position: absolute;
@@ -421,6 +461,11 @@ img {
 
   .corner-ornament {
     animation: none;
+  }
+
+  .hero-bokeh-blob {
+    animation: none;
+    transform: translate3d(0, 0, 0) scale(var(--scale, 1));
   }
 
 }

@@ -62,6 +62,220 @@
   updateMaskVars();
 })();
 
+// === Hero bokeh blobs (twig-like drift + parallax) ===
+(() => {
+  const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const hero = (() => {
+    const directHeader = document.querySelector('header');
+    if (directHeader) return directHeader;
+    const main = document.querySelector('main');
+    const primarySections = Array.from(main ? main.querySelectorAll('section') : document.querySelectorAll('section'));
+    const viewportHeight = window.innerHeight || 800;
+    let best = null;
+    let bestScore = -Infinity;
+    const candidates = primarySections.length ? primarySections : Array.from(document.body.children);
+    candidates.forEach((el) => {
+      if (!(el instanceof HTMLElement)) return;
+      const rect = el.getBoundingClientRect();
+      if (!rect.height) return;
+      if (rect.top > viewportHeight) return;
+      const score = rect.height - Math.abs(rect.top);
+      if (score > bestScore) {
+        best = el;
+        bestScore = score;
+      }
+    });
+    return best;
+  })();
+
+  if (!hero) return;
+
+  hero.classList.add('hero-bokeh-host');
+  const layer = document.createElement('div');
+  layer.className = 'hero-bokeh-layer';
+  layer.setAttribute('aria-hidden', 'true');
+  hero.prepend(layer);
+
+  const colorProbe = document.createElement('span');
+  colorProbe.style.position = 'absolute';
+  colorProbe.style.opacity = '0';
+  colorProbe.style.pointerEvents = 'none';
+  document.body.appendChild(colorProbe);
+
+  const parseColor = (value) => {
+    if (!value) return null;
+    colorProbe.style.color = value;
+    const computed = getComputedStyle(colorProbe).color;
+    const match = computed.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/i);
+    if (!match) return null;
+    return {
+      r: Number(match[1]),
+      g: Number(match[2]),
+      b: Number(match[3]),
+    };
+  };
+
+  const mixColors = (c1, c2, mix) => ({
+    r: Math.round(c1.r + (c2.r - c1.r) * mix),
+    g: Math.round(c1.g + (c2.g - c1.g) * mix),
+    b: Math.round(c1.b + (c2.b - c1.b) * mix),
+  });
+
+  const rootStyles = getComputedStyle(document.documentElement);
+  const paletteVars = ['--c-teal', '--c-aqua', '--c-peach', '--c-coral', '--c-lime', '--c-deep'];
+  const palette = paletteVars
+    .map((name) => parseColor(rootStyles.getPropertyValue(name).trim()))
+    .filter(Boolean);
+
+  const softFallback = parseColor(rootStyles.getPropertyValue('--c-soft').trim())
+    || parseColor(getComputedStyle(document.body).backgroundColor)
+    || { r: 253, g: 248, b: 243 };
+
+  if (palette.length < 3) {
+    palette.push(softFallback, mixColors(softFallback, { r: 101, g: 182, b: 191 }, 0.4));
+  }
+
+  const pickColor = () => {
+    const base = palette[Math.floor(Math.random() * palette.length)];
+    const mix = 0.18 + Math.random() * 0.36;
+    const tinted = mixColors(base, softFallback, mix);
+    return `rgb(${tinted.r} ${tinted.g} ${tinted.b})`;
+  };
+
+  const rand = (min, max) => Math.random() * (max - min) + min;
+  const blobCount = Math.floor(rand(8, 15));
+
+  for (let i = 0; i < blobCount; i += 1) {
+    const blob = document.createElement('div');
+    blob.className = 'hero-bokeh-blob';
+    const size = rand(140, 360);
+    const blur = rand(10, 36);
+    const opacity = rand(0.18, 0.42);
+    const opacityPeak = Math.min(opacity + rand(0.08, 0.18), 0.6);
+    const driftX = rand(-18, 18);
+    const driftY = rand(-18, 18);
+    const driftScale = rand(-0.05, 0.08);
+    const duration = rand(12, 30);
+    const delay = rand(-8, 0);
+    const depth = rand(0.35, 1);
+
+    blob.style.setProperty('--size', `${size}px`);
+    blob.style.setProperty('--blur', `${blur}px`);
+    blob.style.setProperty('--opacity', opacity.toFixed(2));
+    blob.style.setProperty('--opacity-peak', opacityPeak.toFixed(2));
+    blob.style.setProperty('--drift-x', `${driftX}px`);
+    blob.style.setProperty('--drift-y', `${driftY}px`);
+    blob.style.setProperty('--drift-scale', driftScale.toFixed(3));
+    blob.style.setProperty('--duration', `${duration.toFixed(1)}s`);
+    blob.style.setProperty('--delay', `${delay.toFixed(1)}s`);
+    blob.style.setProperty('--scale', rand(0.9, 1.08).toFixed(2));
+    blob.style.setProperty('--blob-color', pickColor());
+    blob.style.left = `${rand(-10, 90).toFixed(1)}%`;
+    blob.style.top = `${rand(-10, 80).toFixed(1)}%`;
+    blob.style.width = 'var(--size)';
+    blob.style.height = 'var(--size)';
+    blob.dataset.depth = depth.toFixed(2);
+    layer.appendChild(blob);
+  }
+
+  colorProbe.remove();
+
+  if (motionQuery.matches) return;
+
+  const blobs = Array.from(layer.querySelectorAll('.hero-bokeh-blob'));
+  const bounds = { left: 0, top: 0, width: 1, height: 1 };
+  const updateBounds = () => {
+    const rect = hero.getBoundingClientRect();
+    bounds.left = rect.left;
+    bounds.top = rect.top;
+    bounds.width = rect.width || 1;
+    bounds.height = rect.height || 1;
+  };
+  updateBounds();
+
+  let rafId = null;
+  let latest = { x: 0, y: 0 };
+
+  const applyParallax = () => {
+    rafId = null;
+    const maxShift = 18;
+    const minShift = 6;
+    blobs.forEach((blob) => {
+      const depth = Number(blob.dataset.depth) || 0.6;
+      const amplitude = minShift + (maxShift - minShift) * depth;
+      blob.style.setProperty('--parallax-x', `${latest.x * amplitude}px`);
+      blob.style.setProperty('--parallax-y', `${latest.y * amplitude}px`);
+    });
+  };
+
+  const scheduleParallax = () => {
+    if (rafId) return;
+    rafId = requestAnimationFrame(applyParallax);
+  };
+
+  const handlePointer = (clientX, clientY) => {
+    const normX = ((clientX - bounds.left) / bounds.width) - 0.5;
+    const normY = ((clientY - bounds.top) / bounds.height) - 0.5;
+    latest = {
+      x: Math.max(-1, Math.min(1, normX * 2)),
+      y: Math.max(-1, Math.min(1, normY * 2)),
+    };
+    scheduleParallax();
+  };
+
+  const handleMouseMove = (event) => {
+    handlePointer(event.clientX, event.clientY);
+  };
+
+  const handleMouseLeave = () => {
+    latest = { x: 0, y: 0 };
+    scheduleParallax();
+  };
+
+  const handleOrientation = (event) => {
+    if (typeof event.beta !== 'number' || typeof event.gamma !== 'number') return;
+    const x = Math.max(-1, Math.min(1, event.gamma / 30));
+    const y = Math.max(-1, Math.min(1, event.beta / 30));
+    latest = { x, y };
+    scheduleParallax();
+  };
+
+  const handleResize = () => {
+    updateBounds();
+    scheduleParallax();
+  };
+
+  hero.addEventListener('mousemove', handleMouseMove, { passive: true });
+  hero.addEventListener('mouseleave', handleMouseLeave, { passive: true });
+  window.addEventListener('resize', handleResize, { passive: true });
+  window.addEventListener('orientationchange', handleResize, { passive: true });
+
+  if ('DeviceOrientationEvent' in window) {
+    if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+      const requestOnTouch = () => {
+        DeviceOrientationEvent.requestPermission().then((state) => {
+          if (state === 'granted') {
+            window.addEventListener('deviceorientation', handleOrientation, { passive: true });
+          }
+        }).catch(() => {});
+        window.removeEventListener('touchend', requestOnTouch);
+      };
+      window.addEventListener('touchend', requestOnTouch, { passive: true });
+    } else {
+      window.addEventListener('deviceorientation', handleOrientation, { passive: true });
+    }
+  }
+
+  motionQuery.addEventListener('change', (event) => {
+    if (event.matches) {
+      blobs.forEach((blob) => {
+        blob.style.setProperty('--parallax-x', '0px');
+        blob.style.setProperty('--parallax-y', '0px');
+      });
+    }
+  });
+})();
+
 // === Placeholders for upcoming sections ===
 // Gallery slider (will be wired when gallery section added)
 window.Wedding = window.Wedding || {};
