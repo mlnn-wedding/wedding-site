@@ -1620,7 +1620,8 @@ img {
   gap: 24px;
   position: relative;
   overflow: hidden;
-  width: min(860px, 100%);
+  width: calc(100% - 32px);
+  max-width: 860px;
   margin-inline: auto;
 }
 
@@ -1865,7 +1866,8 @@ img {
   gap: clamp(18px, 3vw, 28px);
   justify-items: center;
   text-align: center;
-  width: min(860px, 100%);
+  width: calc(100% - 32px);
+  max-width: 860px;
   margin-inline: auto;
   position: relative;
   overflow: hidden;
