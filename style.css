@@ -1600,6 +1600,7 @@ img {
 .rsvp,
 .chat {
   margin-block: clamp(20px, 6vw, 48px);
+  padding-inline: 24px;
 }
 
 @media (max-width: 600px) {
@@ -1859,6 +1860,7 @@ img {
   border-radius: 30px;
   box-shadow: 0 24px 60px rgba(31, 59, 64, 0.12);
   padding: clamp(28px, 6vw, 64px);
+  padding-inline: 24px;
   display: grid;
   gap: clamp(18px, 3vw, 28px);
   justify-items: center;
