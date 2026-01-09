@@ -152,6 +152,7 @@ img {
   width: min(100%, 900px);
   max-width: 100%;
   overflow: visible;
+  margin-inline: auto;
   --hero-radius: clamp(46px, 10vw, 120px);
   --hero-outline: color-mix(in srgb, #fdf8f3 82%, var(--c-peach) 18%);
 }
@@ -273,6 +274,9 @@ img {
 .hero-title {
   display: grid;
   gap: clamp(10px, 1.8vw, 16px);
+  justify-items: center;
+  margin-inline: auto;
+  text-align: center;
 }
 
 .hero-names {
