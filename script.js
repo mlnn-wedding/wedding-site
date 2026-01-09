@@ -122,7 +122,7 @@
   });
 
   const rootStyles = getComputedStyle(document.documentElement);
-  const paletteVars = ['--c-teal', '--c-aqua', '--c-peach', '--c-coral', '--c-lime', '--c-deep'];
+  const paletteVars = ['--c-teal', '--c-aqua', '--c-peach', '--c-coral', '--c-lime'];
   const palette = paletteVars
     .map((name) => parseColor(rootStyles.getPropertyValue(name).trim()))
     .filter(Boolean);
@@ -143,21 +143,25 @@
   };
 
   const rand = (min, max) => Math.random() * (max - min) + min;
-  const blobCount = Math.floor(rand(8, 15));
+  const isSmallScreen = window.matchMedia('(max-width: 520px)').matches;
+  const blobConfigs = [
+    { left: '8%', top: '-6%', depth: 0.55 },
+    { left: '62%', top: '6%', depth: 0.75 },
+    { left: '32%', top: '18%', depth: 0.4 },
+  ];
 
-  for (let i = 0; i < blobCount; i += 1) {
+  blobConfigs.forEach(({ left, top, depth }) => {
     const blob = document.createElement('div');
     blob.className = 'hero-bokeh-blob';
-    const size = rand(140, 360);
-    const blur = rand(10, 36);
-    const opacity = rand(0.18, 0.42);
-    const opacityPeak = Math.min(opacity + rand(0.08, 0.18), 0.6);
-    const driftX = rand(-18, 18);
-    const driftY = rand(-18, 18);
-    const driftScale = rand(-0.05, 0.08);
-    const duration = rand(12, 30);
+    const size = isSmallScreen ? rand(120, 210) : rand(180, 300);
+    const blur = isSmallScreen ? rand(36, 50) : rand(30, 44);
+    const opacity = isSmallScreen ? rand(0.12, 0.18) : rand(0.16, 0.22);
+    const opacityPeak = Math.min(opacity + rand(0.1, 0.14), isSmallScreen ? 0.3 : 0.34);
+    const driftX = rand(-10, 10);
+    const driftY = rand(-10, 10);
+    const driftScale = rand(-0.03, 0.05);
+    const duration = rand(42, 60);
     const delay = rand(-8, 0);
-    const depth = rand(0.35, 1);
 
     blob.style.setProperty('--size', `${size}px`);
     blob.style.setProperty('--blur', `${blur}px`);
@@ -168,15 +172,15 @@
     blob.style.setProperty('--drift-scale', driftScale.toFixed(3));
     blob.style.setProperty('--duration', `${duration.toFixed(1)}s`);
     blob.style.setProperty('--delay', `${delay.toFixed(1)}s`);
-    blob.style.setProperty('--scale', rand(0.9, 1.08).toFixed(2));
+    blob.style.setProperty('--scale', rand(0.92, 1.04).toFixed(2));
     blob.style.setProperty('--blob-color', pickColor());
-    blob.style.left = `${rand(-10, 90).toFixed(1)}%`;
-    blob.style.top = `${rand(-10, 80).toFixed(1)}%`;
+    blob.style.left = left;
+    blob.style.top = top;
     blob.style.width = 'var(--size)';
     blob.style.height = 'var(--size)';
     blob.dataset.depth = depth.toFixed(2);
     layer.appendChild(blob);
-  }
+  });
 
   colorProbe.remove();
 
