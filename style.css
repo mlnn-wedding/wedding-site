@@ -1600,7 +1600,7 @@ img {
 .rsvp,
 .chat {
   margin-block: clamp(20px, 6vw, 48px);
-  padding-inline: 24px;
+  padding-inline: clamp(24px, 4vw, 32px);
 }
 
 @media (max-width: 600px) {
