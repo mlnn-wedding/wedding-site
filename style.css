@@ -1672,10 +1672,12 @@ img {
   background:
     linear-gradient(
       to bottom,
-      #f6f1eb 0%,
-      rgba(246,241,235,0) 24%,
-      rgba(246,241,235,0) 76%,
-      #f6f1eb 100%
+      rgba(246,241,235,0.9) 0%,
+      rgba(246,241,235,0.55) 22%,
+      rgba(246,241,235,0.15) 45%,
+      rgba(246,241,235,0.15) 55%,
+      rgba(246,241,235,0.55) 78%,
+      rgba(246,241,235,0.9) 100%
     ),
     url("photos/hands.png");
   background-repeat: no-repeat, no-repeat;
