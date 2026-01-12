@@ -1653,7 +1653,7 @@ img {
   content: "";
   position: absolute;
   inset: 0;
-  background: url("photos/hands.jpg") center / cover no-repeat;
+  background: url("photos/hands.png") center / cover no-repeat;
   filter: blur(18px);
   transform: scale(1.12);
   opacity: 0.55;
@@ -1677,7 +1677,7 @@ img {
       rgba(246,241,235,0) 76%,
       #f6f1eb 100%
     ),
-    url("photos/hands.jpg");
+    url("photos/hands.png");
   background-repeat: no-repeat, no-repeat;
   background-size: cover, cover;
   background-position: center, 50% 35%;
