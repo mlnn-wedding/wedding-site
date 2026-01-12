@@ -337,7 +337,7 @@ window.Wedding.gallery = {
       if (syncRaf) return;
       syncRaf = requestAnimationFrame(() => {
         syncRaf = null;
-        const visible = [active, prevImg, nextImg].filter((img) => img && img.classList.contains('is-visible'));
+        const visible = [active, standby].filter((img) => img && img.classList.contains('is-visible'));
         resetAnimations();
         if (visible.length) {
           void visible[0].offsetWidth;

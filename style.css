@@ -787,17 +787,20 @@ img {
   aspect-ratio: 3/4;
   opacity: 0;
   transform: none;
-  transition: none;
-  animation: none;
+  transition: none !important;
+  animation: none !important;
 }
 
 .gallery-side img.is-visible {
   opacity: 1;
+  transition: none;
+  animation: none;
 }
 
 .gallery-side img.is-updating {
   opacity: 0;
   animation: none;
+  transition: none;
 }
 
 .gallery-side-left {
@@ -866,7 +869,7 @@ img {
   z-index: 3;
 }
 
-.gallery-animated {
+.gallery-frame img.gallery-animated {
   animation: none !important;
 }
 
