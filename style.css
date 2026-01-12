@@ -1618,40 +1618,6 @@ img {
   width: min(560px, 100%);
 }
 
-/* ====== HANDS BAND ====== */
-
-.hands-band {
-  position: relative;
-  width: 100%;
-  height: clamp(220px, 18vw, 340px);
-  overflow: hidden;
-  background: #f6f1eb url("photos/hands.png") center / cover no-repeat;
-}
-
-.hands-band::marker { content: ""; }
-
-.hands-band::backdrop { }
-
-.hands-band::after {
-  content: none;
-}
-
-@media (max-width: 768px) {
-  .hands-band {
-    height: 240px;
-  }
-
-  .hands-band::after {
-    background-position: center, 50% 48%;
-  }
-}
-
-@media (min-width: 1200px) {
-  .hands-band {
-    height: 280px;
-  }
-}
-
 /* ====== RSVP ====== */
 
 .rsvp,
