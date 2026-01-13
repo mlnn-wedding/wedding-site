@@ -831,7 +831,7 @@ img {
   object-fit: cover;
   opacity: 0;
   transform: none;
-  transition: none;
+  transition: opacity 620ms ease;
   animation: none;
   background-color: color-mix(in srgb, white 85%, var(--c-soft) 15%);
 }

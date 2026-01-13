@@ -305,6 +305,10 @@ window.Wedding.gallery = {
     const prevImg = trio ? trio.querySelector('#gallery-prev') : null;
     const nextImg = trio ? trio.querySelector('#gallery-next') : null;
     const sideReady = { prev: false, next: false };
+    const sideDefaults = {
+      prev: 'photos/gallery_left.png',
+      next: 'photos/gallery_right.png',
+    };
     let buffer = frame ? frame.querySelector('#gallery-buffer') : null;
     if(!buffer && frame){
       buffer = document.createElement('img');
@@ -322,7 +326,7 @@ window.Wedding.gallery = {
     const front = current;
     const back = buffer;
     let syncRaf = null;
-    const disableAnimations = false;
+    const disableAnimations = true;
     const resetAnimations = () => {
       [front, back, prevImg, nextImg].forEach((img) => {
         if (img) img.classList.remove('gallery-animated');
@@ -375,10 +379,8 @@ window.Wedding.gallery = {
       imgEl.alt = `Фотография ${index + 1} из ${total}`;
     };
 
-    const updateSideImage = (imgEl, photoIndex, key) => {
-      if(!imgEl || !this.photos.length) return;
-      const src = this.photos[photoIndex];
-      if(!src) return;
+    const updateSideImage = (imgEl, src, key, altText) => {
+      if(!imgEl || !src) return;
       const markReady = () => {
         imgEl.classList.add('is-visible');
         requestAnimationFrame(() => {
@@ -389,7 +391,7 @@ window.Wedding.gallery = {
       };
       if(this._motionQuery && this._motionQuery.matches){
         setSource(imgEl, src);
-        setAlt(imgEl, photoIndex);
+        imgEl.alt = altText;
         imgEl.classList.add('is-visible');
         imgEl.classList.remove('is-updating');
         sideReady[key] = true;
@@ -401,7 +403,7 @@ window.Wedding.gallery = {
         imgEl.classList.remove('is-visible');
       }
       setSource(imgEl, src);
-      setAlt(imgEl, photoIndex);
+      imgEl.alt = altText;
       const reveal = () => {
         imgEl.onload = null;
         requestAnimationFrame(markReady);
@@ -413,13 +415,9 @@ window.Wedding.gallery = {
       }
     };
 
-    const setSideImages = (centerIndex) => {
-      if(!this.photos.length) return;
-      const total = this.photos.length;
-      const prevIndex = (centerIndex - 1 + total) % total;
-      const nextIndex = (centerIndex + 1) % total;
-      updateSideImage(prevImg, prevIndex, 'prev');
-      updateSideImage(nextImg, nextIndex, 'next');
+    const setSideImages = () => {
+      updateSideImage(prevImg, sideDefaults.prev, 'prev', 'Фотография слева');
+      updateSideImage(nextImg, sideDefaults.next, 'next', 'Фотография справа');
       scheduleSync();
     };
 
@@ -445,7 +443,7 @@ window.Wedding.gallery = {
       setAlt(active, 0);
       makeVisible(active);
       this.index = 0;
-      setSideImages(0);
+      setSideImages();
       scheduleSync();
     }
     makeHidden(standby);
@@ -539,7 +537,7 @@ window.Wedding.gallery = {
       const nextSrc = this.photos[normalized];
       if(!nextSrc || active.getAttribute('data-src') === nextSrc){
         this.index = normalized;
-        setSideImages(normalized);
+        setSideImages();
         return;
       }
 
@@ -563,7 +561,7 @@ window.Wedding.gallery = {
         const revealNewState = () => {
           makeHidden(currentActive);
           makeVisible(upcoming);
-          setSideImages(normalized);
+          setSideImages();
           scheduleSync();
           finalize();
         };
