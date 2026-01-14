@@ -292,11 +292,16 @@ window.Wedding.gallery = {
   ],
   index: 0,
   timer: null,
+  autoStartTs: 0,
   intervalMs: 5000,
   disableAuto: false,
   _visibilityHandler: null,
   _motionQuery: null,
   _motionHandler: null,
+  _indicator: null,
+  _indicatorSegments: [],
+  _progressTimer: null,
+  _navHandlersBound: false,
   mount(imgId){
     const current = document.getElementById(imgId);
     if(!current) return;
@@ -322,6 +327,31 @@ window.Wedding.gallery = {
     if(!buffer || !this.photos.length) return;
 
     current.decoding = 'async';
+
+    const stage = frame ? frame.closest('.gallery-stage') : null;
+    let indicator = stage ? stage.querySelector('.gallery-indicator') : null;
+    if(!indicator && frame){
+      indicator = document.createElement('div');
+      indicator.className = 'gallery-indicator';
+      indicator.setAttribute('role', 'list');
+      indicator.setAttribute('aria-label', 'Прогресс галереи');
+      frame.insertAdjacentElement('afterend', indicator);
+    }
+    if(indicator){
+      indicator.innerHTML = '';
+      this._indicatorSegments = this.photos.map((_, idx) => {
+        const segment = document.createElement('div');
+        segment.className = 'gallery-indicator-segment';
+        segment.setAttribute('role', 'listitem');
+        segment.setAttribute('aria-label', `Фото ${idx + 1} из ${this.photos.length}`);
+        const fill = document.createElement('span');
+        fill.className = 'gallery-indicator-fill';
+        segment.appendChild(fill);
+        indicator.appendChild(segment);
+        return { segment, fill };
+      });
+      this._indicator = indicator;
+    }
 
     const front = current;
     const back = buffer;
@@ -538,6 +568,7 @@ window.Wedding.gallery = {
       if(!nextSrc || active.getAttribute('data-src') === nextSrc){
         this.index = normalized;
         setSideImages();
+        resetAutoProgress();
         return;
       }
 
@@ -553,6 +584,7 @@ window.Wedding.gallery = {
           active = upcoming;
           this.index = normalized;
           isTransitioning = false;
+          resetAutoProgress();
         };
 
         const motionReduced = this._motionQuery && this._motionQuery.matches;
@@ -592,15 +624,61 @@ window.Wedding.gallery = {
       }
     };
 
+    const updateIndicatorProgress = (progressValue) => {
+      if(!this._indicatorSegments.length) return;
+      const progress = Math.max(0, Math.min(1, progressValue));
+      this._indicatorSegments.forEach(({ segment }, idx) => {
+        const isActive = idx === this.index;
+        const fill = idx < this.index ? 1 : idx > this.index ? 0 : progress;
+        segment.classList.toggle('is-active', isActive);
+        if(isActive){
+          segment.setAttribute('aria-current', 'true');
+        } else {
+          segment.removeAttribute('aria-current');
+        }
+        segment.style.setProperty('--progress', fill.toString());
+      });
+    };
+
+    const startProgressTimer = () => {
+      if(this.disableAuto || (this._motionQuery && this._motionQuery.matches) || this._progressTimer) return;
+      this._progressTimer = window.setInterval(() => {
+        if(!this.autoStartTs) return;
+        const elapsed = performance.now() - this.autoStartTs;
+        const progress = Math.min(elapsed / this.intervalMs, 1);
+        updateIndicatorProgress(progress);
+        if(elapsed >= this.intervalMs){
+          show(this.index - 1, { fromAuto: true });
+        }
+      }, 80);
+    };
+
+    const stopProgressTimer = () => {
+      if(!this._progressTimer) return;
+      window.clearInterval(this._progressTimer);
+      this._progressTimer = null;
+    };
+
+    const resetAutoProgress = () => {
+      const prefersReduced = this._motionQuery && this._motionQuery.matches;
+      if(this.disableAuto || prefersReduced){
+        this.autoStartTs = 0;
+        updateIndicatorProgress(1);
+        stopProgressTimer();
+        return;
+      }
+      this.autoStartTs = performance.now();
+      updateIndicatorProgress(0);
+      startProgressTimer();
+    };
+
     const start = () => {
-      if(this.disableAuto || this.timer || (this._motionQuery && this._motionQuery.matches)) return;
-      this.timer = window.setInterval(() => show(this.index - 1), this.intervalMs);
+      if(this.disableAuto || (this._motionQuery && this._motionQuery.matches)) return;
+      resetAutoProgress();
     };
 
     const stop = () => {
-      if(!this.timer) return;
-      window.clearInterval(this.timer);
-      this.timer = null;
+      stopProgressTimer();
     };
 
     if(!this._motionQuery && !this.disableAuto){
@@ -635,7 +713,66 @@ window.Wedding.gallery = {
       start();
     }
 
-    return { next: () => show(this.index - 1) };
+    const navPrev = frame ? frame.querySelector('.gallery-nav-prev') : null;
+    const navNext = frame ? frame.querySelector('.gallery-nav-next') : null;
+    const showPrev = () => show(this.index + 1, { manual: true });
+    const showNext = () => show(this.index - 1, { manual: true });
+
+    if(!this._navHandlersBound){
+      if(navPrev){
+        navPrev.addEventListener('click', () => {
+          showPrev();
+        });
+      }
+      if(navNext){
+        navNext.addEventListener('click', () => {
+          showNext();
+        });
+      }
+
+      if(frame){
+        let touchStartX = 0;
+        let touchStartY = 0;
+        frame.addEventListener('touchstart', (event) => {
+          const touch = event.touches[0];
+          if(!touch) return;
+          touchStartX = touch.clientX;
+          touchStartY = touch.clientY;
+        }, { passive: true });
+        frame.addEventListener('touchend', (event) => {
+          const touch = event.changedTouches[0];
+          if(!touch) return;
+          const dx = touch.clientX - touchStartX;
+          const dy = touch.clientY - touchStartY;
+          if(Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)){
+            if(dx > 0){
+              showPrev();
+            } else {
+              showNext();
+            }
+          }
+        }, { passive: true });
+      }
+
+      document.addEventListener('keydown', (event) => {
+        if(event.defaultPrevented) return;
+        const tag = event.target?.tagName;
+        if(tag && ['INPUT', 'TEXTAREA', 'SELECT'].includes(tag)) return;
+        if(event.target?.isContentEditable) return;
+        if(event.key === 'ArrowLeft'){
+          showPrev();
+        }
+        if(event.key === 'ArrowRight'){
+          showNext();
+        }
+      });
+
+      this._navHandlersBound = true;
+    }
+
+    resetAutoProgress();
+
+    return { next: showNext, prev: showPrev };
   }
 };
 

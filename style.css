@@ -770,6 +770,14 @@ img {
   margin: 0 auto;
 }
 
+.gallery-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  width: min(680px, 100%);
+}
+
 .gallery-side {
   margin: 0;
   width: min(220px, 100%);
@@ -821,6 +829,75 @@ img {
   box-shadow: 0 16px 44px var(--shadow-soft);
   background: color-mix(in srgb, var(--c-aqua) 18%, white 82%);
   isolation: isolate;
+}
+
+.gallery-nav {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: clamp(12px, 2vw, 20px);
+  pointer-events: none;
+  z-index: 4;
+}
+
+.gallery-nav-btn {
+  pointer-events: auto;
+  display: grid;
+  place-items: center;
+  width: clamp(36px, 6vw, 52px);
+  height: clamp(36px, 6vw, 52px);
+  border-radius: 50%;
+  border: none;
+  background: color-mix(in srgb, white 78%, var(--c-soft) 22%);
+  color: var(--c-deep);
+  font-size: clamp(28px, 5vw, 36px);
+  line-height: 1;
+  box-shadow: 0 10px 24px var(--shadow-soft);
+  cursor: pointer;
+  transition: transform 200ms ease, background 200ms ease;
+}
+
+.gallery-nav-btn:hover,
+.gallery-nav-btn:focus-visible {
+  transform: scale(1.05);
+  background: color-mix(in srgb, white 60%, var(--c-soft) 40%);
+  outline: none;
+}
+
+.gallery-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(8px, 1.6vw, 12px);
+  width: min(520px, 100%);
+  margin-top: 2px;
+}
+
+.gallery-indicator-segment {
+  --progress: 0;
+  position: relative;
+  flex: 1;
+  max-width: 56px;
+  height: 6px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--c-deep) 18%, white 82%);
+  overflow: hidden;
+}
+
+.gallery-indicator-fill {
+  display: block;
+  height: 100%;
+  width: 100%;
+  background: var(--c-coral);
+  transform: scaleX(var(--progress));
+  transform-origin: left;
+  transition: transform 120ms linear;
+}
+
+.gallery-indicator-segment.is-active {
+  background: color-mix(in srgb, var(--c-deep) 32%, white 68%);
 }
 
 .gallery-frame img {
@@ -895,6 +972,12 @@ img {
 
   .gallery-side {
     display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gallery-indicator-fill {
+    transition: none;
   }
 }
 
