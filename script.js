@@ -409,6 +409,31 @@ window.Wedding.gallery = {
       imgEl.alt = `Фотография ${index + 1} из ${total}`;
     };
 
+    const resolveSideSource = (src, done) => {
+      if (!src) return;
+      const attempt = (candidate, allowFallback = true) => {
+        const probe = new Image();
+        probe.onload = () => done(candidate);
+        probe.onerror = () => {
+          if (!allowFallback) {
+            done(candidate);
+            return;
+          }
+          const jpgMatch = candidate.match(/\.jpe?g(\?.*)?$/i);
+          if (jpgMatch) {
+            const fallbackSrc = candidate.replace(/\.jpe?g(\?.*)?$/i, '.svg$1');
+            if (fallbackSrc !== candidate) {
+              attempt(fallbackSrc, false);
+              return;
+            }
+          }
+          done(candidate);
+        };
+        probe.src = candidate;
+      };
+      attempt(src);
+    };
+
     const updateSideImage = (imgEl, src, key, altText) => {
       if(!imgEl || !src) return;
       const markReady = () => {
@@ -429,20 +454,23 @@ window.Wedding.gallery = {
         return;
       }
       imgEl.classList.add('is-updating');
-      if(sideReady[key] && imgEl.getAttribute('data-src') !== src){
-        imgEl.classList.remove('is-visible');
-      }
-      setSource(imgEl, src);
-      imgEl.alt = altText;
-      const reveal = () => {
-        imgEl.onload = null;
-        requestAnimationFrame(markReady);
-      };
-      if(imgEl.complete && imgEl.naturalWidth){
-        reveal();
-      } else {
-        imgEl.onload = reveal;
-      }
+      resolveSideSource(src, (resolvedSrc) => {
+        if (imgEl.getAttribute('data-src') === resolvedSrc && sideReady[key]) {
+          imgEl.classList.remove('is-updating');
+          return;
+        }
+        setSource(imgEl, resolvedSrc);
+        imgEl.alt = altText;
+        const reveal = () => {
+          imgEl.onload = null;
+          requestAnimationFrame(markReady);
+        };
+        if(imgEl.complete && imgEl.naturalWidth){
+          reveal();
+        } else {
+          imgEl.onload = reveal;
+        }
+      });
     };
 
     const setSideImages = () => {
@@ -648,7 +676,7 @@ window.Wedding.gallery = {
         const progress = Math.min(elapsed / this.intervalMs, 1);
         updateIndicatorProgress(progress);
         if(elapsed >= this.intervalMs){
-          show(this.index - 1, { fromAuto: true });
+          show(this.index + 1, { fromAuto: true });
         }
       }, 80);
     };
@@ -715,8 +743,8 @@ window.Wedding.gallery = {
 
     const navPrev = frame ? frame.querySelector('.gallery-nav-prev') : null;
     const navNext = frame ? frame.querySelector('.gallery-nav-next') : null;
-    const showPrev = () => show(this.index + 1, { manual: true });
-    const showNext = () => show(this.index - 1, { manual: true });
+    const showPrev = () => show(this.index - 1, { manual: true });
+    const showNext = () => show(this.index + 1, { manual: true });
 
     if(!this._navHandlersBound){
       if(navPrev){
