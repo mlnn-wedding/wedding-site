@@ -1967,12 +1967,12 @@ img {
   }
 }
 
-.choice-pill:focus-within {
+.choice-pill:has(input:focus-visible) {
   box-shadow: 0 0 0 2px color-mix(in srgb, var(--c-teal) 35%, white 65%), 0 10px 20px var(--shadow-soft);
   transform: translateY(-1px);
 }
 
-.choice-pill:focus-within:not(.is-selected) {
+.choice-pill:has(input:focus-visible):not(.is-selected) {
   background: color-mix(in srgb, white 85%, var(--c-aqua) 15%);
 }
 
