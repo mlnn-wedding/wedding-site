@@ -1200,6 +1200,7 @@ img {
   border: none;
   cursor: pointer;
   transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .btn:hover,
@@ -1751,7 +1752,7 @@ img {
 @media (max-width: 600px) {
   .rsvp,
   .chat {
-    margin-block: clamp(18px, 8vw, 32px);
+    margin-block: clamp(9px, 4vw, 16px);
   }
 }
 
@@ -1917,6 +1918,7 @@ img {
   transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
   overflow: hidden;
   text-align: center;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .choice-pill::after {
@@ -2550,6 +2552,14 @@ img {
     --cal-gap: 4px;
     padding: 18px;
     --cal-mark: clamp(28px, 11vw, 32px);
+  }
+
+  .calendar-text {
+    text-align: center;
+  }
+
+  .calendar-text p {
+    text-align: center;
   }
 
   .rsvp-card {
