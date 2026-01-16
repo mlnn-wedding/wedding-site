@@ -1953,17 +1953,11 @@ img {
   font-weight: 600;
 }
 
-.choice-pill:hover {
-  background: color-mix(in srgb, var(--c-peach) 28%, white);
-  box-shadow: 0 10px 20px var(--shadow-soft);
-  transform: translateY(-1px);
-}
-
-@media (hover: none) {
+@media (hover: hover) and (pointer: fine) {
   .choice-pill:hover {
-    background: color-mix(in srgb, white 85%, var(--c-aqua) 15%);
-    box-shadow: none;
-    transform: none;
+    background: color-mix(in srgb, var(--c-peach) 28%, white);
+    box-shadow: 0 10px 20px var(--shadow-soft);
+    transform: translateY(-1px);
   }
 }
 
