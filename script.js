@@ -950,8 +950,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     };
 
-    let hasPlayedCardHint = false;
-
     const renderPalette = (key) => {
       const config = palettes[key];
       if (!config) return;
@@ -959,7 +957,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const cards = [];
       const flipIcon = `
         <svg viewBox="0 0 24 24" role="presentation" focusable="false" aria-hidden="true">
-          <path d="M8.8 5.6a.65.65 0 0 0-.46 1.1L13.64 12l-5.3 5.3a.65.65 0 0 0 .92.92l5.76-5.76a.65.65 0 0 0 0-.92L9.06 5.76a.65.65 0 0 0-.26-.16.65.65 0 0 0-.01 0Z" fill="currentColor"/>
+          <path d="M20 12a8 8 0 1 1-3.2-6.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M20 6v5h-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       `;
 
@@ -1049,11 +1048,7 @@ document.addEventListener('DOMContentLoaded', () => {
           cards.forEach((card, index) => {
             card.style.setProperty('--card-delay', `${index * 140}ms`);
             card.classList.add('is-ready');
-            if (hasPlayedCardHint) {
-              card.classList.add('skip-hint');
-            }
           });
-          hasPlayedCardHint = true;
         });
       }
     };
