@@ -959,7 +959,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const cards = [];
       const flipIcon = `
         <svg viewBox="0 0 24 24" role="presentation" focusable="false" aria-hidden="true">
-          <path d="M8.8 5.6a.65.65 0 0 0-.46 1.1L13.64 12l-5.3 5.3a.65.65 0 0 0 .92.92l5.76-5.76a.65.65 0 0 0 0-.92L9.06 5.76a.65.65 0 0 0-.26-.16.65.65 0 0 0-.01 0Z" fill="currentColor"/>
+          <path d="M5.5 18c5.9 0 9.5-3.4 9.5-8.4V6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M15 6h4v4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
       `;
 
