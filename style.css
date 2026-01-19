@@ -1503,6 +1503,7 @@ img {
 
 .dresscode-card.is-ready .color-card-inner {
   opacity: 1;
+  animation: card-half-flip-hint 900ms ease-in-out var(--card-delay, 0ms) 1;
 }
 
 .dresscode-card .color-card-face {
@@ -1606,10 +1607,26 @@ img {
   .dresscode-card .color-card-inner {
     transition: none;
     opacity: 1;
+    animation: none;
   }
 
   .dresscode-card.is-flipped .color-card-inner {
     transform: rotateY(180deg);
+  }
+}
+
+@keyframes card-half-flip-hint {
+  0% {
+    transform: rotateY(0deg);
+  }
+  45% {
+    transform: rotateY(70deg);
+  }
+  75% {
+    transform: rotateY(-8deg);
+  }
+  100% {
+    transform: rotateY(0deg);
   }
 }
 
