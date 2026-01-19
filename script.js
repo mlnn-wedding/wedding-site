@@ -944,8 +944,8 @@ document.addEventListener('DOMContentLoaded', () => {
         items: [
           { tone: '#AABAD4', name: 'Пудровый деним', photo: 'blue-color-2.jpg' },
           { tone: '#A4B6C6', name: 'Голубой лёд', photo: 'blue-color-1.jpg' },
-          { tone: '#063759', name: 'Полуночный индиго', photo: 'blue-color-4.jpg' },
-          { tone: '#141743', name: 'Чернильный вельвет', photo: 'blue-color-3.jpg' }
+          { tone: '#063759', name: 'Полуночный индиго', photo: 'blue-color-3.jpg' },
+          { tone: '#141743', name: 'Чернильный вельвет', photo: 'blue-color-4.jpg' }
         ]
       }
     };
