@@ -1503,7 +1503,11 @@ img {
 
 .dresscode-card.is-ready .color-card-inner {
   opacity: 1;
-  animation: card-half-flip-hint 900ms ease-in-out var(--card-delay, 0ms) 1;
+  animation: card-half-flip-hint 1400ms cubic-bezier(0.22, 0.61, 0.36, 1) var(--card-delay, 0ms) 1;
+}
+
+.dresscode-card.skip-hint .color-card-inner {
+  animation: none;
 }
 
 .dresscode-card .color-card-face {
@@ -1619,10 +1623,10 @@ img {
   0% {
     transform: rotateY(0deg);
   }
-  45% {
+  40% {
     transform: rotateY(70deg);
   }
-  75% {
+  70% {
     transform: rotateY(-8deg);
   }
   100% {
