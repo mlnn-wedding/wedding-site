@@ -762,7 +762,7 @@ img {
 }
 
 .gallery {
-  padding-bottom: clamp(52px, 8vw, 96px);
+  padding-bottom: clamp(76px, 10vw, 140px);
 }
 
 .gallery-trio {
