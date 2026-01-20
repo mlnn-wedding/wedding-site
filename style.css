@@ -761,6 +761,10 @@ img {
   text-align: center;
 }
 
+.gallery {
+  padding-bottom: clamp(52px, 8vw, 96px);
+}
+
 .gallery-trio {
   display: grid;
   grid-template-columns: minmax(160px, 1fr) minmax(420px, 1.6fr) minmax(160px, 1fr);
