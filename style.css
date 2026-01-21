@@ -2478,6 +2478,12 @@ img {
   stroke-linejoin: round;
 }
 
+.gift-icon img {
+  width: 34px;
+  height: 34px;
+  display: block;
+}
+
 @media (max-width: 900px) {
   .gifts-card {
     grid-template-columns: 1fr;
