@@ -2413,6 +2413,17 @@ img {
   z-index: 1;
 }
 
+.gifts-text {
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+}
+
+.gifts-description {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
 .gifts-animation {
   position: absolute;
   right: -18px;
@@ -2569,6 +2580,10 @@ img {
   .gifts-text {
     display: grid;
     gap: 14px;
+  }
+
+  .gifts-description {
+    margin: 0;
   }
 
   .gifts-text .section-title {
