@@ -2413,6 +2413,10 @@ img {
   z-index: 1;
 }
 
+.gifts-text {
+  align-self: center;
+}
+
 .gifts-animation {
   position: absolute;
   right: -18px;
