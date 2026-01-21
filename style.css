@@ -2427,7 +2427,6 @@ img {
 .gift-orb {
   position: absolute;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(101, 182, 191, 0.45) 0%, rgba(101, 182, 191, 0.08) 60%, rgba(101, 182, 191, 0) 100%);
   filter: blur(0.5px);
   animation: gifts-orb-float 6s ease-in-out infinite;
 }
