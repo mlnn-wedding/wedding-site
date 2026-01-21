@@ -2465,6 +2465,17 @@ img {
   border-radius: 18px;
   background: rgba(101, 182, 191, 0.15);
   grid-area: icon;
+  color: var(--c-deep);
+}
+
+.gift-icon svg {
+  width: 34px;
+  height: 34px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 @media (max-width: 900px) {
