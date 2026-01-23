@@ -396,6 +396,9 @@ window.Wedding.gallery = {
     const setSource = (imgEl, src) => {
       if(!imgEl || !src) return;
       if(imgEl.getAttribute('data-src') === src) return;
+      if (imgEl.loading === 'lazy') {
+        imgEl.loading = 'eager';
+      }
 
       const jpgMatch = src.match(/\.jpe?g(\?.*)?$/i);
       if(jpgMatch){
