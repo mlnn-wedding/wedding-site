@@ -950,8 +950,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     };
 
-    let hasPlayedCardHint = false;
-
     const renderPalette = (key) => {
       const config = palettes[key];
       if (!config) return;
@@ -1049,11 +1047,7 @@ document.addEventListener('DOMContentLoaded', () => {
           cards.forEach((card, index) => {
             card.style.setProperty('--card-delay', `${index * 140}ms`);
             card.classList.add('is-ready');
-            if (hasPlayedCardHint) {
-              card.classList.add('skip-hint');
-            }
           });
-          hasPlayedCardHint = true;
         });
       }
     };
